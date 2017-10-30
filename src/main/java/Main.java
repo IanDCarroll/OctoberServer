@@ -1,9 +1,9 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hot diggity!");
-    }
+        // calls Factory to build the server
+        // Passes factory any command-line params
+        // calls the factory build to start
 
-    public static boolean passTest() {
-        return true;
+        System.out.println("Hot diggity!");
     }
 }

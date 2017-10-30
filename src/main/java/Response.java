@@ -1,0 +1,6 @@
+public class Response {
+    // represents a response
+    // has properties that represent each element of a response
+
+    public boolean exists() { return true; }
+}
