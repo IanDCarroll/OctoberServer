@@ -8,7 +8,8 @@ class ControllerTest {
 
     @BeforeEach
     void init() {
-        subject = new Controller();
+        ResponseGenerator responseGenerator = new ResponseGenerator();
+        subject = new Controller(responseGenerator);
     }
 
     @Test

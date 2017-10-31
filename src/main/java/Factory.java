@@ -24,7 +24,6 @@ public class Factory {
     }
 
     private static Factory constructYourself(String flag1, String value1, String flag2, String value2) {
-        System.out.format("\twith args: %s %s %s %s\n", flag1, value1, flag2, value2);
         if (improperFlags(flag1, flag2)) { throw new IllegalArgumentException(tellUsage()); }
         return new Factory(flag1, value1, flag2, value2);
     }
@@ -68,6 +67,12 @@ public class Factory {
 
     public ServerSocket buildServer() {
         System.out.format("building server with port %d and directory %s\n", port, directory);
-        return new ServerSocket(port, directory);
+        ByteConverter byteConverter = new ByteConverter();
+        Parser parser = new Parser();
+        ResponseGenerator responseGenerator = new ResponseGenerator();
+        Controller controller = new Controller(responseGenerator);
+        DeParser deParser = new DeParser();
+        ClientSocket client = new ClientSocket(byteConverter, parser, controller, deParser);
+        return new ServerSocket(port, directory, client);
     }
 }
