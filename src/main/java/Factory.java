@@ -1,5 +1,4 @@
 public class Factory {
-    // builds the server injecting the dependencies and initializing them in a final object
     // uses config.yml to inject routes to the controller
     private static final String emptyArg = "";
     private int port = 5000;
