@@ -2,9 +2,12 @@
 
 -/: # the name of the route URI.
     #Only explicitly declared routes are accessible to the server.
-    [ all ] # list of methods that may be called on the route.
-    # [ all ] (by itself) or any of [ get, head, post, put, delete, option ]
+    -permissions: # first item in a list of properties in case we want to add others. Open-Closed Principle.
+      [ all ] # list of methods that may be called on the route.
+      # [ all ] (by itself) or any of [ get, head, post, put, delete, option ]
 
--/file1: [ get, head, option ]
+-/file1:
+  -permissions: [ get, head, option ]
 
--/coffee: [ get, head, option ]
+-/coffee:
+  -permissions: [ get, head, option ]
