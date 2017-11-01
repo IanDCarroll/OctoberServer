@@ -1,0 +1,20 @@
+---
+routes: # a root hash with a list of all routes
+
+  -/: # the name of the route URI
+    -permissions: # which methods may be called on the route
+      [ all ] # list options are -all (by itself) or any of -get -head -post -put or -delete (-option is enabled on all)
+    -accessRef: # a magic string which denotes the method by which to return content and perform operations
+      directory # string options are either directory file or process
+
+  -/file1:
+    -permissions:
+      [ get, head ]
+    -accessRef:
+      file
+
+  -/coffee:
+    -permissions:
+      [ get, head ]
+    -accessRef:
+      process
