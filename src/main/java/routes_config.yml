@@ -1,20 +1,10 @@
----
-routes: # a root hash with a list of all routes
+--- # Routes. Please read comments in root (-/:) for how to write new routes
 
-  -/: # the name of the route URI
-    -permissions: # which methods may be called on the route
-      [ all ] # list options are -all (by itself) or any of -get -head -post -put or -delete (-option is enabled on all)
-    -accessRef: # a magic string which denotes the method by which to return content and perform operations
-      directory # string options are either directory file or process
+-/: # the name of the route URI.
+    #Only explicitly declared routes are accessible to the server.
+    [ all ] # list of methods that may be called on the route.
+    # [ all ] (by itself) or any of [ get, head, post, put, delete, option ]
 
-  -/file1:
-    -permissions:
-      [ get, head ]
-    -accessRef:
-      file
+-/file1: [ get, head, option ]
 
-  -/coffee:
-    -permissions:
-      [ get, head ]
-    -accessRef:
-      process
+-/coffee: [ get, head, option ]
