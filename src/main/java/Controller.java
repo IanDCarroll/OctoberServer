@@ -1,10 +1,13 @@
-public class Controller {
-    // matches a request object with a response generator via a config.yml
-    ResponseGenerator responseGenerator;
+import java.util.LinkedHashMap;
 
-    public Controller(ResponseGenerator responseGenerator) {
+public class Controller {
+    private ResponseGenerator responseGenerator;
+    private LinkedHashMap routes;
+
+    public Controller(ResponseGenerator responseGenerator, LinkedHashMap routes) {
         System.out.println("controller initialized");
         this.responseGenerator = responseGenerator;
+        this.routes = routes;
     }
 
     public boolean exists() { return true; }

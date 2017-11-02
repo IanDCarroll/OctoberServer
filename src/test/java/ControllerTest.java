@@ -1,15 +1,18 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
-    public Controller subject;
+    private Controller subject;
 
     @BeforeEach
     void init() {
         ResponseGenerator responseGenerator = new ResponseGenerator();
-        subject = new Controller(responseGenerator);
+        ParseYaml parseYaml = new ParseYaml();
+        LinkedHashMap routes = parseYaml.parse();
+        subject = new Controller(responseGenerator, routes);
     }
 
     @Test

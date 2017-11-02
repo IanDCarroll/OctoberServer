@@ -1,3 +1,5 @@
+import java.util.LinkedHashMap;
+
 public class Factory {
     // uses config.yml to inject routes to the controller
     private static final String emptyArg = "";
@@ -65,11 +67,14 @@ public class Factory {
     }
 
     public ServerSocket buildServer() {
+
         System.out.format("building server with port %d and directory %s\n", port, directory);
         ByteConverter byteConverter = new ByteConverter();
         Parser parser = new Parser();
         ResponseGenerator responseGenerator = new ResponseGenerator();
-        Controller controller = new Controller(responseGenerator);
+        ParseYaml parseYaml = new ParseYaml();
+        LinkedHashMap routes = parseYaml.parse();
+        Controller controller = new Controller(responseGenerator, routes);
         DeParser deParser = new DeParser();
         ClientSocket client = new ClientSocket(byteConverter, parser, controller, deParser);
         return new ServerSocket(port, directory, client);

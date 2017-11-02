@@ -1,13 +1,7 @@
---- # Routes. Please read comments in root (-/:) for how to write new routes
+---
 
--/: # the name of the route URI.
-    #Only explicitly declared routes are accessible to the server.
-    -permissions: # first item in a list of properties in case we want to add others. Open-Closed Principle.
-      [ all ] # list of methods that may be called on the route.
-      # [ all ] (by itself) or any of [ get, head, post, put, delete, option ]
+/: all
 
--/file1:
-  -permissions: [ get, head, option ]
+/file1: get head options
 
--/coffee:
-  -permissions: [ get, head, option ]
+/coffee: get head options
