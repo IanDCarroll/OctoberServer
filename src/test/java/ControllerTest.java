@@ -10,8 +10,8 @@ class ControllerTest {
     @BeforeEach
     void init() {
         ResponseGenerator responseGenerator = new ResponseGenerator();
-        ParseYaml parseYaml = new ParseYaml();
-        LinkedHashMap routes = parseYaml.parse();
+        YamlImporter yamlImporter = new YamlImporter();
+        LinkedHashMap routes = yamlImporter.importYaml();
         subject = new Controller(responseGenerator, routes);
     }
 

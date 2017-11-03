@@ -1,7 +1,6 @@
 import java.util.LinkedHashMap;
 
 public class Factory {
-    // uses config.yml to inject routes to the controller
     private static final String emptyArg = "";
     private int port = 5000;
     private String directory = "/public";
@@ -53,7 +52,6 @@ public class Factory {
     }
 
     public Factory(String flag1, String value1, String flag2, String value2) {
-
         if (flag1.equals("-p")) {
             this.port = integerify(value1);
         } else if (flag2.equals("-p")) {
@@ -72,8 +70,8 @@ public class Factory {
         ByteConverter byteConverter = new ByteConverter();
         Parser parser = new Parser();
         ResponseGenerator responseGenerator = new ResponseGenerator();
-        ParseYaml parseYaml = new ParseYaml();
-        LinkedHashMap routes = parseYaml.parse();
+        YamlImporter yamlImporter = new YamlImporter();
+        LinkedHashMap routes = yamlImporter.importYaml();
         Controller controller = new Controller(responseGenerator, routes);
         DeParser deParser = new DeParser();
         ClientSocket client = new ClientSocket(byteConverter, parser, controller, deParser);

@@ -6,14 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 
-public class ParseYaml {
+public class YamlImporter {
+    private static final String CONFIG_FILE = "src/main/java/routes_config.yml";
 
-    public LinkedHashMap parse() {
+    public LinkedHashMap importYaml() {
+
         Yaml yaml = new Yaml();
 
         InputStream input = null;
         try {
-            input = new FileInputStream(new File("src/main/java/routes_config.yml"));
+            input = new FileInputStream(new File(CONFIG_FILE));
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }

@@ -5,7 +5,10 @@ Check out [the Design Decisions](https://github.com/IanDCarroll/OctoberServer/wi
 
 ### Setup:
 
-`$ mvn install`
+`$ mvn clean compile assembly:single`
+
+### Run Server:
+`$ java -jar target/OctoberServer.jar [-p PORT] [-d DIRECTORY_TO_SERVE]`
 
 ### Run Tests:
 
