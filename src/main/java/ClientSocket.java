@@ -9,7 +9,6 @@ public class ClientSocket {
 
 
     public ClientSocket(ByteConverter byteConverter, Parser parser, Controller controller, DeParser deParser) {
-        System.out.println("client socket initialized");
         this.byteConverter = byteConverter;
         this.parser = parser;
         this.controller = controller;

@@ -5,7 +5,6 @@ public class ServerSocket {
     public ClientSocket client;
 
     public ServerSocket(int port, String directory, ClientSocket client) {
-        System.out.println("server socket initialized");
         this.client = client;
     }
 

@@ -5,7 +5,6 @@ public class ResponseGenerator {
     public Response response;
 
     public ResponseGenerator() {
-        System.out.println("response generator initialized");
         this.response = new Response();
     }
 

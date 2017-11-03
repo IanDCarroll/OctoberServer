@@ -5,7 +5,6 @@ public class Controller {
     private LinkedHashMap routes;
 
     public Controller(ResponseGenerator responseGenerator, LinkedHashMap routes) {
-        System.out.println("controller initialized");
         this.responseGenerator = responseGenerator;
         this.routes = routes;
     }

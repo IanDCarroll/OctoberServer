@@ -4,7 +4,6 @@ public class Parser {
     Request request;
 
     public Parser() {
-        System.out.println("parser initialized");
         this.request = new Request();
     }
 
