@@ -1,6 +1,6 @@
 public class Parser {
     // takes a string and returns a request object
-    // used as a decorator between ClientSocket and Controller
+    // used as a decorator between ResponderSocket and Controller
     Request request;
 
     public Parser() {

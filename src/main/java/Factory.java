@@ -64,7 +64,7 @@ public class Factory {
         }
     }
 
-    public ServerSocket buildServer() {
+    public ListenerSocket buildServer() {
 
         System.out.format("building server with port %d and directory %s\n", port, directory);
         ByteConverter byteConverter = new ByteConverter();
@@ -74,7 +74,7 @@ public class Factory {
         LinkedHashMap routes = yamlImporter.importYaml();
         Controller controller = new Controller(responseGenerator, routes);
         DeParser deParser = new DeParser();
-        ClientSocket client = new ClientSocket(byteConverter, parser, controller, deParser);
-        return new ServerSocket(port, directory, client);
+        ResponderSocket client = new ResponderSocket(byteConverter, parser, controller, deParser);
+        return new ListenerSocket(port, directory, client);
     }
 }
