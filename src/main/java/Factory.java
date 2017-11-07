@@ -67,14 +67,12 @@ public class Factory {
     public ListenerSocket buildServer() {
 
         System.out.format("building server with port %d and directory %s\n", port, directory);
-        ByteConverter byteConverter = new ByteConverter();
         Parser parser = new Parser();
         ResponseGenerator responseGenerator = new ResponseGenerator();
         YamlImporter yamlImporter = new YamlImporter();
         LinkedHashMap routes = yamlImporter.importYaml();
         Controller controller = new Controller(responseGenerator, routes);
-        DeParser deParser = new DeParser();
-        ResponderSocket client = new ResponderSocket(byteConverter, parser, controller, deParser);
+        ResponderSocket client = new ResponderSocket(parser, controller);
         return new ListenerSocket(port, directory, client);
     }
 }
