@@ -2,7 +2,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketException;
 
 public class ResponderSocket {
     // on init accepts a controller as a parameter
@@ -52,20 +51,17 @@ public class ResponderSocket {
      }
 
      private void toWriteAResponse() throws NullPointerException, IOException {
-        String response = readRequest();
-        System.out.println(response);
+        byte[] request = readRequest();
+        System.out.println(new String(request));
         byte[] responsePayload = "HTTP/1.1 404 Not Found\r\n\r\n".getBytes(); // This is the gateway to the functional core
         responder.write(responsePayload);
         responder.flush();
      }
 
-     private String readRequest() throws NullPointerException, IOException {
-         byte[] request = new byte[MAX_REQUEST_SIZE];
-         int count;
-         while((count = listener.read(request)) > 0) {
-             return new String(request);
-         }
-         return new String(request);
+     private byte[] readRequest() throws NullPointerException, IOException {
+        byte[] request = new byte[MAX_REQUEST_SIZE];
+        listener.read(request);
+        return request;
      }
 
      private void thenCloseTheConnection() {
