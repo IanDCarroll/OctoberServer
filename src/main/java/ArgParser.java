@@ -94,7 +94,7 @@ public class ArgParser {
     }
 
     public static String directoryNotInFSMessage(String badInput) {
-        return badInput + " is not a directory in the file system. Please specify an existing directory,.";
+        return badInput + " is not a directory in the file system. Please specify the full path of an existing directory.";
     }
 
     public static String usageMessage() {
