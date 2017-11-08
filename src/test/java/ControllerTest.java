@@ -10,8 +10,8 @@ class ControllerTest {
     @BeforeEach
     void init() {
         ResponseGenerator responseGenerator = new ResponseGenerator();
-        YamlImporter yamlImporter = new YamlImporter();
-        LinkedHashMap routes = yamlImporter.importYaml();
+        ConfigImporter configImporter = new ConfigImporter();
+        LinkedHashMap routes = configImporter.importConfig();
         subject = new Controller(responseGenerator, routes);
     }
 

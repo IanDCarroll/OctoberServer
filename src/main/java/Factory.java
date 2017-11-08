@@ -14,8 +14,8 @@ public class Factory {
         System.out.format("building server with port %d and directory %s\n", port, directory);
         Parser parser = new Parser();
         ResponseGenerator responseGenerator = new ResponseGenerator();
-        YamlImporter yamlImporter = new YamlImporter();
-        LinkedHashMap routes = yamlImporter.importYaml();
+        ConfigImporter configImporter = new ConfigImporter();
+        LinkedHashMap routes = configImporter.importConfig();
         Controller controller = new Controller(responseGenerator, routes);
         ResponderSocket client = new ResponderSocket(parser, controller);
         return new ListenerSocket(port, directory, client);
