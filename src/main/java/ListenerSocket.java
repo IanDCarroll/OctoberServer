@@ -30,7 +30,11 @@ public class ListenerSocket {
         }
     }
 
-    private void toAcceptAnIncomingCall(ServerSocket listener) throws IOException {
-        responder.respondTo(listener.accept());
+    private void toAcceptAnIncomingCall(ServerSocket listener) throws SocketException {
+        try {
+            responder.respondTo(listener.accept());
+        } catch (IOException e) {
+            System.out.println("IOException while trying to accept an incoming call");
+        }
     }
 }
