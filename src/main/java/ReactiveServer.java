@@ -25,8 +25,9 @@ public class ReactiveServer {
             @Override
             public void subscribe(FlowableEmitter<Socket> emitter) throws Exception {
                 System.out.println("starting event stream");
-                emitter.onNext(listenerSocket.getClientConnection());
-                emitter.onNext(listenerSocket.getClientConnection());
+                while (!Thread.currentThread().isInterrupted()) {
+                    emitter.onNext(listenerSocket.getClientConnection());
+                }
                 System.out.println("completing event stream");
                 emitter.onComplete();
             }
