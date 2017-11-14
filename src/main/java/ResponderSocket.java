@@ -4,10 +4,6 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ResponderSocket {
-    // on init accepts a controller as a parameter
-    // accepts a byte[] from a client
-    // returns a response byte[] to the client by means of the Controller
-
     public Parser parser;
     public Controller controller;
     public Socket clientConnection;

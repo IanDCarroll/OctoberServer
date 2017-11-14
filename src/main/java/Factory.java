@@ -9,15 +9,16 @@ public class Factory {
         this.directory = directory;
     }
 
-    public ListenerSocket buildServer() {
+    public ReactiveServer buildServer() {
 
         System.out.format("building server with port %d and directory %s\n", port, directory);
-        Parser parser = new Parser();
-        ResponseGenerator responseGenerator = new ResponseGenerator();
-        ConfigImporter configImporter = new ConfigImporter();
-        LinkedHashMap routes = configImporter.importConfig();
-        Controller controller = new Controller(responseGenerator, routes);
-        ResponderSocket client = new ResponderSocket(parser, controller);
-        return new ListenerSocket(port, directory, client);
+            Parser parser = new Parser();
+                ResponseGenerator responseGenerator = new ResponseGenerator();
+                ConfigImporter configImporter = new ConfigImporter();
+                LinkedHashMap routes = configImporter.importConfig();
+            Controller controller = new Controller(responseGenerator, routes);
+        ResponderSocket responder = new ResponderSocket(parser, controller);
+        ListenerSocket listener = new ListenerSocket(port);
+        return new ReactiveServer(listener, responder);
     }
 }

@@ -1,40 +1,44 @@
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 
 public class ListenerSocket {
-    // implements Reactive Programming to manage Server Streams and concurrency
-    private ResponderSocket responder;
     private int port;
 
-    public ListenerSocket(int port, String directory, ResponderSocket responder) {
+    public ListenerSocket(int port) {
         this.port = port;
-        this.responder = responder;
     }
 
-    public void start() {
+    public Socket getClientConnection() {
         System.out.println("starting server");
+        Socket clientConnection = new Socket();
         try {
-            toStartListening();
+            clientConnection = startListening();
         } catch (IOException e) {
             System.out.println("IOException while trying to initialize Server Socket");
         }
+        return clientConnection;
     }
 
-    private void toStartListening() throws IOException {
+    private Socket startListening() throws IOException {
         ServerSocket listener = new ServerSocket(port);
+        Socket clientConnection = new Socket();
         try {
-            toAcceptAnIncomingCall(listener);
+            clientConnection = acceptAnIncomingCall(listener);
         } catch (SocketException e) {
             System.out.println("SocketException while trying to listen for requests");
         }
+        return clientConnection;
     }
 
-    private void toAcceptAnIncomingCall(ServerSocket listener) throws SocketException {
+    private Socket acceptAnIncomingCall(ServerSocket listener) throws SocketException {
+        Socket clientConnection = new Socket();
         try {
-            responder.respondTo(listener.accept());
+            clientConnection = listener.accept();
         } catch (IOException e) {
             System.out.println("IOException while trying to accept an incoming call");
         }
+        return clientConnection;
     }
 }
