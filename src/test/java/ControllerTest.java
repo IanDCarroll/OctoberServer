@@ -10,7 +10,8 @@ class ControllerTest {
     @BeforeEach
     void init() {
         ResponseGenerator responseGenerator = new ResponseGenerator();
-        ConfigImporter configImporter = new ConfigImporter();
+            String configFilePath = "src/main/java/routes_config.yml";
+            ConfigImporter configImporter = new ConfigImporter(configFilePath);
         LinkedHashMap routes = configImporter.importConfig();
         subject = new Controller(responseGenerator, routes);
     }

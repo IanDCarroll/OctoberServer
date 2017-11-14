@@ -10,12 +10,13 @@ Check out [the Design Decisions](https://github.com/IanDCarroll/OctoberServer/wi
 
 ### Setup:
 
-`$ cd` (`routes_config` is only accessible if the repo's root is a direct child of home)<br>
-`git clone git@github.com:IanDCarroll/OctoberServer.git`<br>
 `$ mvn clean compile assembly:single`
 
 ### Run Server:
-`$ java -jar target/OctoberServer.jar [-p PORT] [-d DIRECTORY_TO_SERVE]`
+`$ java -jar target/OctoberServer.jar [-p PORT] [-d /PATH/TO/DIRECTORY/TO/SERVE/FROM] [-c /PATH/TO/SPECIAL/ROUTES/CONFIG.yml]`<br>
+When configuring this with cob_spec, be sure to specify `-c` or it won't run.<br>
+Cob_spec runs your server from the home directory, not the project's root.<br>
+This will break a server that relies on files and expects to run in the project's root.
 
 ### Run Unit Tests:
 

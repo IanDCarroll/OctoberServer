@@ -120,6 +120,47 @@ class ArgParserTest {
     }
 
     @Test
+    void argParserGetsADefaultConfigFileWhenNoConfigIsSpecified() {
+        //Given
+        String configFile = "src/main/java/routes_config.yml";
+        String[] args = {};
+        subject = new ArgParser(args);
+        //When
+        String actual = subject.getConfigFile();
+        //Then
+        String expected = configFile;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void argParserSetsAConfigFileWhenAnExistingConfigIsSpecified() {
+        //Given
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String[] args = {configFlag, configFile };
+        subject = new ArgParser(args);
+        //When
+        String actual = subject.getConfigFile();
+        //Then
+        String expected = configFile;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void argParserThrowsAnIllegalArgumentExceptionIfConfigSpecifiedCantBeFoundInTheFileSystem() {
+        //Given
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/throw_an_error.yml";
+        String[] args = {configFlag, configFile };
+        //Then
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+            subject = new ArgParser(args);
+        });
+        //And
+        assertEquals(FileSetter.fileNotInFSMessage(configFile), exception.getMessage());
+    }
+
+    @Test
     void argParserThrowsAnIllegalArgumentExceptionIfFlagsAreNotSpecified() {
         //Given
         String directoryFlag = "Throw an error";
@@ -172,6 +213,226 @@ class ArgParserTest {
     }
 
     @Test
+    void argParserSetsConfigAndDirectory() {
+        //Given
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String directoryFlag = "-d";
+        String directory = System.getProperty("user.dir") + "/target";
+        String[] args = { directoryFlag, directory, configFlag, configFile };
+        subject = new ArgParser(args);
+        //When
+        String actualFile = subject.getConfigFile();
+        String actualDirectory = subject.getDirectory();
+        //Then
+        String expectedFile = configFile;
+        String expectedDirectory = directory;
+        assertEquals(expectedFile, actualFile);
+        assertEquals(expectedDirectory, actualDirectory);
+    }
+
+    @Test
+    void argParserSetsDirectoryAndConfig() {
+        //Given
+        String directoryFlag = "-d";
+        String directory = System.getProperty("user.dir") + "/target";
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String[] args = { configFlag, configFile, directoryFlag, directory };
+        subject = new ArgParser(args);
+        //When
+        String actualFile = subject.getConfigFile();
+        String actualDirectory = subject.getDirectory();
+        //Then
+        String expectedFile = configFile;
+        String expectedDirectory = directory;
+        assertEquals(expectedFile, actualFile);
+        assertEquals(expectedDirectory, actualDirectory);
+    }
+
+    @Test
+    void argParserSetsPortAndConfig() {
+        //Given
+        String portFlag = "-p";
+        String port = "1701";
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String[] args = { portFlag, port, configFlag, configFile };
+        subject = new ArgParser(args);
+        //When
+        int actualPort = subject.getPort();
+        String actualFile = subject.getConfigFile();
+        //Then
+        int expectedPort = Integer.parseInt(port);
+        String expectedFile = configFile;
+        assertEquals(expectedPort, actualPort);
+        assertEquals(expectedFile, actualFile);
+    }
+
+    @Test
+    void argParserSetsConfigAndPort() {
+        //Given
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String portFlag = "-p";
+        String port = "1701";
+        String[] args = { configFlag, configFile, portFlag, port };
+        subject = new ArgParser(args);
+        //When
+        int actualPort = subject.getPort();
+        String actualFile = subject.getConfigFile();
+        //Then
+        int expectedPort = Integer.parseInt(port);
+        String expectedFile = configFile;
+        assertEquals(expectedPort, actualPort);
+        assertEquals(expectedFile, actualFile);
+    }
+
+    @Test
+    void argParserSetsPortAndDirectoryAndConfig() {
+        //Given
+        String portFlag = "-p";
+        String port = "1701";
+        String directoryFlag = "-d";
+        String directory = System.getProperty("user.dir") + "/target";
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String[] args = { portFlag, port, directoryFlag, directory, configFlag, configFile };
+        subject = new ArgParser(args);
+        //When
+        int actualPort = subject.getPort();
+        String actualDirectory = subject.getDirectory();
+        String actualConfig = subject.getConfigFile();
+        //Then
+        int expectedPort = Integer.parseInt(port);
+        String expectedDirectory = directory;
+        String expectedConfig = configFile;
+        assertEquals(expectedPort, actualPort);
+        assertEquals(expectedDirectory, actualDirectory);
+        assertEquals(expectedConfig, actualConfig);
+    }
+
+    @Test
+    void argParserSetsPortAndConfigAndDirectory() {
+        //Given
+        String portFlag = "-p";
+        String port = "1701";
+        String directoryFlag = "-d";
+        String directory = System.getProperty("user.dir") + "/target";
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String[] args = { directoryFlag, directory, configFlag, configFile, portFlag, port };
+        subject = new ArgParser(args);
+        //When
+        int actualPort = subject.getPort();
+        String actualDirectory = subject.getDirectory();
+        String actualConfig = subject.getConfigFile();
+        //Then
+        int expectedPort = Integer.parseInt(port);
+        String expectedDirectory = directory;
+        String expectedConfig = configFile;
+        assertEquals(expectedPort, actualPort);
+        assertEquals(expectedDirectory, actualDirectory);
+        assertEquals(expectedConfig, actualConfig);
+    }
+
+    @Test
+    void argParserSetsDirectoryAndPortAndConfig() {
+        //Given
+        String portFlag = "-p";
+        String port = "1701";
+        String directoryFlag = "-d";
+        String directory = System.getProperty("user.dir") + "/target";
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String[] args = { directoryFlag, directory, portFlag, port, configFlag, configFile };
+        subject = new ArgParser(args);
+        //When
+        int actualPort = subject.getPort();
+        String actualDirectory = subject.getDirectory();
+        String actualConfig = subject.getConfigFile();
+        //Then
+        int expectedPort = Integer.parseInt(port);
+        String expectedDirectory = directory;
+        String expectedConfig = configFile;
+        assertEquals(expectedPort, actualPort);
+        assertEquals(expectedDirectory, actualDirectory);
+        assertEquals(expectedConfig, actualConfig);
+    }
+
+    @Test
+    void argParserSetsDirectoryAndConfigAndPort() {
+        //Given
+        String portFlag = "-p";
+        String port = "1701";
+        String directoryFlag = "-d";
+        String directory = System.getProperty("user.dir") + "/target";
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String[] args = { configFlag, configFile, directoryFlag, directory, portFlag, port };
+        subject = new ArgParser(args);
+        //When
+        int actualPort = subject.getPort();
+        String actualDirectory = subject.getDirectory();
+        String actualConfig = subject.getConfigFile();
+        //Then
+        int expectedPort = Integer.parseInt(port);
+        String expectedDirectory = directory;
+        String expectedConfig = configFile;
+        assertEquals(expectedPort, actualPort);
+        assertEquals(expectedDirectory, actualDirectory);
+        assertEquals(expectedConfig, actualConfig);
+    }
+
+    @Test
+    void argParserSetsConfigAndPortAndDirectory() {
+        //Given
+        String portFlag = "-p";
+        String port = "1701";
+        String directoryFlag = "-d";
+        String directory = System.getProperty("user.dir") + "/target";
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String[] args = { configFlag, configFile, portFlag, port, directoryFlag, directory };
+        subject = new ArgParser(args);
+        //When
+        int actualPort = subject.getPort();
+        String actualDirectory = subject.getDirectory();
+        String actualConfig = subject.getConfigFile();
+        //Then
+        int expectedPort = Integer.parseInt(port);
+        String expectedDirectory = directory;
+        String expectedConfig = configFile;
+        assertEquals(expectedPort, actualPort);
+        assertEquals(expectedDirectory, actualDirectory);
+        assertEquals(expectedConfig, actualConfig);
+    }
+
+    @Test
+    void argParserSetsConfigAndDirectoryAndPort() {
+        //Given
+        String portFlag = "-p";
+        String port = "1701";
+        String directoryFlag = "-d";
+        String directory = System.getProperty("user.dir") + "/target";
+        String configFlag = "-c";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
+        String[] args = { configFlag, configFile,directoryFlag, directory, portFlag, port };
+        subject = new ArgParser(args);
+        //When
+        int actualPort = subject.getPort();
+        String actualDirectory = subject.getDirectory();
+        String actualConfig = subject.getConfigFile();
+        //Then
+        int expectedPort = Integer.parseInt(port);
+        String expectedDirectory = directory;
+        String expectedConfig = configFile;
+        assertEquals(expectedPort, actualPort);
+        assertEquals(expectedDirectory, actualDirectory);
+        assertEquals(expectedConfig, actualConfig);
+    }
+
+    @Test
     void argParserThrowsAnIllegalArgumentExceptionIfFlagsAreNotRight() {
         //Given
         String portFlag = "-p";
@@ -216,14 +477,33 @@ class ArgParserTest {
     }
 
     @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfThereAreMoreThanFourArgs() {
+    void argParserThrowsAnIllegalArgumentExceptionIfThereAreFiveArgs() {
         //Given
         String portFlag = "-p";
         String port = "1701";
         String directoryFlag = "-d";
         String directory = "/target";
+        String configFlag = "-c";
+        String[] args = { portFlag, port, directoryFlag, directory, configFlag };
+        //Then
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+            subject = new ArgParser(args);
+        });
+        //And
+        assertEquals(ArgParser.usageMessage(), exception.getMessage());
+    }
+
+    @Test
+    void argParserThrowsAnIllegalArgumentExceptionIfThereAreMoreThanSixArgs() {
+        //Given
+        String portFlag = "-p";
+        String port = "1701";
+        String directoryFlag = "-d";
+        String directory = "/target";
+        String configFlag = "-c";
+        String configFile = "src/main/java/routes_config.yml";
         String extra = "Throw an error";
-        String[] args = { portFlag, port, directoryFlag, directory, extra };
+        String[] args = { portFlag, port, directoryFlag, directory, configFlag, configFile, extra };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             subject = new ArgParser(args);
