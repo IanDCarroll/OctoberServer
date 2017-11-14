@@ -10,6 +10,8 @@ Check out [the Design Decisions](https://github.com/IanDCarroll/OctoberServer/wi
 
 ### Setup:
 
+`$ cd` (`routes_config` is only accessible if the repo's root is a direct child of home)<br>
+`git clone git@github.com:IanDCarroll/OctoberServer.git`<br>
 `$ mvn clean compile assembly:single`
 
 ### Run Server:

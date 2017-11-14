@@ -3,6 +3,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ArgParserTest {
     private ArgParser subject;
+    private static final int PORT_MIN = 0;
+    private static final int PORT_MAX = 65535;
 
     @Test
     void argParserGetsDefaultPort5000() {
@@ -53,7 +55,8 @@ class ArgParserTest {
             subject = new ArgParser(args);
         });
         //And
-        assertEquals(ArgParser.portNumberFormatErrorMessage(port), exception.getMessage());
+        String expected = PortSetter.portNumberFormatErrorMessage(port);
+        assertEquals(expected, exception.getMessage());
     }
 
     @Test
@@ -67,7 +70,8 @@ class ArgParserTest {
             subject = new ArgParser(args);
         });
         //And
-        assertEquals(ArgParser.portOurOfRangeMessage(port), exception.getMessage());
+        String expected = PortSetter.portOutOfRangeMessage(port, String.valueOf(PORT_MIN), String.valueOf(PORT_MAX));
+        assertEquals(expected, exception.getMessage());
     }
 
     @Test
@@ -81,7 +85,8 @@ class ArgParserTest {
             subject = new ArgParser(args);
         });
         //And
-        assertEquals(ArgParser.portOurOfRangeMessage(port), exception.getMessage());
+        String expected = PortSetter.portOutOfRangeMessage(port, String.valueOf(PORT_MIN), String.valueOf(PORT_MAX));
+        assertEquals(expected, exception.getMessage());
     }
 
 
@@ -111,7 +116,7 @@ class ArgParserTest {
             subject = new ArgParser(args);
         });
         //And
-        assertEquals(ArgParser.directoryNotInFSMessage(directory), exception.getMessage());
+        assertEquals(DirSetter.directoryNotInFSMessage(directory), exception.getMessage());
     }
 
     @Test
