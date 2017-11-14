@@ -46,7 +46,7 @@ public class ResponderSocket {
      private void toWriteAResponse() throws NullPointerException, IOException {
         byte[] request = readRequest();
         System.out.println(new String(request));
-        byte[] responsePayload = "HTTP/1.1 404 Not Found\r\n\r\n".getBytes(); // This is the gateway to the functional core
+        byte[] responsePayload = "HTTP/1.1 200 OK\r\n\r\n".getBytes(); // This is the gateway to the functional core
         responder.write(responsePayload);
         responder.flush();
      }
