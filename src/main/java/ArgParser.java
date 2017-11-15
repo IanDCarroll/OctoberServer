@@ -8,6 +8,7 @@ public class ArgParser {
     private static final String PORT_FLAG = "-p";
     private static final String DIRECTORY_FLAG = "-d";
     private static final String CONFIG_FLAG = "-c";
+    private static final String useDefault = "";
 
     public ArgParser(String[] args) {
         setArgs(args);
@@ -25,7 +26,7 @@ public class ArgParser {
 
     private void setArgs(String[] args) {
         if (args.length == 0) {
-            //use defaults
+            setSettings(useDefault, useDefault, useDefault);
         } else if (args.length == 2) {
             setOneArg(args);
         } else if (args.length == 4) {
@@ -39,11 +40,11 @@ public class ArgParser {
 
     private void setOneArg(String[] args) {
         if (itsFlagged(args, 0, PORT_FLAG)) {
-            port = PortSetter.setPort(args[1]);
+            setSettings(args[1], useDefault, useDefault);
         } else if (itsFlagged(args, 0, DIRECTORY_FLAG)) {
-            directory = DirSetter.setDir(args[1]);
+            setSettings(useDefault, args[1], useDefault);
         } else if (itsFlagged(args,0, CONFIG_FLAG)) {
-            configFile = FileSetter.setFile(args[1]);
+            setSettings(useDefault, useDefault, args[1]);
         } else {
             throw new IllegalArgumentException(usageMessage());
         }
@@ -51,23 +52,17 @@ public class ArgParser {
 
     private void setTwoArgs(String[] args) {
         if (itsOrdered(args, PORT_FLAG, DIRECTORY_FLAG)) {
-            port = PortSetter.setPort(args[1]);
-            directory = DirSetter.setDir(args[3]);
+            setSettings(args[1], args[3], useDefault);
         } else if (itsOrdered(args, DIRECTORY_FLAG, PORT_FLAG)) {
-            directory = DirSetter.setDir(args[1]);
-            port = PortSetter.setPort(args[3]);
+            setSettings(args[3], args[1], useDefault);
         } else if (itsOrdered(args, PORT_FLAG, CONFIG_FLAG)) {
-            port = PortSetter.setPort(args[1]);
-            configFile = FileSetter.setFile(args[3]);
+            setSettings(args[1], useDefault, args[3]);
         } else if (itsOrdered(args, CONFIG_FLAG, PORT_FLAG)) {
-            configFile = FileSetter.setFile(args[1]);
-            port = PortSetter.setPort(args[3]);
+            setSettings(args[3], useDefault, args[1]);
         } else if (itsOrdered(args, DIRECTORY_FLAG, CONFIG_FLAG)) {
-            directory = DirSetter.setDir(args[1]);
-            configFile = FileSetter.setFile(args[3]);
+            setSettings(useDefault, args[1], args[3]);
         } else if (itsOrdered(args, CONFIG_FLAG, DIRECTORY_FLAG)) {
-            configFile = FileSetter.setFile(args[1]);
-            directory = DirSetter.setDir(args[3]);
+            setSettings(useDefault, args[3], args[1]);
         } else {
             throw new IllegalArgumentException(usageMessage());
         }
@@ -92,9 +87,9 @@ public class ArgParser {
     }
 
     private void setSettings(String port, String directory, String configFile) {
-        this.port = PortSetter.setPort(port);
-        this.directory = DirSetter.setDir(directory);
-        this.configFile = FileSetter.setFile(configFile);
+        this.port = port.equals(useDefault) ? this.port : PortSetter.setPort(port);
+        this.directory = directory.equals(useDefault) ? this.directory : DirSetter.setDir(directory);
+        this.configFile = configFile.equals(useDefault) ? this.configFile : FileSetter.setFile(configFile);
     }
 
     private boolean itsOrdered(String[] args, String flag1, String flag2, String flag3) {
@@ -103,7 +98,6 @@ public class ArgParser {
 
     private boolean itsOrdered(String[] args, String flag1, String flag2) {
         return itsFlagged(args, 0, flag1) && itsFlagged(args, 2, flag2);
-
     }
 
     private boolean itsFlagged(String[] args, int index, String flag) {
