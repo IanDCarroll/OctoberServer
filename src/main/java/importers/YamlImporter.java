@@ -1,3 +1,5 @@
+package importers;
+
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
