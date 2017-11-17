@@ -1,3 +1,5 @@
+package clArgs;
+
 import java.io.File;
 
 public class DirSetter {

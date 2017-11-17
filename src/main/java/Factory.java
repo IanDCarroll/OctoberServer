@@ -1,3 +1,9 @@
+import functionalCore.*;
+import serverShell.ListenerSocket;
+import serverShell.ReactiveServer;
+import serverShell.ResponderSocket;
+import serverShell.Server;
+
 import java.util.LinkedHashMap;
 
 public class Factory {
@@ -11,16 +17,29 @@ public class Factory {
         this.configFile = configFile;
     }
 
-    public ReactiveServer buildServer() {
+    public Server buildServer() {
 
         System.out.format("building server with port %d and directory %s\n", port, directory);
-            Parser parser = new Parser();
-                ResponseGenerator responseGenerator = new ResponseGenerator();
-                ConfigImporter configImporter = new ConfigImporter(configFile);
-                LinkedHashMap routes = configImporter.importConfig();
-            Controller controller = new Controller(responseGenerator, routes);
-        ResponderSocket responder = new ResponderSocket(parser, controller);
+        CoreCoordinator functionalCore = buildCore();
+        ResponderSocket responder = new ResponderSocket(functionalCore);
         ListenerSocket listener = new ListenerSocket(port);
         return new ReactiveServer(listener, responder);
+    }
+
+    private HTTPCoordinator buildCore() {
+        Parser parser = new Parser();
+        Controller controller = buildController();
+        return new HTTPCoordinator(parser, controller);
+    }
+
+    private Controller buildController() {
+        ResponseGenerator responseGenerator = new ResponseGenerator();
+        LinkedHashMap routes = importConfigFile();
+        return new Controller(responseGenerator, routes);
+    }
+
+    private LinkedHashMap importConfigFile() {
+        FileImporter configImporter = new YamlImporter();
+        return configImporter.importAsHash(configFile);
     }
 }

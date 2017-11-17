@@ -1,7 +1,9 @@
+package clArgs;
+
 import java.io.File;
 import java.io.InputStream;
 
-public class ArgParser {
+public class ConditionalArgParser implements ArgParser {
     private int port = 5000;
     private String directory = System.getProperty("user.dir") + "/public";
     private String configFile = "src/main/java/routes_config.yml";
@@ -10,21 +12,21 @@ public class ArgParser {
     private static final String CONFIG_FLAG = "-c";
     private static final String useDefault = "";
 
-    public ArgParser(String[] args) {
-        setArgs(args);
-    }
-
+    @Override
     public int getPort() {
         return this.port;
     }
 
+    @Override
     public String getDirectory() {
         return this.directory;
     }
 
+    @Override
     public String getConfigFile() { return configFile; }
 
-    private void setArgs(String[] args) {
+    @Override
+    public void setArgs(String[] args) {
         if (args.length == 0) {
             setSettings(useDefault, useDefault, useDefault);
         } else if (args.length == 2) {

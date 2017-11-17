@@ -1,14 +1,17 @@
+package functionalCoreTests;
+
+import functionalCore.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RequestTest {
-    public Request subject;
+class ResponseTest {
+    public Response subject;
 
     @BeforeEach
     void init() {
-        subject = new Request();
+        subject = new Response();
     }
 
     @Test

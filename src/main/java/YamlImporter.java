@@ -6,20 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 
-public class ConfigImporter {
-    private final String configFile;
+public class YamlImporter implements FileImporter {
 
-    public ConfigImporter(String configFile) {
-        this.configFile = configFile;
-    }
-
-    public LinkedHashMap importConfig() {
+    @Override
+    public LinkedHashMap importAsHash(String filePath) {
 
         Yaml yaml = new Yaml();
 
         InputStream input = null;
         try {
-            input = new FileInputStream(new File(configFile));
+            input = new FileInputStream(new File(filePath));
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }

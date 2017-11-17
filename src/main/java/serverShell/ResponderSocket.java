@@ -1,20 +1,22 @@
+package serverShell;
+
+import functionalCore.CoreCoordinator;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 public class ResponderSocket {
-    public Parser parser;
-    public Controller controller;
+    public CoreCoordinator functionalCore;
     public Socket clientConnection;
     public BufferedInputStream listener;
     public BufferedOutputStream responder;
     public final int MAX_REQUEST_SIZE = 1000;
 
 
-    public ResponderSocket(Parser parser, Controller controller) {
-        this.parser = parser;
-        this.controller = controller;
+    public ResponderSocket(CoreCoordinator functionalCore) {
+        this.functionalCore = functionalCore;
     }
 
     public void respondTo(Socket clientConnection) {

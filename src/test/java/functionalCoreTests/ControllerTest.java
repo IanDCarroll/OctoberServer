@@ -1,3 +1,7 @@
+package functionalCoreTests;
+
+import functionalCore.Controller;
+import functionalCore.ResponseGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.LinkedHashMap;
@@ -10,10 +14,8 @@ class ControllerTest {
     @BeforeEach
     void init() {
         ResponseGenerator responseGenerator = new ResponseGenerator();
-            String configFilePath = "src/main/java/routes_config.yml";
-            ConfigImporter configImporter = new ConfigImporter(configFilePath);
-        LinkedHashMap routes = configImporter.importConfig();
-        subject = new Controller(responseGenerator, routes);
+        LinkedHashMap mockRoutes = new LinkedHashMap();
+        subject = new Controller(responseGenerator, mockRoutes);
     }
 
     @Test

@@ -1,13 +1,12 @@
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
+package serverShell;
+
+import io.reactivex.*;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.net.Socket;
 
-public class ReactiveServer {
+public class ReactiveServer implements Server {
     ListenerSocket listenerSocket;
     ResponderSocket responderSocket;
 
@@ -49,7 +48,7 @@ public class ReactiveServer {
 
             @Override
             public void onError(Throwable throwable) {
-                System.out.println("error emitted by event stream");
+                System.out.println(throwable.toString() + "\nerror emitted by event stream; check if the port is occupied");
             }
 
             @Override
@@ -58,5 +57,4 @@ public class ReactiveServer {
             }
         };
     }
-
 }

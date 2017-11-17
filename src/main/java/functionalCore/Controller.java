@@ -1,3 +1,5 @@
+package functionalCore;
+
 import java.util.LinkedHashMap;
 
 public class Controller {

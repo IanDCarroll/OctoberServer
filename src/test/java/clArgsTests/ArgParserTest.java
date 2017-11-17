@@ -1,8 +1,11 @@
+package clArgsTests;
+
+import clArgs.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArgParserTest {
-    private ArgParser subject;
+    private ArgParser subject = new ConditionalArgParser();
     private static final int PORT_MIN = 0;
     private static final int PORT_MAX = 65535;
 
@@ -10,7 +13,7 @@ class ArgParserTest {
     void argParserGetsDefaultPort5000() {
         //Given
         String[] args = new String[0];
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actual = subject.getPort();
         //Then
@@ -22,7 +25,7 @@ class ArgParserTest {
     void argParserGetsDefaultDirectoryPublic() {
         //Given
         String[] args = new String[0];
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         String actual = subject.getDirectory();
         //Then
@@ -36,7 +39,7 @@ class ArgParserTest {
         String portFlag = "-p";
         String port = "1701";
         String[] args = { portFlag, port };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actual = subject.getPort();
         //Then
@@ -52,7 +55,7 @@ class ArgParserTest {
         String[] args = { portFlag, port };
         //Then
         Throwable exception = assertThrows(NumberFormatException.class, () -> {
-            subject = new ArgParser(args);
+            subject.setArgs(args);
         });
         //And
         String expected = PortSetter.portNumberFormatErrorMessage(port);
@@ -67,7 +70,7 @@ class ArgParserTest {
         String[] args = { portFlag, port };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject = new ArgParser(args);
+            subject.setArgs(args);
         });
         //And
         String expected = PortSetter.portOutOfRangeMessage(port, String.valueOf(PORT_MIN), String.valueOf(PORT_MAX));
@@ -82,7 +85,7 @@ class ArgParserTest {
         String[] args = { portFlag, port };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject = new ArgParser(args);
+            subject.setArgs(args);
         });
         //And
         String expected = PortSetter.portOutOfRangeMessage(port, String.valueOf(PORT_MIN), String.valueOf(PORT_MAX));
@@ -96,7 +99,7 @@ class ArgParserTest {
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String[] args = { directoryFlag, directory };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         String actual = subject.getDirectory();
         //Then
@@ -113,7 +116,7 @@ class ArgParserTest {
         String[] args = { directoryFlag, directory };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject = new ArgParser(args);
+            subject.setArgs(args);
         });
         //And
         assertEquals(DirSetter.directoryNotInFSMessage(directory), exception.getMessage());
@@ -124,7 +127,7 @@ class ArgParserTest {
         //Given
         String configFile = "src/main/java/routes_config.yml";
         String[] args = {};
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         String actual = subject.getConfigFile();
         //Then
@@ -138,7 +141,7 @@ class ArgParserTest {
         String configFlag = "-c";
         String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = {configFlag, configFile };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         String actual = subject.getConfigFile();
         //Then
@@ -154,7 +157,7 @@ class ArgParserTest {
         String[] args = {configFlag, configFile };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject = new ArgParser(args);
+            subject .setArgs(args);
         });
         //And
         assertEquals(FileSetter.fileNotInFSMessage(configFile), exception.getMessage());
@@ -168,10 +171,10 @@ class ArgParserTest {
         String[] args = { directoryFlag, directory };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject = new ArgParser(args);
+            subject .setArgs(args);
         });
         //And
-        assertEquals(ArgParser.usageMessage(), exception.getMessage());
+        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
     }
 
     @Test
@@ -182,7 +185,7 @@ class ArgParserTest {
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String[] args = { portFlag, port, directoryFlag, directory };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actualPort = subject.getPort();
         String actualDirectory = subject.getDirectory();
@@ -201,7 +204,7 @@ class ArgParserTest {
         String portFlag = "-p";
         String port = "1701";
         String[] args = { directoryFlag, directory, portFlag, port };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actualPort = subject.getPort();
         String actualDirectory = subject.getDirectory();
@@ -220,7 +223,7 @@ class ArgParserTest {
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String[] args = { directoryFlag, directory, configFlag, configFile };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         String actualFile = subject.getConfigFile();
         String actualDirectory = subject.getDirectory();
@@ -239,7 +242,7 @@ class ArgParserTest {
         String configFlag = "-c";
         String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile, directoryFlag, directory };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         String actualFile = subject.getConfigFile();
         String actualDirectory = subject.getDirectory();
@@ -258,7 +261,7 @@ class ArgParserTest {
         String configFlag = "-c";
         String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { portFlag, port, configFlag, configFile };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actualPort = subject.getPort();
         String actualFile = subject.getConfigFile();
@@ -277,7 +280,7 @@ class ArgParserTest {
         String portFlag = "-p";
         String port = "1701";
         String[] args = { configFlag, configFile, portFlag, port };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actualPort = subject.getPort();
         String actualFile = subject.getConfigFile();
@@ -298,7 +301,7 @@ class ArgParserTest {
         String configFlag = "-c";
         String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { portFlag, port, directoryFlag, directory, configFlag, configFile };
-        subject = new ArgParser(args);
+        subject .setArgs(args);
         //When
         int actualPort = subject.getPort();
         String actualDirectory = subject.getDirectory();
@@ -322,7 +325,7 @@ class ArgParserTest {
         String configFlag = "-c";
         String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { directoryFlag, directory, configFlag, configFile, portFlag, port };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actualPort = subject.getPort();
         String actualDirectory = subject.getDirectory();
@@ -346,7 +349,7 @@ class ArgParserTest {
         String configFlag = "-c";
         String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { directoryFlag, directory, portFlag, port, configFlag, configFile };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actualPort = subject.getPort();
         String actualDirectory = subject.getDirectory();
@@ -370,7 +373,7 @@ class ArgParserTest {
         String configFlag = "-c";
         String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile, directoryFlag, directory, portFlag, port };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actualPort = subject.getPort();
         String actualDirectory = subject.getDirectory();
@@ -394,7 +397,7 @@ class ArgParserTest {
         String configFlag = "-c";
         String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile, portFlag, port, directoryFlag, directory };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actualPort = subject.getPort();
         String actualDirectory = subject.getDirectory();
@@ -418,7 +421,7 @@ class ArgParserTest {
         String configFlag = "-c";
         String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile,directoryFlag, directory, portFlag, port };
-        subject = new ArgParser(args);
+        subject.setArgs(args);
         //When
         int actualPort = subject.getPort();
         String actualDirectory = subject.getDirectory();
@@ -442,10 +445,10 @@ class ArgParserTest {
         String[] args = { portFlag, port, directoryFlag, directory };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject = new ArgParser(args);
+            subject.setArgs(args);
         });
         //And
-        assertEquals(ArgParser.usageMessage(), exception.getMessage());
+        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
     }
 
     @Test
@@ -455,10 +458,10 @@ class ArgParserTest {
         String[] args = { portFlag };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject = new ArgParser(args);
+            subject.setArgs(args);
         });
         //And
-        assertEquals(ArgParser.usageMessage(), exception.getMessage());
+        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
     }
 
     @Test
@@ -470,10 +473,10 @@ class ArgParserTest {
         String[] args = { portFlag, port, directoryFlag };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject = new ArgParser(args);
+            subject.setArgs(args);
         });
         //And
-        assertEquals(ArgParser.usageMessage(), exception.getMessage());
+        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
     }
 
     @Test
@@ -487,10 +490,10 @@ class ArgParserTest {
         String[] args = { portFlag, port, directoryFlag, directory, configFlag };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject = new ArgParser(args);
+            subject.setArgs(args);
         });
         //And
-        assertEquals(ArgParser.usageMessage(), exception.getMessage());
+        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
     }
 
     @Test
@@ -506,9 +509,9 @@ class ArgParserTest {
         String[] args = { portFlag, port, directoryFlag, directory, configFlag, configFile, extra };
         //Then
         Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject = new ArgParser(args);
+            subject.setArgs(args);
         });
         //And
-        assertEquals(ArgParser.usageMessage(), exception.getMessage());
+        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
     }
 }

@@ -1,14 +1,17 @@
+package functionalCoreTests;
+
+import functionalCore.ResponseGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ParserTest {
-    public Parser subject;
+class ResponseGeneratorTest {
+    public ResponseGenerator subject;
 
     @BeforeEach
     void init() {
-        subject = new Parser();
+        subject = new ResponseGenerator();
     }
 
     @Test

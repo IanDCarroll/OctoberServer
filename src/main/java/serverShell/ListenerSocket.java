@@ -1,3 +1,5 @@
+package serverShell;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -7,10 +9,11 @@ public class ListenerSocket {
     private ServerSocket listener;
 
     public ListenerSocket(int port) {
+        System.out.format("Listener Socket port: %d\n", port);
         try {
             this.listener = new ServerSocket(port);
         } catch (IOException e) {
-            System.out.println("IOException while trying to initialize Server Socket");
+            System.out.println("IOException while trying to initialize Server Socket; check if the port is occupied.");
         }
     }
 
