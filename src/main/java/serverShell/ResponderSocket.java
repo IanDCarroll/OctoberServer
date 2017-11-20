@@ -1,6 +1,6 @@
 package serverShell;
 
-import functionalCore.CoreCoordinator;
+import functionalCore.Core;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -8,14 +8,14 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class ResponderSocket {
-    public CoreCoordinator functionalCore;
+    public Core functionalCore;
     public Socket clientConnection;
     public BufferedInputStream listener;
     public BufferedOutputStream responder;
     public final int MAX_REQUEST_SIZE = 1000;
 
 
-    public ResponderSocket(CoreCoordinator functionalCore) {
+    public ResponderSocket(Core functionalCore) {
         this.functionalCore = functionalCore;
     }
 
@@ -48,7 +48,7 @@ public class ResponderSocket {
      private void toWriteAResponse() throws NullPointerException, IOException {
         byte[] request = readRequest();
         System.out.println(new String(request));
-        byte[] responsePayload = "HTTP/1.1 200 OK\r\n\r\n".getBytes(); // This is the gateway to the functional core
+        byte[] responsePayload = "HTTPCore/1.1 200 OK\r\n\r\n".getBytes(); // This is the gateway to the functional core
         responder.write(responsePayload);
         responder.flush();
      }

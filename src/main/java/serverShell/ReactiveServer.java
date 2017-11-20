@@ -6,7 +6,7 @@ import org.reactivestreams.Subscription;
 
 import java.net.Socket;
 
-public class ReactiveServer implements Server {
+public class ReactiveServer implements serverShell.Server {
     ListenerSocket listenerSocket;
     ResponderSocket responderSocket;
 

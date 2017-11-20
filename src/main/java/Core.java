@@ -1,5 +1,5 @@
 package functionalCore;
 
-public interface CoreCoordinator {
+public interface Core {
     byte[] respondTo(byte[] request);
 }

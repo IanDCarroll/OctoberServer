@@ -1,10 +1,10 @@
 package functionalCore;
 
-public class HTTPCoordinator implements CoreCoordinator {
+public class HTTPCore implements functionalCore.Core {
     Parser parser;
     Controller controller;
 
-    public HTTPCoordinator(Parser parser, Controller controller) {
+    public HTTPCore(Parser parser, Controller controller) {
         this.parser = parser;
         this.controller = controller;
     }

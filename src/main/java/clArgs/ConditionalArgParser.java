@@ -1,8 +1,5 @@
 package clArgs;
 
-import java.io.File;
-import java.io.InputStream;
-
 public class ConditionalArgParser implements ArgParser {
     private int port = 5000;
     private String directory = System.getProperty("user.dir") + "/public";

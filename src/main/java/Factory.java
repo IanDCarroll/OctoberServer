@@ -1,4 +1,5 @@
 import functionalCore.*;
+import functionalCore.Core;
 import importers.FileImporter;
 import importers.YamlImporter;
 import serverShell.ListenerSocket;
@@ -22,16 +23,16 @@ public class Factory {
     public Server buildServer() {
 
         System.out.format("building server with port %d and directory %s\n", port, directory);
-        CoreCoordinator functionalCore = buildCore();
+        Core functionalCore = buildCore();
         ResponderSocket responder = new ResponderSocket(functionalCore);
         ListenerSocket listener = new ListenerSocket(port);
         return new ReactiveServer(listener, responder);
     }
 
-    private HTTPCoordinator buildCore() {
+    private HTTPCore buildCore() {
         Parser parser = new Parser();
         Controller controller = buildController();
-        return new HTTPCoordinator(parser, controller);
+        return new HTTPCore(parser, controller);
     }
 
     private Controller buildController() {
