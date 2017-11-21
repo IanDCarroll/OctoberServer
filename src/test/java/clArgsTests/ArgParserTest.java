@@ -34,64 +34,7 @@ class ArgParserTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    void argParserSetsPortToAnyArbitraryIntInTheRangeOfValidPorts() {
-        //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String[] args = { portFlag, port };
-        subject.setArgs(args);
-        //When
-        int actual = subject.getPort();
-        //Then
-        int expected = Integer.parseInt(port);
-        assertEquals(expected, actual);
-    }
 
-    @Test
-    void argParserThrowsANumberFormatErrorIfPortCannotBeParsed() {
-        //Given
-        String portFlag = "-p";
-        String port = "Throw An Error";
-        String[] args = { portFlag, port };
-        //Then
-        Throwable exception = assertThrows(NumberFormatException.class, () -> {
-            subject.setArgs(args);
-        });
-        //And
-        String expected = PortSetter.portNumberFormatErrorMessage(port);
-        assertEquals(expected, exception.getMessage());
-    }
-
-    @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfPortNumberIsTooLow() {
-        //Given
-        String portFlag = "-p";
-        String port = "-1";
-        String[] args = { portFlag, port };
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject.setArgs(args);
-        });
-        //And
-        String expected = PortSetter.portOutOfRangeMessage(port, String.valueOf(PORT_MIN), String.valueOf(PORT_MAX));
-        assertEquals(expected, exception.getMessage());
-    }
-
-    @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfPortNumberIsTooHigh() {
-        //Given
-        String portFlag = "-p";
-        String port = "65536";
-        String[] args = { portFlag, port };
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject.setArgs(args);
-        });
-        //And
-        String expected = PortSetter.portOutOfRangeMessage(port, String.valueOf(PORT_MIN), String.valueOf(PORT_MAX));
-        assertEquals(expected, exception.getMessage());
-    }
 
 
     @Test
