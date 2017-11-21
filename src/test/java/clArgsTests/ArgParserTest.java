@@ -34,38 +34,6 @@ class ArgParserTest {
         assertEquals(expected, actual);
     }
 
-
-
-
-    @Test
-    void argParserSetsDirectoryToAnyValidDirectoryFoundInTheFileSystem() {
-        //Given
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
-        String[] args = { directoryFlag, directory };
-        subject.setArgs(args);
-        //When
-        String actual = subject.getDirectory();
-        //Then
-        String expected = directory;
-        assertEquals(expected, actual);
-    }
-
-
-    @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfDirectorySpecifiedCantBeFoundInTheFileSystem() {
-        //Given
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/Throw-an-error";
-        String[] args = { directoryFlag, directory };
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject.setArgs(args);
-        });
-        //And
-        assertEquals(FSSetter.notInFSMessage(directory), exception.getMessage());
-    }
-
     @Test
     void argParserGetsADefaultConfigFileWhenNoConfigIsSpecified() {
         //Given
@@ -77,48 +45,6 @@ class ArgParserTest {
         //Then
         String expected = configFile;
         assertEquals(expected, actual);
-    }
-
-    @Test
-    void argParserSetsAConfigFileWhenAnExistingConfigIsSpecified() {
-        //Given
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
-        String[] args = {configFlag, configFile };
-        subject.setArgs(args);
-        //When
-        String actual = subject.getConfigFile();
-        //Then
-        String expected = configFile;
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfConfigSpecifiedCantBeFoundInTheFileSystem() {
-        //Given
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/throw_an_error.yml";
-        String[] args = {configFlag, configFile };
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject .setArgs(args);
-        });
-        //And
-        assertEquals(FSSetter.notInFSMessage(configFile), exception.getMessage());
-    }
-
-    @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfFlagsAreNotSpecified() {
-        //Given
-        String directoryFlag = "Throw an error";
-        String directory = "/target";
-        String[] args = { directoryFlag, directory };
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject .setArgs(args);
-        });
-        //And
-        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
     }
 
     @Test
