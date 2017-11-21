@@ -59,9 +59,9 @@ public class Factory {
     private Server buildSingleThreadedReactiveServer() {
         System.out.format("building server with port %d and directory %s\n", port, directory);
         Core functionalCore = buildCore();
-        ResponderSocket responder = new ResponderSocket(functionalCore);
-        ListenerSocket listener = new ListenerSocket(port);
-        return new ReactiveServer(listener, responder);
+        SingleThreadedResponderSocket responder = new SingleThreadedResponderSocket(functionalCore);
+        SingleThreadedListenerSocket listener = new SingleThreadedListenerSocket(port);
+        return new SingleThreadedReactiveServer(listener, responder);
     }
 
     private HTTPCore buildCore() {

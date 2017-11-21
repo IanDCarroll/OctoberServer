@@ -6,11 +6,11 @@ import org.reactivestreams.Subscription;
 
 import java.net.Socket;
 
-public class ReactiveServer implements serverShell.Server {
-    ListenerSocket listenerSocket;
-    ResponderSocket responderSocket;
+public class SingleThreadedReactiveServer implements serverShell.Server {
+    SingleThreadedListenerSocket listenerSocket;
+    SingleThreadedResponderSocket responderSocket;
 
-    public ReactiveServer(ListenerSocket listenerSocket, ResponderSocket responderSocket) {
+    public SingleThreadedReactiveServer(SingleThreadedListenerSocket listenerSocket, SingleThreadedResponderSocket responderSocket) {
         this.listenerSocket = listenerSocket;
         this.responderSocket = responderSocket;
     }

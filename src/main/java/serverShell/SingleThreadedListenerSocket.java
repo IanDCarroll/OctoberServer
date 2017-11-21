@@ -5,10 +5,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class ListenerSocket {
+public class SingleThreadedListenerSocket {
     private ServerSocket listener;
 
-    public ListenerSocket(int port) {
+    public SingleThreadedListenerSocket(int port) {
         System.out.format("Listener Socket port: %d\n", port);
         try {
             this.listener = new ServerSocket(port);
