@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArgParserTest {
-    private ArgParser subject = new ConditionalArgParser();
+    private ArgParser subject = new HashLoopArgParser();
     private static final int PORT_MIN = 0;
     private static final int PORT_MAX = 65535;
 
@@ -303,85 +303,5 @@ class ArgParserTest {
         assertEquals(expectedPort, actualPort);
         assertEquals(expectedDirectory, actualDirectory);
         assertEquals(expectedConfig, actualConfig);
-    }
-
-    @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfFlagsAreNotRight() {
-        //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "Throw an error";
-        String directory = "/target";
-        String[] args = { portFlag, port, directoryFlag, directory };
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject.setArgs(args);
-        });
-        //And
-        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
-    }
-
-    @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfThereIsOneArg() {
-        //Given
-        String portFlag = "-p";
-        String[] args = { portFlag };
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject.setArgs(args);
-        });
-        //And
-        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
-    }
-
-    @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfThereAreThreeArgs() {
-        //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "-d";
-        String[] args = { portFlag, port, directoryFlag };
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject.setArgs(args);
-        });
-        //And
-        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
-    }
-
-    @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfThereAreFiveArgs() {
-        //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "-d";
-        String directory = "/target";
-        String configFlag = "-c";
-        String[] args = { portFlag, port, directoryFlag, directory, configFlag };
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject.setArgs(args);
-        });
-        //And
-        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
-    }
-
-    @Test
-    void argParserThrowsAnIllegalArgumentExceptionIfThereAreMoreThanSixArgs() {
-        //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "-d";
-        String directory = "/target";
-        String configFlag = "-c";
-        String configFile = "src/main/java/routes_config.yml";
-        String extra = "Throw an error";
-        String[] args = { portFlag, port, directoryFlag, directory, configFlag, configFile, extra };
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            subject.setArgs(args);
-        });
-        //And
-        assertEquals(ConditionalArgParser.usageMessage(), exception.getMessage());
     }
 }

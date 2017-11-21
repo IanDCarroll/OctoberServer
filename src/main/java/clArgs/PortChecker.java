@@ -1,10 +1,10 @@
 package clArgs;
 
-public class PortSetter {
+public class PortChecker {
     private static final int PORT_MIN = 0;
     private static final int PORT_MAX = 65535;
 
-    public static int setPort(String input) {
+    public static int validatePort(String input) {
         try {
             return validatePort(Integer.parseInt(input));
         } catch (NumberFormatException e) {
