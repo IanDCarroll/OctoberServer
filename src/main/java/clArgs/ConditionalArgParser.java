@@ -87,8 +87,8 @@ public class ConditionalArgParser implements ArgParser {
 
     private void setSettings(String port, String directory, String configFile) {
         this.port = port.equals(useDefault) ? this.port : PortSetter.setPort(port);
-        this.directory = directory.equals(useDefault) ? this.directory : DirSetter.setDir(directory);
-        this.configFile = configFile.equals(useDefault) ? this.configFile : FileSetter.setFile(configFile);
+        this.directory = directory.equals(useDefault) ? this.directory : FSSetter.set(FSChecker.checkDir(directory), directory);
+        this.configFile = configFile.equals(useDefault) ? this.configFile : FSSetter.set(FSChecker.checkFile(configFile), configFile);
     }
 
     private boolean itsOrdered(String[] args, String flag1, String flag2, String flag3) {

@@ -120,7 +120,7 @@ class ArgParserTest {
             subject.setArgs(args);
         });
         //And
-        assertEquals(DirSetter.directoryNotInFSMessage(directory), exception.getMessage());
+        assertEquals(FSSetter.notInFSMessage(directory), exception.getMessage());
     }
 
     @Test
@@ -161,7 +161,7 @@ class ArgParserTest {
             subject .setArgs(args);
         });
         //And
-        assertEquals(FileSetter.fileNotInFSMessage(configFile), exception.getMessage());
+        assertEquals(FSSetter.notInFSMessage(configFile), exception.getMessage());
     }
 
     @Test
