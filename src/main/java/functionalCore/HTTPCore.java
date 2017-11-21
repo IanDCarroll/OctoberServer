@@ -10,7 +10,7 @@ public class HTTPCore implements functionalCore.Core {
     }
 
     @Override
-    public byte[] respondTo(byte[] request) {
-        return new byte[0];
+    public byte[] craftResponseTo(byte[] request) {
+        return "HTTP/1.1 200 OK\r\n\r\n".getBytes();
     }
 }

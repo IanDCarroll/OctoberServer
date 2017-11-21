@@ -1,5 +1,6 @@
 package functionalCore;
 
 public interface Core {
-    byte[] respondTo(byte[] request);
+    byte[] craftResponseTo(byte[] request);
+
 }

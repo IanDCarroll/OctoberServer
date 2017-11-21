@@ -2,11 +2,10 @@ import functionalCore.*;
 import functionalCore.Core;
 import importers.FileImporter;
 import importers.YamlImporter;
-import serverShell.ListenerSocket;
-import serverShell.ReactiveServer;
-import serverShell.ResponderSocket;
+import serverShell.*;
 import serverShell.Server;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 
 public class Factory {
@@ -21,7 +20,43 @@ public class Factory {
     }
 
     public Server buildServer() {
+        return buildSingleThreadedReactiveServer();
+        //return buildAsynchronousReactiveServer();
+    }
 
+    private Server buildAsynchronousReactiveServer() {
+        ReactiveFlowable flowable = buildFlowable();
+        ReactiveSubscriber subscriber = buildSubscriber();
+        return new AsynchronousReactiveServer(flowable, subscriber);
+    }
+
+    private ReactiveFlowable buildFlowable() {
+        AsynchronousListener listener = buildListener();
+        AsynchronousHandler handler = new AsynchronousHandler(listener);
+        return new ReactiveFlowable(listener, handler);
+    }
+
+    private AsynchronousListener buildListener() {
+        try {
+            return new AsynchronousListener(port);
+        } catch (IOException e) {
+            throw new IllegalStateException("IOException caught while trying to initialize listener");
+        }
+    }
+
+    private ReactiveSubscriber buildSubscriber() {
+        AsynchronousResponder responder = buildResponder();
+        return new ReactiveSubscriber(responder);
+    }
+
+    private AsynchronousResponder buildResponder() {
+        SocketReader reader = new SocketReader();
+        Core core = buildCore();
+        SocketWriter writer = new SocketWriter();
+        return new AsynchronousResponder(reader, core, writer);
+    }
+
+    private Server buildSingleThreadedReactiveServer() {
         System.out.format("building server with port %d and directory %s\n", port, directory);
         Core functionalCore = buildCore();
         ResponderSocket responder = new ResponderSocket(functionalCore);
