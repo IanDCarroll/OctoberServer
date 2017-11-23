@@ -7,7 +7,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class SingleThreadedResponderSocket {
+public class SingleSocketedResponderSocket {
     public Core functionalCore;
     public Socket clientConnection;
     public BufferedInputStream listener;
@@ -15,7 +15,7 @@ public class SingleThreadedResponderSocket {
     public final int MAX_REQUEST_SIZE = 1000;
 
 
-    public SingleThreadedResponderSocket(Core functionalCore) {
+    public SingleSocketedResponderSocket(Core functionalCore) {
         this.functionalCore = functionalCore;
     }
 

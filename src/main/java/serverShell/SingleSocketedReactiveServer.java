@@ -1,22 +1,30 @@
 package serverShell;
 
 import io.reactivex.*;
+import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.net.Socket;
+import java.util.concurrent.CountDownLatch;
 
-public class SingleThreadedReactiveServer implements serverShell.Server {
-    SingleThreadedListenerSocket listenerSocket;
-    SingleThreadedResponderSocket responderSocket;
+public class SingleSocketedReactiveServer implements serverShell.Server {
+    SingleSocketedListenerSocket listenerSocket;
+    SingleSocketedResponderSocket responderSocket;
 
-    public SingleThreadedReactiveServer(SingleThreadedListenerSocket listenerSocket, SingleThreadedResponderSocket responderSocket) {
+    public SingleSocketedReactiveServer(SingleSocketedListenerSocket listenerSocket, SingleSocketedResponderSocket responderSocket) {
         this.listenerSocket = listenerSocket;
         this.responderSocket = responderSocket;
     }
 
     public void start() {
-        getListenerStream().subscribe(respondWithSubscriber());
+        CountDownLatch latch = new CountDownLatch(1);
+        getListenerStream()
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(respondWithSubscriber());
+        try {
+            latch.await();
+        } catch (InterruptedException e) {}
     }
 
     private Flowable<Socket> getListenerStream() {
