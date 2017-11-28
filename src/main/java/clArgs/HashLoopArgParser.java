@@ -8,16 +8,16 @@ public class HashLoopArgParser implements ArgParser {
     private static final String PORT_FLAG = "-p";
     private static final String DIRECTORY_FLAG = "-d";
     private static final String CONFIG_FLAG = "-c";
-    private String port = "5000";
-    private String directory = System.getProperty("user.dir") + "/public";
-    private String configFile = "src/main/java/routes_config.yml";
+    private static final String defaultPort = "5000";
+    private static final String defaultDirectory = System.getProperty("user.dir") + "/public";
+    private static final String defaultConfigFile = "src/main/java/routes_config.yml";
 
     private int argsAccountedFor = 0;
 
     public HashLoopArgParser() {
-        parsedArgs.put(PORT_FLAG, port);
-        parsedArgs.put(DIRECTORY_FLAG, directory);
-        parsedArgs.put(CONFIG_FLAG, configFile);
+        parsedArgs.put(PORT_FLAG, defaultPort);
+        parsedArgs.put(DIRECTORY_FLAG, defaultDirectory);
+        parsedArgs.put(CONFIG_FLAG, defaultConfigFile);
     }
 
     @Override
