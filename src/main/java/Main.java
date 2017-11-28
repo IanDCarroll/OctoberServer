@@ -1,6 +1,6 @@
-import clArgs.ArgParser;
-import clArgs.HashLoopArgParser;
-import serverShell.Server;
+import TerminalArgs.ArgParser;
+import TerminalArgs.HashLoopArgParser;
+import ServerShell.Server;
 
 public class Main {
     public static void main(String[] args) {

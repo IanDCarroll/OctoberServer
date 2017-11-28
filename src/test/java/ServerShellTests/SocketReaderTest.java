@@ -2,7 +2,7 @@ package ServerShellTests;
 
 import Mocks.MockSocketDealer;
 import org.junit.jupiter.api.Test;
-import serverShell.SocketReader;
+import ServerShell.SocketReader;
 
 import java.nio.channels.AsynchronousSocketChannel;
 

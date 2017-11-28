@@ -1,9 +1,9 @@
-import functionalCore.*;
-import functionalCore.Core;
-import importers.FileImporter;
-import importers.YamlImporter;
-import serverShell.*;
-import serverShell.Server;
+import FunctionalCore.*;
+import FunctionalCore.Core;
+import Importers.FileImporter;
+import Importers.YamlImporter;
+import ServerShell.*;
+import ServerShell.Server;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
