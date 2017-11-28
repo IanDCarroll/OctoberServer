@@ -19,7 +19,7 @@ class SocketWriterTest {
         //When
         subject.send(message.getBytes(), socket);
         //Then
-        assertEquals(message, MockSocketDealer.result);
+        assertEquals(message, MockSocketDealer.response);
     }
 
 }

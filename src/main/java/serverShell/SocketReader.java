@@ -8,45 +8,38 @@ public class SocketReader {
     private static final int THIS_MANY_BYTES = 8192;
     private static final int THIS_MUCH_TIME = 20;
     private static final java.util.concurrent.TimeUnit MEASURED_BY_THIS_UNIT = TimeUnit.SECONDS;
-
     private ByteBuffer buffer = ByteBuffer.allocate(THIS_MANY_BYTES);
+    private byte[] request = new byte[0];
 
     public byte[] readRequest(AsynchronousSocketChannel clientConnection) {
-        byte[] requestBytes = new byte[0];
         try {
-            requestBytes = populateRequestFrom(clientConnection);
+            getRequestFrom(clientConnection);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return requestBytes;
+        return request;
     }
 
-    private byte[] populateRequestFrom(AsynchronousSocketChannel clientConnection) throws Exception {
-        int withThisManyBytesToRead = getTheRightAmountOfBytesToReadFrom(clientConnection);
-        return aFull(new byte[withThisManyBytesToRead]);
+    private void getRequestFrom(AsynchronousSocketChannel clientConnection) throws Exception {
+        request = new byte[withTheLengthFromThe(clientConnection)];
+        fillRequest(ifTheBufferHasContent());
     }
 
-    private int getTheRightAmountOfBytesToReadFrom(AsynchronousSocketChannel clientConnection) throws Exception {
+    public int withTheLengthFromThe(AsynchronousSocketChannel clientConnection) throws Exception {
         return clientConnection.read(buffer).get(THIS_MUCH_TIME, MEASURED_BY_THIS_UNIT);
     }
 
-    private byte[] aFull(byte[] requestBytes) {
-        int bytesToRead = requestBytes.length;
-        if (thereAreSome(bytesToRead)) {
-            return aBufferFullOf(requestBytes, bytesToRead);
-        }
-        return new byte[0];
+    private void fillRequest(boolean thereIsSomethingToRead) {
+        if (thereIsSomethingToRead) { fillRequestFromBuffer(); }
     }
 
-    private boolean thereAreSome(int bytesToRead) {
-        return bytesToRead > 0 && buffer.position() > 2;
+    private boolean ifTheBufferHasContent() {
+        return request.length > 0 && buffer.position() > 2;
     }
 
-    private byte[] aBufferFullOf(byte[] requestBytes, int andWhenYouComeToTheEnd_Stop) {
-        int startAtTheBeginning = 0;
+    private void fillRequestFromBuffer() {
         buffer.flip();
-        buffer.get(requestBytes, startAtTheBeginning, andWhenYouComeToTheEnd_Stop);
+        buffer.get(request);
         buffer.clear();
-        return requestBytes;
     }
 }
