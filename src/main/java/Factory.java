@@ -20,7 +20,7 @@ public class Factory {
     }
 
     public Server buildServer() {
-        return buildSingleThreadedReactiveServer();
+        return buildSingleSocketedReactiveServer();
         //return buildAsynchronousReactiveServer();
     }
 
@@ -56,12 +56,12 @@ public class Factory {
         return new AsynchronousResponder(reader, core, writer);
     }
 
-    private Server buildSingleThreadedReactiveServer() {
+    private Server buildSingleSocketedReactiveServer() {
         System.out.format("building server with port %d and directory %s\n", port, directory);
         Core functionalCore = buildCore();
-        SingleThreadedResponderSocket responder = new SingleThreadedResponderSocket(functionalCore);
-        SingleThreadedListenerSocket listener = new SingleThreadedListenerSocket(port);
-        return new SingleThreadedReactiveServer(listener, responder);
+        SingleSocketedResponderSocket responder = new SingleSocketedResponderSocket(functionalCore);
+        SingleSocketedListenerSocket listener = new SingleSocketedListenerSocket(port);
+        return new SingleSocketedReactiveServer(listener, responder);
     }
 
     private HTTPCore buildCore() {

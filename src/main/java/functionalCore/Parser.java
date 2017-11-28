@@ -2,7 +2,7 @@ package functionalCore;
 
 public class Parser {
     // takes a string and returns a request object
-    // used as a decorator between serverShell.SingleThreadedResponderSocket and functionalCore.Controller
+    // used as a component of the HTTPCore.
     Request request;
 
     public Parser() {
