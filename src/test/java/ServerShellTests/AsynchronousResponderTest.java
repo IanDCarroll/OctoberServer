@@ -13,7 +13,7 @@ import java.nio.channels.AsynchronousSocketChannel;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AsynchronousResponderTest {
-    AsynchronousSocketChannel socket = MockSocketDealer.socket;
+    AsynchronousSocketChannel socket = MockSocketDealer.readWriteSocket;
     SocketReader reader = new SocketReader();
     Core mockCore = MockCoreDealer.core;
     SocketWriter writer = new SocketWriter();

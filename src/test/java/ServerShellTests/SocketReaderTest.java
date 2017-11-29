@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SocketReaderTest {
     SocketReader subject = new SocketReader();
-    AsynchronousSocketChannel socket = MockSocketDealer.socket;
+    AsynchronousSocketChannel socket = MockSocketDealer.readSocket;
 
     @Test
     void sendSendsAGivenByteArrayOverTheWire() {
