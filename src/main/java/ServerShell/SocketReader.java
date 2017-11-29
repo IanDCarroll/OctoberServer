@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 public class SocketReader {
     private static final int THIS_MANY_BYTES = 8192;
     private static final int THIS_MUCH_TIME = 20;
-    private static final java.util.concurrent.TimeUnit MEASURED_BY_THIS_UNIT = TimeUnit.SECONDS;
+    private static final TimeUnit MEASURED_BY_THIS_UNIT = TimeUnit.SECONDS;
     private ByteBuffer buffer = ByteBuffer.allocate(THIS_MANY_BYTES);
     private byte[] request = new byte[0];
 
