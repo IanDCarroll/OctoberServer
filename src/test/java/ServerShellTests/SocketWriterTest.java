@@ -1,6 +1,8 @@
 package ServerShellTests;
 
 import Mocks.MockSocketDealer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ServerShell.SocketWriter;
 
@@ -9,8 +11,19 @@ import java.nio.channels.AsynchronousSocketChannel;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SocketWriterTest {
-    SocketWriter subject = new SocketWriter();
-    AsynchronousSocketChannel socket = MockSocketDealer.writeSocket;
+    SocketWriter subject;
+    AsynchronousSocketChannel socket;
+
+    @BeforeEach
+    void setup() {
+        subject = new SocketWriter();
+        socket = MockSocketDealer.socket;
+    }
+
+    @AfterEach
+    void tearDown() {
+        MockSocketDealer.response = "";
+    }
 
     @Test
     void sendSendsAGivenByteArrayOverTheWire() {
@@ -21,5 +34,4 @@ class SocketWriterTest {
         //Then
         assertEquals(message, MockSocketDealer.response);
     }
-
 }

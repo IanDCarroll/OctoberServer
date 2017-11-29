@@ -1,6 +1,8 @@
 package ServerShellTests;
 
 import Mocks.MockSocketDealer;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ServerShell.SocketReader;
 
@@ -9,11 +11,22 @@ import java.nio.channels.AsynchronousSocketChannel;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SocketReaderTest {
-    SocketReader subject = new SocketReader();
-    AsynchronousSocketChannel socket = MockSocketDealer.readSocket;
+    SocketReader subject;
+    AsynchronousSocketChannel socket;
+
+    @BeforeEach
+    void setup() {
+        subject = new SocketReader();
+        socket = MockSocketDealer.socket;
+    }
+
+    @AfterEach
+    void tearDown() {
+        MockSocketDealer.request = "";
+    }
 
     @Test
-    void sendSendsAGivenByteArrayOverTheWire() {
+    void readRequestReadsARequestFromASocketChannel() {
         //Given
         MockSocketDealer.request = "This is a request";
         //When
