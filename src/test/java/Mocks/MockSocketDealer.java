@@ -24,6 +24,13 @@ public class MockSocketDealer {
     };
 
     public static AsynchronousSocketChannel socket = new AsynchronousSocketChannel(provider) {
+        private boolean isOpen = true;
+
+        @Override
+        public void close() throws IOException { isOpen = false; }
+
+        @Override
+        public boolean isOpen() { return isOpen; }
 
         @Override
         public Future<Integer> write(ByteBuffer src) {
@@ -62,9 +69,9 @@ public class MockSocketDealer {
         public <A> void write(ByteBuffer src, long timeout, TimeUnit unit, A attachment, CompletionHandler<Integer, ? super A> handler) {}
         public <A> void write(ByteBuffer[] srcs, int offset, int length, long timeout, TimeUnit unit, A attachment, CompletionHandler<Long, ? super A> handler) {}
         public SocketAddress getLocalAddress() throws IOException { return null; }
-        public void close() throws IOException {}
+
         public <T> T getOption(SocketOption<T> name) throws IOException { return null; }
         public Set<SocketOption<?>> supportedOptions() { return null; }
-        public boolean isOpen() { return false; }
+
     };
 }

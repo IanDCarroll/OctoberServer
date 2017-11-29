@@ -34,4 +34,12 @@ class SocketWriterTest {
         //Then
         assertEquals(message, MockSocketDealer.response);
     }
+
+    @Test
+    void closeClosesASocketChannel() {
+        //When
+        subject.close(socket);
+        //Then
+        assertFalse(socket.isOpen());
+    }
 }
