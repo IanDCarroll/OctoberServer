@@ -21,8 +21,8 @@ public class AsynchronousHandler implements CompletionHandler<AsynchronousSocket
     @Override
     public void completed(AsynchronousSocketChannel clientConnection, Void attachment) {
         System.out.println("starting completed");
-        listener.listen(this);
         emitter.onNext(clientConnection);
+        listener.listen(this);
     }
 
     @Override
