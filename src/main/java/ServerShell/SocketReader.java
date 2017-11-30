@@ -1,5 +1,6 @@
 package ServerShell;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +39,7 @@ public class SocketReader {
     }
 
     private void fillRequestFromBuffer() {
-        buffer.flip();
+        ((Buffer)buffer).flip();
         buffer.get(request);
         buffer.clear();
     }
