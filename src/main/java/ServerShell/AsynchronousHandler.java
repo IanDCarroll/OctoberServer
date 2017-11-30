@@ -14,13 +14,11 @@ public class AsynchronousHandler implements CompletionHandler<AsynchronousSocket
     }
 
     public void setEmitter(FlowableEmitter<AsynchronousSocketChannel> emitter) {
-        System.out.println("setting emitter");
         this.emitter = emitter;
     }
 
     @Override
     public void completed(AsynchronousSocketChannel clientConnection, Void attachment) {
-        System.out.println("starting completed");
         emitter.onNext(clientConnection);
         //listener.close();
         listener.listen(this);
@@ -28,6 +26,6 @@ public class AsynchronousHandler implements CompletionHandler<AsynchronousSocket
 
     @Override
     public void failed(Throwable error, Void attachment) {
-        System.out.println("failed was called");
+        System.out.println("Handler reports a failure");
     }
 }

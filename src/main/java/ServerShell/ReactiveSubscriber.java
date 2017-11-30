@@ -20,11 +20,7 @@ public class ReactiveSubscriber {
             }
 
             @Override
-            public void onNext(AsynchronousSocketChannel clientConnection) {
-                //do all the read and write calls for the Asynchronous Socket
-                System.out.println("Subscriber received a message");
-                responder.respondTo(clientConnection);
-            }
+            public void onNext(AsynchronousSocketChannel clientConnection) { responder.respondTo(clientConnection); }
 
             @Override
             public void onError(Throwable throwable) {
