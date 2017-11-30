@@ -21,10 +21,9 @@ public class AsynchronousListener {
     public void listen(CompletionHandler<AsynchronousSocketChannel, Void> handler) {
         Void noAttachment = null;
         listener.accept(noAttachment, handler);
-        keepTheThreadAlive();
     }
 
-    private void keepTheThreadAlive() {
+    public void keepTheThreadAlive() {
         long thisMuchTime = Long.MAX_VALUE;
         TimeUnit byThisMeasure = TimeUnit.DAYS; // about 252 trillion years with long's max value
         try {

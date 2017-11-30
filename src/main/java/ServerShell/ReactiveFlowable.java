@@ -22,6 +22,7 @@ public class ReactiveFlowable {
             public void subscribe(FlowableEmitter<AsynchronousSocketChannel> emitter) throws Exception {
                 handler.setEmitter(emitter);
                 listener.listen(handler);
+                listener.keepTheThreadAlive();
             }
         }, BackpressureStrategy.MISSING);
     };
