@@ -41,6 +41,6 @@ public class SocketReader {
     private void fillRequestFromBuffer() {
         ((Buffer)buffer).flip();
         buffer.get(request);
-        buffer.clear();
+        ((Buffer)buffer).clear();
     }
 }
