@@ -1,28 +1,27 @@
 package ServerShell;
 
 import FunctionalCore.Core;
+import Loggers.Logger;
 
 import java.awt.*;
 import java.nio.channels.AsynchronousSocketChannel;
 
 public class AsynchronousResponder {
     private SocketReader reader;
-    private Core responseCrafter;
+    private Core core;
     private SocketWriter writer;
+    private Logger logger;
 
-    public AsynchronousResponder(SocketReader reader, Core responseCrafter, SocketWriter writer) {
+    public AsynchronousResponder(SocketReader reader, Core core, SocketWriter writer, Logger logger) {
         this.reader = reader;
-        this.responseCrafter = responseCrafter;
+        this.core = core;
         this.writer = writer;
+        this.logger = logger;
     }
 
     public void respondTo(AsynchronousSocketChannel clientConnection) {
-        byte[] request = reader.readRequest(clientConnection);
-        System.out.println("recieved this:");
-        System.out.println(new String(request));
-        byte[] response = responseCrafter.craftResponseTo(request);
-        System.out.println("sending this:");
-        System.out.println(new String(response));
+        byte[] request = logger.messageLog(reader.readRequest(clientConnection));
+        byte[] response = logger.messageLog(core.craftResponseTo(request));
         writer.send(response, clientConnection);
     }
 }

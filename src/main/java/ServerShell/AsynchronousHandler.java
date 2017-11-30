@@ -1,5 +1,6 @@
 package ServerShell;
 
+import Loggers.Logger;
 import io.reactivex.FlowableEmitter;
 
 import java.nio.channels.AsynchronousSocketChannel;
@@ -7,10 +8,12 @@ import java.nio.channels.CompletionHandler;
 
 public class AsynchronousHandler implements CompletionHandler<AsynchronousSocketChannel, Void> {
     private AsynchronousListener listener;
+    private Logger logger;
     private FlowableEmitter<AsynchronousSocketChannel> emitter;
 
-    public AsynchronousHandler(AsynchronousListener listener) {
+    public AsynchronousHandler(AsynchronousListener listener, Logger logger) {
         this.listener = listener;
+        this.logger = logger;
     }
 
     public void setEmitter(FlowableEmitter<AsynchronousSocketChannel> emitter) {
@@ -20,12 +23,11 @@ public class AsynchronousHandler implements CompletionHandler<AsynchronousSocket
     @Override
     public void completed(AsynchronousSocketChannel clientConnection, Void attachment) {
         emitter.onNext(clientConnection);
-        //listener.close();
         listener.listen(this);
     }
 
     @Override
     public void failed(Throwable error, Void attachment) {
-        System.out.println("Handler reports a failure");
+        logger.systemLog("Handler reports a failure");
     }
 }

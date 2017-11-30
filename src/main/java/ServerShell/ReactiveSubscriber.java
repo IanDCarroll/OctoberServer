@@ -1,5 +1,6 @@
 package ServerShell;
 
+import Loggers.Logger;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -7,16 +8,18 @@ import java.nio.channels.AsynchronousSocketChannel;
 
 public class ReactiveSubscriber {
     private AsynchronousResponder responder;
+    private Logger logger;
 
-    public ReactiveSubscriber(AsynchronousResponder responder) {
+    public ReactiveSubscriber(AsynchronousResponder responder, Logger logger) {
         this.responder = responder;
+        this.logger = logger;
     }
 
     public Subscriber<AsynchronousSocketChannel> getAsynchronousResponder() {
         return new Subscriber<AsynchronousSocketChannel>() {
             @Override
             public void onSubscribe(Subscription subscription) {
-                System.out.println("subscriber has successfully subscribed to the listener");
+                logger.systemLog("subscriber has successfully subscribed to the listener");
             }
 
             @Override
@@ -24,12 +27,12 @@ public class ReactiveSubscriber {
 
             @Override
             public void onError(Throwable throwable) {
-                System.out.format("subscriber has been sent an error:\n\n%s\n", throwable.getMessage());
+                logger.systemLog("subscriber has been sent an error:\n%s" + throwable.getMessage());
             }
 
             @Override
             public void onComplete() {
-                System.out.println("subscriber was told the listener is done listening now, so it's going to stop too");
+                logger.systemLog("subscriber was told the listener is done listening now, so it's going to stop too");
             }
         };
     }

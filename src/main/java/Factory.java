@@ -2,6 +2,8 @@ import FunctionalCore.*;
 import FunctionalCore.Core;
 import Importers.FileImporter;
 import Importers.YamlImporter;
+import Loggers.ConsoleLogger;
+import Loggers.Logger;
 import ServerShell.*;
 import ServerShell.Server;
 
@@ -12,6 +14,7 @@ public class Factory {
     private int port;
     private String directory;
     private String configFile;
+    private Logger logger = new ConsoleLogger();
 
     public Factory(int port, String directory, String configFile) {
         this.port = port;
@@ -31,13 +34,13 @@ public class Factory {
 
     private ReactiveFlowable buildFlowable() {
         AsynchronousListener listener = buildListener();
-        AsynchronousHandler handler = new AsynchronousHandler(listener);
+        AsynchronousHandler handler = new AsynchronousHandler(listener, logger);
         return new ReactiveFlowable(listener, handler);
     }
 
     private AsynchronousListener buildListener() {
         try {
-            return new AsynchronousListener(port);
+            return new AsynchronousListener(port, logger);
         } catch (IOException e) {
             throw new IllegalStateException("IOException caught while trying to initialize listener");
         }
@@ -45,14 +48,14 @@ public class Factory {
 
     private ReactiveSubscriber buildSubscriber() {
         AsynchronousResponder responder = buildResponder();
-        return new ReactiveSubscriber(responder);
+        return new ReactiveSubscriber(responder, logger);
     }
 
     private AsynchronousResponder buildResponder() {
         SocketReader reader = new SocketReader();
         Core core = buildCore();
         SocketWriter writer = new SocketWriter();
-        return new AsynchronousResponder(reader, core, writer);
+        return new AsynchronousResponder(reader, core, writer, logger);
     }
 
     private HTTPCore buildCore() {

@@ -1,7 +1,9 @@
 package ServerShellTests;
 
 import FunctionalCore.Core;
+import Loggers.Logger;
 import Mocks.MockCoreDealer;
+import Mocks.MockLoggerDealer;
 import Mocks.MockSocketDealer;
 import ServerShell.AsynchronousResponder;
 import ServerShell.SocketReader;
@@ -19,6 +21,7 @@ class AsynchronousResponderTest {
     SocketReader reader;
     Core core;
     SocketWriter writer;
+    Logger logger;
     AsynchronousResponder subject;
 
     @BeforeEach
@@ -27,7 +30,8 @@ class AsynchronousResponderTest {
         reader = new SocketReader();
         core = MockCoreDealer.core;
         writer = new SocketWriter();
-        subject = new AsynchronousResponder(reader, core, writer);
+        logger = MockLoggerDealer.logger;
+        subject = new AsynchronousResponder(reader, core, writer, logger);
 
     }
 

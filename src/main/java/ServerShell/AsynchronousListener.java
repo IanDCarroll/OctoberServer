@@ -1,5 +1,7 @@
 package ServerShell;
 
+import Loggers.Logger;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.AsynchronousChannelGroup;
@@ -12,10 +14,12 @@ import java.util.concurrent.TimeUnit;
 public class AsynchronousListener {
     private final AsynchronousServerSocketChannel listener;
     private final AsynchronousChannelGroup threadpool = AsynchronousChannelGroup.withThreadPool(Executors.newWorkStealingPool());
+    private final Logger logger;
 
-    public AsynchronousListener(int portNumber) throws IOException {
+    public AsynchronousListener(int portNumber, Logger logger) throws IOException {
         this.listener = AsynchronousServerSocketChannel.open(threadpool);
         this.listener.bind(new InetSocketAddress(portNumber));
+        this.logger = logger;
     }
 
     public void listen(CompletionHandler<AsynchronousSocketChannel, Void> handler) {
@@ -28,6 +32,6 @@ public class AsynchronousListener {
         TimeUnit byThisMeasure = TimeUnit.DAYS; // about 252 trillion years with long's max value
         try {
             threadpool.awaitTermination(thisMuchTime, byThisMeasure);
-        } catch (InterruptedException e) { System.out.println("Thread interrupted."); }
+        } catch (InterruptedException e) { logger.systemLog("Thread interrupted."); }
     }
 }
