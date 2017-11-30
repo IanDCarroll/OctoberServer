@@ -26,7 +26,7 @@ public class Factory {
     private Server buildAsynchronousReactiveServer() {
         ReactiveFlowable flowable = buildFlowable();
         ReactiveSubscriber subscriber = buildSubscriber();
-        return new AsynchronousReactiveServer(flowable, subscriber);
+        return new ReactiveServer(flowable, subscriber);
     }
 
     private ReactiveFlowable buildFlowable() {

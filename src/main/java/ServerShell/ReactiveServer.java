@@ -1,10 +1,10 @@
 package ServerShell;
 
-public class AsynchronousReactiveServer implements ServerShell.Server {
+public class ReactiveServer implements ServerShell.Server {
     ReactiveFlowable flowable;
     ReactiveSubscriber subscriber;
 
-    public AsynchronousReactiveServer(ReactiveFlowable flowable, ReactiveSubscriber subscriber) {
+    public ReactiveServer(ReactiveFlowable flowable, ReactiveSubscriber subscriber) {
         this.flowable = flowable;
         this.subscriber = subscriber;
     }
