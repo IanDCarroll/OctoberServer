@@ -19,7 +19,7 @@ public class ReactiveSubscriber {
         return new Subscriber<AsynchronousSocketChannel>() {
             @Override
             public void onSubscribe(Subscription subscription) {
-                logger.systemLog("subscriber has successfully subscribed to the listener");
+                logger.log("subscriber has successfully subscribed to the listener");
             }
 
             @Override
@@ -27,12 +27,12 @@ public class ReactiveSubscriber {
 
             @Override
             public void onError(Throwable throwable) {
-                logger.systemLog("subscriber has been sent an error:\n%s" + throwable.getMessage());
+                logger.log("subscriber has been sent an error:\n%s" + throwable.getMessage());
             }
 
             @Override
             public void onComplete() {
-                logger.systemLog("subscriber was told the listener is done listening now, so it's going to stop too");
+                logger.log("subscriber was told the listener is done listening now, so it's going to stop too");
             }
         };
     }

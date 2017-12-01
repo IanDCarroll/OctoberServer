@@ -28,6 +28,6 @@ public class AsynchronousHandler implements CompletionHandler<AsynchronousSocket
 
     @Override
     public void failed(Throwable error, Void attachment) {
-        logger.systemLog("Handler reports a failure");
+        logger.log("Handler reports a failure");
     }
 }

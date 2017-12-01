@@ -20,8 +20,10 @@ public class AsynchronousResponder {
     }
 
     public void respondTo(AsynchronousSocketChannel clientConnection) {
-        byte[] request = logger.messageLog(reader.readRequest(clientConnection));
-        byte[] response = logger.messageLog(core.craftResponseTo(request));
+        byte[] request = reader.readRequest(clientConnection);
+        logger.log(new String(request));
+        byte[] response = core.craftResponseTo(request);
         writer.send(response, clientConnection);
+        logger.log(new String(response));
     }
 }

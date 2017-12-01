@@ -32,6 +32,6 @@ public class AsynchronousListener {
         TimeUnit byThisMeasure = TimeUnit.DAYS; // about 252 trillion years with long's max value
         try {
             threadpool.awaitTermination(thisMuchTime, byThisMeasure);
-        } catch (InterruptedException e) { logger.systemLog("Thread interrupted."); }
+        } catch (InterruptedException e) { logger.log("Thread interrupted."); }
     }
 }
