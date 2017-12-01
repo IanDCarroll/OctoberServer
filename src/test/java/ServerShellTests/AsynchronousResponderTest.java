@@ -50,4 +50,12 @@ class AsynchronousResponderTest {
         assertEquals(MockCoreDealer.desiredResponse, MockSocketDealer.response);
     }
 
+    @Test
+    void closeClosesASocketChannel() {
+        //When
+        subject.close(socket);
+        //Then
+        assertFalse(socket.isOpen());
+    }
+
 }

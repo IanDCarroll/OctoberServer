@@ -4,6 +4,7 @@ import FunctionalCore.Core;
 import Loggers.Logger;
 
 import java.awt.*;
+import java.io.IOException;
 import java.nio.channels.AsynchronousSocketChannel;
 
 public class AsynchronousResponder {
@@ -25,5 +26,14 @@ public class AsynchronousResponder {
         byte[] response = core.craftResponseTo(request);
         writer.send(response, clientConnection);
         logger.log(new String(response));
+        close(clientConnection);
+    }
+
+    public void close(AsynchronousSocketChannel clientConnection) {
+        try {
+            clientConnection.close();
+        } catch (IOException e) {
+            logger.log("IOException caught while closing the client connection.");
+        }
     }
 }
