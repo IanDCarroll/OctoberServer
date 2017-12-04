@@ -7,13 +7,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ArgParserTest {
     private ArgParser subject = new HashLoopArgParser();
-    private static final int PORT_MIN = 0;
-    private static final int PORT_MAX = 65535;
+    private static String portFlag = "-p";
+    private static String directoryFlag = "-d";
+    private static String configFlag = "-c";
+    private static String port = "1701";
+    private static String directory = System.getProperty("user.dir") + "/target";
+    private static String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
 
     @Test
     void argParserGetsDefaultPort5000() {
         //Given
-        String[] args = new String[0];
+        String[] args = {};
         subject.setArgs(args);
         //When
         int actual = subject.getPort();
@@ -25,7 +29,7 @@ class ArgParserTest {
     @Test
     void argParserGetsDefaultDirectoryPublic() {
         //Given
-        String[] args = new String[0];
+        String[] args = {};
         subject.setArgs(args);
         //When
         String actual = subject.getDirectory();
@@ -37,23 +41,18 @@ class ArgParserTest {
     @Test
     void argParserGetsADefaultConfigFileWhenNoConfigIsSpecified() {
         //Given
-        String configFile = "src/main/java/routes_config.yml";
         String[] args = {};
         subject.setArgs(args);
         //When
         String actual = subject.getConfigFile();
         //Then
-        String expected = configFile;
+        String expected = "src/main/java/routes_config.yml";
         assertEquals(expected, actual);
     }
 
     @Test
     void argParserSetsPortAndDirectory() {
         //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
         String[] args = { portFlag, port, directoryFlag, directory };
         subject.setArgs(args);
         //When
@@ -69,10 +68,6 @@ class ArgParserTest {
     @Test
     void argParserSetsDirectoryAndPort() {
         //Given
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
-        String portFlag = "-p";
-        String port = "1701";
         String[] args = { directoryFlag, directory, portFlag, port };
         subject.setArgs(args);
         //When
@@ -88,10 +83,6 @@ class ArgParserTest {
     @Test
     void argParserSetsConfigAndDirectory() {
         //Given
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
         String[] args = { directoryFlag, directory, configFlag, configFile };
         subject.setArgs(args);
         //When
@@ -107,10 +98,6 @@ class ArgParserTest {
     @Test
     void argParserSetsDirectoryAndConfig() {
         //Given
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile, directoryFlag, directory };
         subject.setArgs(args);
         //When
@@ -126,10 +113,6 @@ class ArgParserTest {
     @Test
     void argParserSetsPortAndConfig() {
         //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { portFlag, port, configFlag, configFile };
         subject.setArgs(args);
         //When
@@ -145,10 +128,6 @@ class ArgParserTest {
     @Test
     void argParserSetsConfigAndPort() {
         //Given
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
-        String portFlag = "-p";
-        String port = "1701";
         String[] args = { configFlag, configFile, portFlag, port };
         subject.setArgs(args);
         //When
@@ -164,12 +143,6 @@ class ArgParserTest {
     @Test
     void argParserSetsPortAndDirectoryAndConfig() {
         //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { portFlag, port, directoryFlag, directory, configFlag, configFile };
         subject .setArgs(args);
         //When
@@ -188,12 +161,6 @@ class ArgParserTest {
     @Test
     void argParserSetsPortAndConfigAndDirectory() {
         //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { directoryFlag, directory, configFlag, configFile, portFlag, port };
         subject.setArgs(args);
         //When
@@ -212,12 +179,6 @@ class ArgParserTest {
     @Test
     void argParserSetsDirectoryAndPortAndConfig() {
         //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { directoryFlag, directory, portFlag, port, configFlag, configFile };
         subject.setArgs(args);
         //When
@@ -236,12 +197,6 @@ class ArgParserTest {
     @Test
     void argParserSetsDirectoryAndConfigAndPort() {
         //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile, directoryFlag, directory, portFlag, port };
         subject.setArgs(args);
         //When
@@ -260,12 +215,6 @@ class ArgParserTest {
     @Test
     void argParserSetsConfigAndPortAndDirectory() {
         //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile, portFlag, port, directoryFlag, directory };
         subject.setArgs(args);
         //When
@@ -284,12 +233,6 @@ class ArgParserTest {
     @Test
     void argParserSetsConfigAndDirectoryAndPort() {
         //Given
-        String portFlag = "-p";
-        String port = "1701";
-        String directoryFlag = "-d";
-        String directory = System.getProperty("user.dir") + "/target";
-        String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile,directoryFlag, directory, portFlag, port };
         subject.setArgs(args);
         //When
