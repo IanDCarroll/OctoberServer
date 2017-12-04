@@ -1,5 +1,6 @@
-# OctoberServer
-A second Java HTTP server implementing https://github.com/8thlight/cob_spec
+# OctoberServer [![Build Status](https://travis-ci.org/IanDCarroll/OctoberServer.svg?branch=master)](https://travis-ci.org/IanDCarroll/OctoberServer)
+A Reactive Java HTTP server implementing https://github.com/8thlight/cob_spec
+
 
 Check out [the Design Decisions](https://github.com/IanDCarroll/OctoberServer/wiki/Design-Decisions) for an overview on how this server is constructed
 

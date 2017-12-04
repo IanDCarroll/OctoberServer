@@ -89,7 +89,7 @@ class ArgParserTest {
     void argParserSetsConfigAndDirectory() {
         //Given
         String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/mock_routes.yml";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String[] args = { directoryFlag, directory, configFlag, configFile };
@@ -110,7 +110,7 @@ class ArgParserTest {
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/mock_routes.yml";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile, directoryFlag, directory };
         subject.setArgs(args);
         //When
@@ -129,7 +129,7 @@ class ArgParserTest {
         String portFlag = "-p";
         String port = "1701";
         String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/mock_routes.yml";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { portFlag, port, configFlag, configFile };
         subject.setArgs(args);
         //When
@@ -146,7 +146,7 @@ class ArgParserTest {
     void argParserSetsConfigAndPort() {
         //Given
         String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/mock_routes.yml";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String portFlag = "-p";
         String port = "1701";
         String[] args = { configFlag, configFile, portFlag, port };
@@ -169,7 +169,7 @@ class ArgParserTest {
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/mock_routes.yml";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { portFlag, port, directoryFlag, directory, configFlag, configFile };
         subject .setArgs(args);
         //When
@@ -193,7 +193,7 @@ class ArgParserTest {
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/mock_routes.yml";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { directoryFlag, directory, configFlag, configFile, portFlag, port };
         subject.setArgs(args);
         //When
@@ -217,7 +217,7 @@ class ArgParserTest {
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/mock_routes.yml";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { directoryFlag, directory, portFlag, port, configFlag, configFile };
         subject.setArgs(args);
         //When
@@ -241,7 +241,7 @@ class ArgParserTest {
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/mock_routes.yml";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile, directoryFlag, directory, portFlag, port };
         subject.setArgs(args);
         //When
@@ -265,7 +265,7 @@ class ArgParserTest {
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/mock_routes.yml";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile, portFlag, port, directoryFlag, directory };
         subject.setArgs(args);
         //When
@@ -289,7 +289,7 @@ class ArgParserTest {
         String directoryFlag = "-d";
         String directory = System.getProperty("user.dir") + "/target";
         String configFlag = "-c";
-        String configFile = System.getProperty("user.dir") + "/src/main/java/mock_routes.yml";
+        String configFile = System.getProperty("user.dir") + "/src/main/java/routes_config.yml";
         String[] args = { configFlag, configFile,directoryFlag, directory, portFlag, port };
         subject.setArgs(args);
         //When
