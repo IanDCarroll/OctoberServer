@@ -11,5 +11,7 @@ public class Controller {
         this.routes = routes;
     }
 
-    public boolean exists() { return true; }
+    public byte[] getAppropriateResponse(Request request) {
+        return "HTTP/1.1 200 OK".getBytes();
+    }
 }

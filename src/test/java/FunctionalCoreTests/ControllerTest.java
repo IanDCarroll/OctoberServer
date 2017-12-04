@@ -1,7 +1,9 @@
 package FunctionalCoreTests;
 
 import FunctionalCore.Controller;
+import FunctionalCore.Request;
 import FunctionalCore.ResponseGenerator;
+import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.LinkedHashMap;
@@ -19,9 +21,13 @@ class ControllerTest {
     }
 
     @Test
-    void sanityTest() {
-        boolean actual = subject.exists();
-        boolean expected = true;
-        assertEquals(expected, actual);
+    void getAppropriateResponseTakesARequestObjectAndReturnsAnAppropriateByteArray() {
+        //Given
+        Request request = MockRequestDealer.getRootRequest;
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String expected = "HTTP/1.1 200 OK";
+        assertTrue(new String(actual).contains(expected));
     }
 }
