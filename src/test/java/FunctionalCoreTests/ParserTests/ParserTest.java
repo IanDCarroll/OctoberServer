@@ -27,6 +27,17 @@ class ParserTest {
     }
 
     @Test
+    void parseReturnsARequestObjectWithNoHeadersFromAByteArrayWithNoCRLF() {
+        //Given
+        byte[] source = "GET / HTTP/1.1".getBytes();
+        //When
+        String[] actual = subject.parse(source).getHeaders();
+        //Then
+        String[] expected = MockRequestDealer.getRootRequest().getHeaders();
+        assertArrayEquals(actual, expected);
+    }
+
+    @Test
     void parseReturnsARequestObjectWithTheRightUriFromAByteArray() {
         //Given
         byte[] source = "GET / HTTP/1.1\r\n\r\n".getBytes();
@@ -71,6 +82,34 @@ class ParserTest {
         String[] actual = subject.parse(source).getHeaders();
         //Then
         String[] expected = MockRequestDealer.getFullRequest().getHeaders();
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void parseReturnsARequestObjectWithTheURIFromAByteArrayWithParams() {
+        byte[] source = ("GET /mock-address?param1=value1&param2=value2 HTTP/1.1\n" +
+                "Content-Type: text/plain\n" +
+                "Content-Length: 34" +
+                "\r\n\r\n" +
+                "This represents a well-formed body").getBytes();
+        //When
+        String actual = subject.parse(source).getUri();
+        //Then
+        String expected = MockRequestDealer.getFullRequest().getUri();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void parseReturnsARequestObjectWithAllTheURIParamsFromAByteArray() {
+        byte[] source = ("GET /mock-address?param1=value1&param2=value2 HTTP/1.1\n" +
+                "Content-Type: text/plain\n" +
+                "Content-Length: 34" +
+                "\r\n\r\n" +
+                "This represents a well-formed body").getBytes();
+        //When
+        String[] actual = subject.parse(source).getUriParams();
+        //Then
+        String[] expected = MockRequestDealer.getFullRequest().getUriParams();
         assertArrayEquals(expected, actual);
     }
 }
