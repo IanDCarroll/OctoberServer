@@ -23,7 +23,7 @@ class ControllerTest {
     @Test
     void getAppropriateResponseTakesARequestObjectAndReturnsAnAppropriateByteArray() {
         //Given
-        Request request = MockRequestDealer.getRootRequest;
+        Request request = MockRequestDealer.getRootRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
