@@ -1,5 +1,6 @@
 import FunctionalCore.*;
 import FunctionalCore.Core;
+import FunctionalCore.Parser.Parser;
 import Importers.FileImporter;
 import Importers.YamlImporter;
 import Loggers.ConsoleLogger;

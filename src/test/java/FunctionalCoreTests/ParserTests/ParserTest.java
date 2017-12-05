@@ -1,7 +1,6 @@
-package FunctionalCoreTests;
+package FunctionalCoreTests.ParserTests;
 
-import FunctionalCore.Parser;
-import FunctionalCore.Request;
+import FunctionalCore.Parser.Parser;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
