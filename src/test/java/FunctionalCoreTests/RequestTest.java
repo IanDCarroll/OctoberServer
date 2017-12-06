@@ -60,7 +60,7 @@ class RequestTest {
         //Given
         String[] expected = { "A string representing an arbitrary uriParam" };
         //When
-        subject.addUriParam(expected[0]);
+        subject.setUriParams(expected);
         //Then
         assertArrayEquals(expected, subject.getUriParams());
     }
@@ -70,31 +70,27 @@ class RequestTest {
         //Given
         String[] expected = { "param1", "param2", "param3" };
         //When
-        subject.addUriParam(expected[0]);
-        subject.addUriParam(expected[1]);
-        subject.addUriParam(expected[2]);
+        subject.setUriParams(expected);
         //Then
         assertArrayEquals(expected, subject.getUriParams());
     }
 
     @Test
-    void addHeaderAddsOneHeaderTotheLinkedListOfHeaders() {
+    void setHeadersAddsOneHeaderToTheLinkedListOfHeaders() {
         //Given
         String[] expected = { "A string representing an arbitrary header" };
         //When
-        subject.addHeader(expected[0]);
+        subject.setHeaders(expected);
         //Then
         assertArrayEquals(expected, subject.getHeaders());
     }
 
     @Test
-    void addHeaderCanBeCalledAnArbitraryNumberOfTimesToPopulateTheLinkedListOfHeaders() {
+    void setHeadersAcceptsAnArbitraryNumberOfHeaders() {
         //Given
         String[] expected = { "header1", "header2", "header3" };
         //When
-        subject.addHeader(expected[0]);
-        subject.addHeader(expected[1]);
-        subject.addHeader(expected[2]);
+        subject.setHeaders(expected);
         //Then
         assertArrayEquals(expected, subject.getHeaders());
     }

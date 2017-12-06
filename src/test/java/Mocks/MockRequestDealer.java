@@ -16,11 +16,9 @@ public class MockRequestDealer {
         Request request = new Request();
         request.setMethod("GET");
         request.setUri("/mock-address");
-        request.addUriParam("param1=value1");
-        request.addUriParam("param2=value2");
+        request.setUriParams(new String[]{ "param1=value1", "param2=value2" });
         request.setHttpV("HTTP/1.1");
-        request.addHeader("Content-Type: text/plain");
-        request.addHeader("Content-Length: 34");
+        request.setHeaders(new String[]{ "Content-Type: text/plain", "Content-Length: 34" });
         request.setBody("This represents a well-formed body".getBytes());
         return request;
     }

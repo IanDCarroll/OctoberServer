@@ -6,51 +6,54 @@ import java.util.Arrays;
 
 public class Parser {
     private Request request;
-    private final byte[] crlf = "\r\n\r\n".getBytes();
-    private final String newLine = "\n";
-    private final String space = " ";
-    private final String questionMark = "\\?";
-    private final String ampersand = "&";
+    private final byte[] byCRLF = "\r\n\r\n".getBytes();
+    private final String byNewLine = "\n";
+    private final String bySpace = " ";
+    private final String byQuestionMark = "\\?";
+    private final String byAmpersand = "&";
     private final int onTheFirstEncounterOnly = 2;
 
     public Request parse(byte[] source) {
-        byte[][] splitSource = ByteSplitter.splitByPattern(source, crlf);
-        String[] splitHead = new String(splitSource[0]).split(newLine, onTheFirstEncounterOnly);
         request = new Request();
-        assignBody(splitSource[1]);
-        assignStartLine(splitHead[0]);
-        if(splitHead.length == 2) { assignAllHeaders(splitHead[1]); }
+        setRequestValuesInSource(source);
         return request;
     }
 
-    private void assignBody(byte[] body) { request.setBody(body); }
-
-    private void assignStartLine(String startLine) {
-        String[] splitStartLine = startLine.split(space);
-        if (splitStartLine.length == 3) {
-            request.setMethod(splitStartLine[0]);
-            assignUri(splitStartLine[1]);
-            request.setHttpV(splitStartLine[2]);
-        }
+    private void setRequestValuesInSource(byte[] source) {
+        byte[][] splitHeadFromBody = ByteSplitter.splitByPattern(source, byCRLF);
+        setRequestValuesInHead(splitHeadFromBody[0]);
+        request.setBody(splitHeadFromBody[1]);
     }
 
-    private void assignUri(String uri) {
-        String[] splitUri = uri.split(questionMark, onTheFirstEncounterOnly);
-        request.setUri(splitUri[0]);
-        if(splitUri.length == 2) { assignAllParams(splitUri[1]);}
+    private void setRequestValuesInHead(byte[] head) {
+        String[] splitHead = new String(head).split(byNewLine);
+        setRequestValuesInStartLine(splitHead[0]);
+        if(splitHead.length > 1) { request.setHeaders(minusTheFirst(splitHead)); }
     }
 
-    private void assignAllParams(String params) {
-        String[] splitParams = params.split(ampersand);
-        for(String param : splitParams) {
-            request.addUriParam(param);
-        }
+    private String[] minusTheFirst(String[] array) {
+        return Arrays.copyOfRange(array, 1, array.length);
     }
 
-    private void assignAllHeaders(String headers) {
-        String[] splitHeaders = headers.split(newLine);
-        for(String header : splitHeaders) {
-            request.addHeader(header);
-        }
+    private void setRequestValuesInStartLine(String startLine) {
+        String[] splitStartLine = startLine.split(bySpace);
+        if (splitStartLine.length == 3) { setRequestValuesInStartLine(splitStartLine); }
+    }
+
+    private void setRequestValuesInStartLine(String[] splitStartLine) {
+        request.setMethod(splitStartLine[0]);
+        setRequestValuesInUri(splitStartLine[1]);
+        request.setHttpV(splitStartLine[2]);
+    }
+
+    private void setRequestValuesInUri(String uri) {
+        String[] splitUriFromParams = uri.split(byQuestionMark, onTheFirstEncounterOnly);
+        request.setUri(splitUriFromParams[0]);
+        if(splitUriFromParams.length == 2) { setRequestUriParams(splitUriFromParams[1]); }
+    }
+
+    private void setRequestUriParams(String rawParams) {
+        String[] uriParams = rawParams.split(byAmpersand);
+        request.setUriParams(uriParams);
     }
 }

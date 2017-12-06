@@ -18,13 +18,21 @@ public class Request {
     public void setUri(String uri) { this.uri = uri; }
     public String getUri() { return uri; }
 
-    public void addUriParam(String uriParam) { uriParams.add(uriParam); }
+    public void setUriParams(String[] values) {
+        for (String uriParam : values) {
+            uriParams.add(uriParam);
+        }
+    }
     public String[] getUriParams() { return uriParams.toArray(new String[uriParams.size()]); }
 
     public void setHttpV(String httpV) { this.httpV = httpV; }
     public String getHttpV() { return httpV; }
 
-    public void addHeader(String header) { headers.add(header); }
+    public void setHeaders(String[] values) {
+        for (String header : values) {
+            headers.add(header);
+        }
+    }
     public String[] getHeaders() { return headers.toArray(new String[headers.size()]); }
 
     public void setBody(byte[] body) { this.body = body; }
