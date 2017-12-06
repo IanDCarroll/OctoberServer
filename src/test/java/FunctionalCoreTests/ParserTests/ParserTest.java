@@ -22,8 +22,7 @@ class ParserTest {
         //When
         String actual = subject.parse(source).getMethod();
         //Then
-        String expected = MockRequestDealer.getRootRequest().getMethod();
-        assertEquals(actual, expected);
+        assertEquals("GET", actual);
     }
 
     @Test
@@ -33,8 +32,7 @@ class ParserTest {
         //When
         String[] actual = subject.parse(source).getHeaders();
         //Then
-        String[] expected = MockRequestDealer.getRootRequest().getHeaders();
-        assertArrayEquals(actual, expected);
+        assertArrayEquals(new String[0], actual);
     }
 
     @Test
@@ -44,8 +42,7 @@ class ParserTest {
         //When
         String actual = subject.parse(source).getUri();
         //Then
-        String expected = MockRequestDealer.getRootRequest().getUri();
-        assertEquals(actual, expected);
+        assertEquals( "/", actual);
     }
 
     @Test
@@ -56,7 +53,7 @@ class ParserTest {
         String actual = subject.parse(source).getHttpV();
         //Then
         String expected = MockRequestDealer.getRootRequest().getHttpV();
-        assertEquals(actual, expected);
+        assertEquals("HTTP/1.1", actual);
     }
 
     @Test
@@ -66,8 +63,8 @@ class ParserTest {
         //When
         byte[] actual = subject.parse(source).getBody();
         //Then
-        byte[] expected = MockRequestDealer.getFullRequest().getBody();
-        assertEquals(new String(expected), new String(actual));
+        String expected = "This represents a well-formed body";
+        assertEquals(expected, new String(actual));
     }
 
     @Test
@@ -81,7 +78,7 @@ class ParserTest {
         //When
         String[] actual = subject.parse(source).getHeaders();
         //Then
-        String[] expected = MockRequestDealer.getFullRequest().getHeaders();
+        String[] expected = { "Content-Type: text/plain", "Content-Length: 34" };
         assertArrayEquals(expected, actual);
     }
 
@@ -95,7 +92,7 @@ class ParserTest {
         //When
         String actual = subject.parse(source).getUri();
         //Then
-        String expected = MockRequestDealer.getFullRequest().getUri();
+        String expected = "/mock-address";
         assertEquals(expected, actual);
     }
 
@@ -109,7 +106,7 @@ class ParserTest {
         //When
         String[] actual = subject.parse(source).getUriParams();
         //Then
-        String[] expected = MockRequestDealer.getFullRequest().getUriParams();
+        String[] expected = { "param1=value1", "param2=value2" };
         assertArrayEquals(expected, actual);
     }
 }
