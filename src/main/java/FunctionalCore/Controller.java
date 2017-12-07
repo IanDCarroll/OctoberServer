@@ -12,6 +12,6 @@ public class Controller {
     }
 
     public byte[] getAppropriateResponse(Request request) {
-        return "HTTP/1.1 200 OK".getBytes();
+        return responseGenerator.generate200();
     }
 }
