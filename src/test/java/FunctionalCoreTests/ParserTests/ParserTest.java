@@ -106,7 +106,7 @@ class ParserTest {
         //When
         String[] actual = subject.parse(source).getUriParams();
         //Then
-        String[] expected = { "param1=value1", "param2=value2" };
+        String[] expected = { "param1 = value1", "param2 = value2" };
         assertArrayEquals(expected, actual);
     }
 }

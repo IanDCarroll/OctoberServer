@@ -53,7 +53,7 @@ public class Parser {
     }
 
     private void setRequestUriParams(String rawParams) {
-        String[] uriParams = rawParams.split(byAmpersand);
+        String[] uriParams = ParamDecoder.decode(rawParams.split(byAmpersand));
         request.setUriParams(uriParams);
     }
 }
