@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 public class Controller {
     private ResponseGenerator responseGenerator;
-    private LinkedHashMap routes;
+    private LinkedHashMap<String, String> routes;
 
     public Controller(ResponseGenerator responseGenerator, LinkedHashMap routes) {
         this.responseGenerator = responseGenerator;
@@ -12,6 +12,10 @@ public class Controller {
     }
 
     public byte[] getAppropriateResponse(Request request) {
-        return responseGenerator.generate200();
+        for (String route : routes.keySet()) {
+            if (route.equals(request.getUri())) { return responseGenerator.generate200(); }
+        }
+        System.out.println("404");
+        return responseGenerator.generate404();
     }
 }

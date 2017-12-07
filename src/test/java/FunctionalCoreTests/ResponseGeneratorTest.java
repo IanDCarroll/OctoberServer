@@ -25,7 +25,7 @@ class ResponseGeneratorTest {
     }
 
     @Test
-    void generate404GeneratesA404Respose() {
+    void generate404GeneratesA404Response() {
         //Given nothing
         //When
         byte[] actual = subject.generate404();
@@ -35,7 +35,7 @@ class ResponseGeneratorTest {
     }
 
     @Test
-    void assembleStartlineAssemblesAValidStartline() {
+    void assembleStartLineAssemblesAValidStartLine() {
         //Given
         String[] code = { "999", "Legit Response" };
         //When
