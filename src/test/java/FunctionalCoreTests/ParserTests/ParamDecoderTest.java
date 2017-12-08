@@ -1,5 +1,6 @@
-package FunctionalCore.Parser;
+package FunctionalCoreTests.ParserTests;
 
+import FunctionalCore.Parser.ParamDecoder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
