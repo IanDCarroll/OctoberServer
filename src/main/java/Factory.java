@@ -1,4 +1,6 @@
 import FunctionalCore.*;
+import FunctionalCore.Controller.Controller;
+import FunctionalCore.Controller.ResponseGenerator;
 import FunctionalCore.Core;
 import FunctionalCore.Parser.Parser;
 import Importers.FileImporter;

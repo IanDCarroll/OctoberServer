@@ -1,9 +1,9 @@
 package FunctionalCoreTests;
 
-import FunctionalCore.Controller;
+import FunctionalCore.Controller.Controller;
 import FunctionalCore.HTTPCore;
 import FunctionalCore.Parser.Parser;
-import FunctionalCore.ResponseGenerator;
+import FunctionalCore.Controller.ResponseGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

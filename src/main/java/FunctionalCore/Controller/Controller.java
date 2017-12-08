@@ -1,4 +1,6 @@
-package FunctionalCore;
+package FunctionalCore.Controller;
+
+import FunctionalCore.Request;
 
 import java.util.LinkedHashMap;
 

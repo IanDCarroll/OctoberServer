@@ -1,4 +1,4 @@
-package FunctionalCore;
+package FunctionalCore.Controller;
 
 public class ResponseGenerator {
 

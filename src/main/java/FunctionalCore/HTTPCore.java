@@ -1,5 +1,6 @@
 package FunctionalCore;
 
+import FunctionalCore.Controller.Controller;
 import FunctionalCore.Parser.Parser;
 
 public class HTTPCore implements FunctionalCore.Core {
