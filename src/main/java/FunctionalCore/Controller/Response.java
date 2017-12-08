@@ -62,7 +62,9 @@ public class Response {
 
     public void setBody(byte[] body) { this.body = body; }
 
-    public void setBody(String[] params) {}
+    public void setBody(String[] params) {
+
+    }
 
     public void setBody(byte[] body, String[] params) {}
 }
