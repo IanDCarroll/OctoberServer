@@ -5,3 +5,5 @@
 /file1: get head options
 
 /coffee: get head options
+
+/form: post put
