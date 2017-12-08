@@ -1,11 +1,6 @@
 package FunctionalCore;
 
 public class ResponseGenerator {
-    public Response response;
-
-    public ResponseGenerator() {
-        this.response = new Response();
-    }
 
     public byte[] generate200() {
         final String[] code200 = { "200", "OK" };
