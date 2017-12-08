@@ -13,19 +13,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HTTPCoreTest {
     HTTPCore subject;
+    LinkedHashMap<String, String> mockRoutes;
 
     @BeforeEach
     void setup() {
         Parser parser = new Parser();
         ResponseGenerator responseGenerator = new ResponseGenerator();
-        LinkedHashMap routes = new LinkedHashMap();
-        Controller controller = new Controller(responseGenerator, routes);
+        mockRoutes = new LinkedHashMap();
+        Controller controller = new Controller(responseGenerator, mockRoutes);
         subject = new HTTPCore(parser, controller);
     }
 
     @Test
     void coreReturnsA200ResponseWhenTheRootIsRequested() {
         //Given
+        mockRoutes.put("/", "all");
         byte[] request = "GET / HTTP/1.1\r\n\r\n".getBytes();
         //When
         String actual = new String(subject.craftResponseTo(request));

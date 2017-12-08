@@ -15,7 +15,6 @@ public class Controller {
         for (String route : routes.keySet()) {
             if (route.equals(request.getUri())) { return responseGenerator.generate200(); }
         }
-        System.out.println("404");
         return responseGenerator.generate404();
     }
 }

@@ -13,6 +13,7 @@ public class HTTPCore implements FunctionalCore.Core {
 
     @Override
     public byte[] craftResponseTo(byte[] request) {
-        return "HTTP/1.1 200 OK\r\n\r\n".getBytes();
+        Request parsedRequest = parser.parse(request);
+        return controller.getAppropriateResponse(parsedRequest);
     }
 }
