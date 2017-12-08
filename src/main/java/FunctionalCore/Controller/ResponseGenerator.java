@@ -1,25 +1,22 @@
 package FunctionalCore.Controller;
 
 public class ResponseGenerator {
+    Response response;
 
     public byte[] generate200() {
         final String[] code200 = { "200", "OK" };
-        return assembleResponse(code200).getBytes();
+        setResponseHead(code200);
+        return response.getResponse();
     }
 
     public byte[] generate404() {
         final String[] code404 = { "404", "Not Found" };
-        return assembleResponse(code404).getBytes();
+        setResponseHead(code404);
+        return response.getResponse();
     }
 
-    private String assembleResponse(String[] code) {
-        final String crlf = "\r\n\r\n";
-        return assembleStartLine(code) + crlf;
-    }
-
-    public String assembleStartLine(String[] code) {
-        final String httpV = "HTTP/1.1";
-        final String sp = " ";
-        return httpV + sp + code[0] + sp + code[1];
+    private void setResponseHead(String[] codeTuple) {
+        response = new Response();
+        response.setStartLine(codeTuple[0], codeTuple[1]);
     }
 }

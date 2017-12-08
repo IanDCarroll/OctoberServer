@@ -33,15 +33,4 @@ class ResponseGeneratorTest {
         String expected = "404 Not Found";
         assertTrue(new String(actual).contains(expected));
     }
-
-    @Test
-    void assembleStartLineAssemblesAValidStartLine() {
-        //Given
-        String[] code = { "999", "Legit Response" };
-        //When
-        String actual = subject.assembleStartLine(code);
-        //Then
-        String expected = "HTTP/1.1 " + code[0] + " " + code[1];
-        assertEquals(expected, actual);
-    }
 }
