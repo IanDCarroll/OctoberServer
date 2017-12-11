@@ -11,6 +11,8 @@ Check out [the Design Decisions](https://github.com/IanDCarroll/OctoberServer/wi
 
 ### Setup:
 
+clone this repo.<br>
+`$ cd LOCAL/REPO/ROOT`<br>
 `$ mvn clean compile assembly:single`
 
 ### Run Server:
@@ -23,3 +25,19 @@ This will break a server that relies on files and expects to run in the project'
 
 `$ mvn test`
 
+### Run Cob-Spec Tests:
+- __in a terminal:__
+- clone [cob-spec](https://github.com/8thlight/cob_spec) and follow setup instructions.
+- Run cob-spec on port `9090`<br> 
+- __in the browser:__
+- Navigate to the [Server Start Edit Page](http://localhost:9090/HttpTestSuite?edit)<br>
+in the `SERVER_START_COMMAND {` `java -jar /PATH/TO/OctoberServer/target/OctoberServer.jar -c /PATH/TO/OctoberServer/src/test/java/Mocks/cob_spec_routes_config.yml` `}`<br>
+Note: cob-spec starts the server from the user's home directory, not the repo's root.</br>
+Make sure to specify the path to the `.jar` and the `cob_spec_config.yml` from that reference.<br>
+- Save the page.<br>
+- __in a separate terminal:__
+- `$ cd LOCAL/REPO/ROOT`
+- `$ mvn clean compile assembly:single`
+- `java -jar /PATH/TO/OctoberServer/target/OctoberServer.jar -c /PATH/TO/OctoberServer/src/test/java/Mocks/cob_spec_routes_config.yml`
+- __in the browser:__
+- Load [this link](http://localhost:9090/HttpTestSuite?suite) to start the test, or just click the `suite` link at the top of the page.

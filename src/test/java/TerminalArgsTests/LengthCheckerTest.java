@@ -72,7 +72,7 @@ class LengthCheckerTest {
         String directoryFlag = "-d";
         String directory = "/target";
         String configFlag = "-c";
-        String configFile = "src/main/java/routes_config.yml";
+        String configFile = "src/main/java/mock_routes_config.yml";
         String extra = "Throw an error";
         String[] args = { portFlag, port, directoryFlag, directory, configFlag, configFile, extra };
         //Then

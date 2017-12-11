@@ -2,8 +2,6 @@
 
 /: all
 
-/file1: get head options
+/exampleRoute1: get head options
 
-/coffee: get head options
-
-/form: post put
+/exampleRoute2: post put
