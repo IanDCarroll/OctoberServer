@@ -77,4 +77,46 @@ class ResponseTest {
         String expected = "Response Object received an odd Array length";
         assertEquals(expected, exception.getMessage());
     }
+
+    @Test
+    void setBodySetsTheBodyToAGivenByteArray() {
+        //Given
+        byte[] body = "Any arbitrary byte array".getBytes();
+        //When
+        subject.setBody(body);
+        //Then
+        assertTrue(new String(subject.getResponse()).contains(new String(body)));
+    }
+
+    @Test
+    void setBodySetsTheBodyToAGivenStringArray() {
+        //Given
+        String[] params = { "Cool-Param=pretty cool",
+                "Awesome-Param=could be more awesome",
+                "Radical-Param=totally rad" };
+        //When
+        subject.setBody(params);
+        //Then
+        String expected = "Cool-Param = pretty cool\n" +
+                "Awesome-Param = could be more awesome\n" +
+                "Radical-Param = totally rad\n";
+        assertTrue(new String(subject.getResponse()).contains(expected));
+    }
+
+    @Test
+    void setBodySetsTheBodyToAGivenByteArrayAndAddsFormattedParams() {
+        //Given
+        byte[] body = "Any arbitrary byte array".getBytes();
+        String[] params = { "Cool-Param=pretty cool",
+                "Awesome-Param=could be more awesome",
+                "Radical-Param=totally rad" };
+        //When
+        subject.setBody(body, params);
+        //Then
+        String expected = "Cool-Param = pretty cool\n" +
+                "Awesome-Param = could be more awesome\n" +
+                "Radical-Param = totally rad\n" +
+                 new String(body);
+        assertTrue(new String(subject.getResponse()).contains(expected));
+    }
 }

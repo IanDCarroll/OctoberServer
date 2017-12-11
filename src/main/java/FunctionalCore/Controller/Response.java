@@ -15,23 +15,24 @@ public class Response {
     }
 
     public byte[] getResponse() {
-        String headers = buildHeaderString();
+        String headers = buildStringFrom(getHeaders());
         final String crlf = "\r\n\r\n";
-        String head = startLine + headers + crlf;
-        return uniteRequest(head, body);
+        byte[] head = (startLine + headers + crlf).getBytes();
+        return uniteBytes(head, body);
+    }
+    private String[] getHeaders() {
+        return headers.toArray(new String[headers.size()]);
     }
 
-    private String buildHeaderString() {
-        StringBuilder headerString = new StringBuilder();
-        String[] headersArray = headers.toArray(new String[headers.size()]);
-        for (String header : headersArray) {
-            headerString.append(header);
+    private String buildStringFrom(String[] array) {
+        StringBuilder string = new StringBuilder();
+        for (String item : array) {
+            string.append(item);
         }
-        return headerString.toString();
+        return string.toString();
     }
 
-    private byte[] uniteRequest(String headString, byte[] body) {
-        byte[] head = headString.getBytes();
+    private byte[] uniteBytes(byte[] head, byte[] body) {
         byte[] union = new byte[head.length + body.length];
         int fromStart = 0;
         System.arraycopy(head, fromStart, union, fromStart, head.length);
@@ -62,9 +63,13 @@ public class Response {
 
     public void setBody(byte[] body) { this.body = body; }
 
-    public void setBody(String[] params) {
-
+    public void setBody(byte[] body, String[] params) {
+        setBody(params);
+        this.body = uniteBytes(this.body, body);
     }
 
-    public void setBody(byte[] body, String[] params) {}
+    public void setBody(String[] params) {
+        String[] formattedParams = ParamFormatter.addStyling(params);
+        this.body = buildStringFrom(formattedParams).getBytes();
+    }
 }
