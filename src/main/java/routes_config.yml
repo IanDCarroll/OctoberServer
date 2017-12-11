@@ -1,7 +1,7 @@
 ---
 
-/: all
+/: GET
 
-/exampleRoute1: get head options
+/exampleRoute1: GET HEAD OPTIONS
 
-/exampleRoute2: post put
+/exampleRoute2: POST PUT

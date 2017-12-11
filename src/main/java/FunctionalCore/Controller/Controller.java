@@ -14,11 +14,15 @@ public class Controller {
     }
 
     public byte[] getAppropriateResponse(Request request) {
+        return valid(request) ? responseGenerator.generate200(request.getUriParams()) : responseGenerator.generate404();
+    }
+
+    private boolean valid(Request request) {
         for (String route : routes.keySet()) {
             if (route.equals(request.getUri())) {
-                return responseGenerator.generate200(request.getUriParams());
+                return true;
             }
         }
-        return responseGenerator.generate404();
+        return false;
     }
 }
