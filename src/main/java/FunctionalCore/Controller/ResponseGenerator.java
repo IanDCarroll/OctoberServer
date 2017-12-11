@@ -3,20 +3,24 @@ package FunctionalCore.Controller;
 public class ResponseGenerator {
     Response response;
 
-    public byte[] generate200() {
-        final String[] code200 = { "200", "OK" };
-        setResponseHead(code200);
+    public byte[] generate200(String[] params) {
+        response = new Response();
+        setResponseHead(new String[]{"200", "OK"});
+        setParams(params);
         return response.getResponse();
     }
 
     public byte[] generate404() {
-        final String[] code404 = { "404", "Not Found" };
-        setResponseHead(code404);
+        response = new Response();
+        setResponseHead(new String[]{ "404", "Not Found" });
         return response.getResponse();
     }
 
     private void setResponseHead(String[] codeTuple) {
-        response = new Response();
         response.setStartLine(codeTuple[0], codeTuple[1]);
+    }
+
+    public void setParams(String[] params) {
+        response.setBody(params);
     }
 }

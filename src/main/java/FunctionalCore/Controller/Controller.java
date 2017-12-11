@@ -15,7 +15,9 @@ public class Controller {
 
     public byte[] getAppropriateResponse(Request request) {
         for (String route : routes.keySet()) {
-            if (route.equals(request.getUri())) { return responseGenerator.generate200(); }
+            if (route.equals(request.getUri())) {
+                return responseGenerator.generate200(request.getUriParams());
+            }
         }
         return responseGenerator.generate404();
     }

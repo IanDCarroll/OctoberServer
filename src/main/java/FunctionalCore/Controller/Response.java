@@ -61,7 +61,7 @@ public class Response {
         }
     }
 
-    public void setBody(byte[] body) { this.body = body; }
+    public void setBody(byte[] body) { this.body = uniteBytes(this.body, body); }
 
     public void setBody(byte[] body, String[] params) {
         setBody(params);
@@ -70,6 +70,6 @@ public class Response {
 
     public void setBody(String[] params) {
         String[] formattedParams = ParamFormatter.addStyling(params);
-        this.body = buildStringFrom(formattedParams).getBytes();
+        this.body = uniteBytes(this.body, buildStringFrom(formattedParams).getBytes());
     }
 }
