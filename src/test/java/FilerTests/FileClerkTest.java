@@ -1,5 +1,7 @@
 package FilerTests;
 
+import Filers.FileClerk;
+import Helpers.FileHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,9 +17,11 @@ class FileClerkTest {
     private static final String name = System.getProperty("user.dir") + "/src/test/java/Mocks/mock_file";
     private static final byte[] content = "Original content".getBytes();
     private File file;
+    private FileClerk subject;
 
     @BeforeEach
     void setup() {
+        subject = new FileClerk();
         file = new File(name);
         try {
             FileOutputStream out = new FileOutputStream(file);
@@ -39,6 +43,13 @@ class FileClerkTest {
 
     @Test
     void appendAddsToTheFileContents() {
+        //Given
+        byte[] appendment = "this is a killer appendment, bro".getBytes();
+        //When
+        subject.append(name, appendment);
+        //Then
+        String expected = new String(content) + new String(appendment);
+        assertTrue(FileHelper.read(name).contains(new String(expected)));
     }
 
     @Test
