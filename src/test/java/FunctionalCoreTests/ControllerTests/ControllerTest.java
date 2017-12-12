@@ -58,7 +58,7 @@ class ControllerTest {
     }
 
     @Test
-    void getAppropriateResponseReturnsOnlyTheHeadOfARequest() {
+    void getAppropriateResponseReturnsOnlyTheHeadForAHEADRequest() {
         //Given
         mockRoutes.put("/", "HEAD");
         Request request = MockRequestDealer.headHeaderRequest();
@@ -67,5 +67,17 @@ class ControllerTest {
         //Then
         String unExpected = "param1";
         assertFalse(new String(actual).contains(unExpected));
+    }
+
+    @Test
+    void getAppropriateResponseReturnsAnAllowHeaderForAnOPTIONSRequest() {
+        //Given
+        mockRoutes.put("/", "GET HEAD OPTIONS");
+        Request request = MockRequestDealer.optionsRequest();
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String expected = "Allow: GET,HEAD,OPTIONS";
+        assertTrue(new String(actual).contains(expected));
     }
 }

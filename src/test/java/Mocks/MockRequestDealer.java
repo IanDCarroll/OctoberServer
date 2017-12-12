@@ -23,6 +23,13 @@ public class MockRequestDealer {
         return request;
     }
 
+    public static Request optionsRequest() {
+        Request request = new Request();
+        request.setMethod("OPTIONS");
+        request.setUri("/");
+        return request;
+    }
+
     public static Request getFullRequest() {
         Request request = new Request();
         request.setMethod("GET");
