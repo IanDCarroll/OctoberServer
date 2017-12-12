@@ -29,7 +29,12 @@ public class Controller {
     private byte[] validMethod(Request request) {
         String permittedMethods = routes.get(request.getUri());
         return (permittedMethods.contains(request.getMethod()))
-                ? responseGenerator.generate200(request.getMethod(), request.getUriParams())
+                ? responseGenerator.generate200(request)
                 : responseGenerator.generate405(permittedMethods);
+    }
+
+    private byte[] handleMethod(Request request) {
+        if (request.getMethod().equals("HEAD")) return responseGenerator.generate200(new String[0]);
+        return responseGenerator.generate200(request.getUriParams());
     }
 }

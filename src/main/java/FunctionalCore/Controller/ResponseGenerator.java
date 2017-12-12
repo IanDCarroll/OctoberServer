@@ -1,12 +1,18 @@
 package FunctionalCore.Controller;
 
+import FunctionalCore.Request;
+
 public class ResponseGenerator {
     Response response;
 
-    public byte[] generate200(String method, String[] params) {
+    public byte[] generate200(Request request) {
+        return (request.getMethod().equals("HEAD")) ? generate200(new String[0]) : generate200(request.getUriParams());
+    }
+
+    public byte[] generate200(String[] params) {
         response = new Response();
         setResponseHead(new String[]{"200", "OK"});
-        if (!method.equals("HEAD")) setParams(params);
+        setParams(params);
         return response.getResponse();
     }
 
