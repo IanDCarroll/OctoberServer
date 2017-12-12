@@ -1,5 +1,5 @@
 package Filers;
 
-public interface Appendable {
+public interface Appender {
     void append(String destination, byte[] payload);
 }
