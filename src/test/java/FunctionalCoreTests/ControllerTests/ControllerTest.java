@@ -13,12 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
     private Controller subject;
     private LinkedHashMap mockRoutes;
+    private String publicDir;
 
     @BeforeEach
     void init() {
         ResponseGenerator responseGenerator = new ResponseGenerator();
         mockRoutes = new LinkedHashMap();
-        subject = new Controller(responseGenerator, mockRoutes);
+        publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
+        subject = new Controller(responseGenerator, mockRoutes, publicDir);
     }
 
     @Test

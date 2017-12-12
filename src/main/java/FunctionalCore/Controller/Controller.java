@@ -1,5 +1,6 @@
 package FunctionalCore.Controller;
 
+import Filers.FileClerk;
 import FunctionalCore.Request;
 
 import java.util.LinkedHashMap;
@@ -7,10 +8,14 @@ import java.util.LinkedHashMap;
 public class Controller {
     private ResponseGenerator responseGenerator;
     private LinkedHashMap<String, String> routes;
+    private String publicDir;
+    private FileClerk fileClerk;
 
-    public Controller(ResponseGenerator responseGenerator, LinkedHashMap routes) {
+    public Controller(ResponseGenerator responseGenerator, LinkedHashMap routes, String publicDir) {
         this.responseGenerator = responseGenerator;
         this.routes = routes;
+        this.publicDir = publicDir;
+        this.fileClerk = new FileClerk();
     }
 
     public byte[] getAppropriateResponse(Request request) {

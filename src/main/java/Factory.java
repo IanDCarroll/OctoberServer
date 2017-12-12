@@ -70,7 +70,7 @@ public class Factory {
     private Controller buildController() {
         ResponseGenerator responseGenerator = new ResponseGenerator();
         LinkedHashMap routes = importConfigFile();
-        return new Controller(responseGenerator, routes);
+        return new Controller(responseGenerator, routes, directory);
     }
 
     private LinkedHashMap importConfigFile() {

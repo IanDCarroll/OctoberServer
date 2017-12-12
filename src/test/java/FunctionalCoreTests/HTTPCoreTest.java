@@ -12,15 +12,17 @@ import java.util.LinkedHashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HTTPCoreTest {
-    HTTPCore subject;
-    LinkedHashMap<String, String> mockRoutes;
+    private HTTPCore subject;
+    private LinkedHashMap<String, String> mockRoutes;
+    private String publicDir;
 
     @BeforeEach
     void setup() {
         Parser parser = new Parser();
         ResponseGenerator responseGenerator = new ResponseGenerator();
         mockRoutes = new LinkedHashMap();
-        Controller controller = new Controller(responseGenerator, mockRoutes);
+        publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
+        Controller controller = new Controller(responseGenerator, mockRoutes, publicDir);
         subject = new HTTPCore(parser, controller);
     }
 
