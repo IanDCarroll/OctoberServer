@@ -11,14 +11,14 @@ public class FileUpdater implements Appender {
         File file = new File(destination);
         try {
             toBuildOutputStream(file, append, payload);
-        } catch (FileNotFoundException e) { System.out.println( e.getMessage()); }
+        } catch (FileNotFoundException e) { System.out.println(e.getMessage()); }
     }
 
-    private void toBuildOutputStream(File file, boolean append, byte[] payload) throws FileNotFoundException {
+    void toBuildOutputStream(File file, boolean append, byte[] payload) throws FileNotFoundException {
         FileOutputStream outToFile = new FileOutputStream(file, append);
         try {
             toWriteThis(payload, outToFile);
-        } catch (IOException e) { System.out.println( e.getMessage()); }
+        } catch (IOException e) { System.out.println(e.getMessage()); }
     }
 
     private void toWriteThis(byte[] payload, FileOutputStream outToFile) throws IOException {

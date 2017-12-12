@@ -39,6 +39,11 @@ class FileClerkTest {
 
     @Test
     void checkoutReturnsTheContentsOfAFile() {
+        //Given nothing
+        //When
+        byte[] actual = subject.checkout(name);
+        //Then
+        assertEquals(new String(content), new String(actual));
     }
 
     @Test
@@ -49,19 +54,36 @@ class FileClerkTest {
         subject.append(name, appendment);
         //Then
         String expected = new String(content) + new String(appendment);
-        assertTrue(FileHelper.read(name).contains(new String(expected)));
+        assertTrue(FileHelper.read(name).contains(expected));
     }
 
     @Test
     void rewriteReplacesTheFileContentsWithCompletelyNewContents() {
+        //Given
+        byte[] replacement = "this will replace the other stuff".getBytes();
+        //When
+        subject.rewrite(name, replacement);
+        //Then
+        assertEquals(new String(replacement), FileHelper.read(name));
     }
 
     @Test
     void deleteDeletesTheContentsAlongWithTheFile() {
+        //Given nothing
+        //When
+        subject.delete(name);
+        //Then
+        assertArrayEquals(new byte[0], FileHelper.read(name).getBytes());
     }
 
     @Test
     void checkoutReturnsAnEmptyByteArrayWhenTheFileDoesNotExist() {
+        //Given
+        subject.delete(name);
+        //When
+        byte[] actual = subject.checkout(name);
+        //Then
+        assertArrayEquals(new byte[0], actual);
     }
 
 }

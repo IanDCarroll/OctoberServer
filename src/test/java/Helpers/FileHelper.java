@@ -9,7 +9,7 @@ public class FileHelper {
         byte[] bytes = new byte[0];
         try {
             bytes = Files.readAllBytes(Paths.get(name));
-        } catch (IOException e) { System.out.println(e.getMessage()); }
+        } catch (IOException e) {}
         return new String(bytes);
     }
 }
