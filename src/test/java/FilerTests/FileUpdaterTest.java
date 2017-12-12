@@ -20,19 +20,12 @@ class FileUpdaterTest {
 
     @BeforeAll
     static void setup() {
-        file = new File(name);
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            try {
-                out.write(content);
-                out.close();
-            } catch (IOException e) { System.out.println("IOException in Filer tests"); }
-        } catch (FileNotFoundException e) { System.out.println("file not found in Filer tests"); }
+        FileHelper.make(name, content);
     }
 
     @AfterAll
     static void tearDown() {
-        file.delete();
+        FileHelper.delete(name);
     }
 
     @Test

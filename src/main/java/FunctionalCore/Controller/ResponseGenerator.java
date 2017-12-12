@@ -1,8 +1,21 @@
 package FunctionalCore.Controller;
 
+import Filers.FileClerk;
+import Filers.FileUpdater;
+
 public class ResponseGenerator {
     private final String[] ok200 = { "200", "OK" };
     Response response;
+
+    public byte[] generate200(String name, String[] params) {
+        response = new Response();
+        setResponseHead(ok200);
+        setParams(params);
+        FileClerk fileClerk = new FileClerk();
+        byte[] body = fileClerk.checkout(name);
+        response.setBody(body);
+        return response.getResponse();
+    }
 
     public byte[] generate200(String[] params) {
         response = new Response();

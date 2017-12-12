@@ -3,6 +3,7 @@ package FunctionalCoreTests.ControllerTests;
 import FunctionalCore.Controller.Controller;
 import FunctionalCore.Request;
 import FunctionalCore.Controller.ResponseGenerator;
+import Helpers.FileHelper;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,6 +81,23 @@ class ControllerTest {
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
         String expected = "Allow: GET,HEAD,OPTIONS";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void getAppropriateResponseReturnTheBodyForAGetRequest() {
+        //Given
+        byte[] content = "Original content".getBytes();
+        String name = publicDir + MockRequestDealer.getRequest().getUri();
+        FileHelper.make(name, content);
+        Request request = MockRequestDealer.getRequest();
+        mockRoutes.put(request.getUri(), "GET");
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        FileHelper.delete(name);
+        String expected = new String(content);
+        //System.out.println(new String(actual));
         assertTrue(new String(actual).contains(expected));
     }
 }

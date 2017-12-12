@@ -1,13 +1,17 @@
 package FunctionalCoreTests.ControllerTests;
 
 import FunctionalCore.Controller.ResponseGenerator;
+import FunctionalCore.Request;
+import Helpers.FileHelper;
+import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResponseGeneratorTest {
-    public ResponseGenerator subject;
+    private ResponseGenerator subject;
+    private String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
 
     @BeforeEach
     void init() {
@@ -72,5 +76,18 @@ class ResponseGeneratorTest {
         assertTrue(new String(actual).contains(expected));
     }
 
-
+    @Test
+    void getAppropriateResponseReturnTheBodyForAGetRequest() {
+        //Given
+        byte[] content = "Original content".getBytes();
+        String name = publicDir + MockRequestDealer.getRequest();
+        FileHelper.make(name, content);
+        String[] params = new String[0];
+        //When
+        byte[] actual = subject.generate200(name, params);
+        //Then
+        FileHelper.delete(name);
+        String expected = new String(content);
+        assertTrue(new String(actual).contains(expected));
+    }
 }

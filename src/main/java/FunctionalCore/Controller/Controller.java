@@ -56,13 +56,14 @@ public class Controller {
         return responseGenerator.generate200(permittedMethods);
     }
 
-    private byte[] post(Request request) { return get(request); }
+    private byte[] post(Request request) { return responseGenerator.generate200(request.getUriParams()); }
 
     private byte[] put(Request request) { return get(request); }
 
     private byte[] delete(Request request) { return get(request); }
 
     private byte[] get(Request request) {
-        return responseGenerator.generate200(request.getUriParams());
+        String filename = publicDir + request.getUri();
+        return responseGenerator.generate200(filename, request.getUriParams());
     }
 }

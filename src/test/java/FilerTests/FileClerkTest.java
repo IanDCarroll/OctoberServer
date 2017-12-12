@@ -22,20 +22,11 @@ class FileClerkTest {
     @BeforeEach
     void setup() {
         subject = new FileClerk();
-        file = new File(name);
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            try {
-                out.write(content);
-                out.close();
-            } catch (IOException e) { System.out.println("IOException in Filer tests"); }
-        } catch (FileNotFoundException e) { System.out.println("file not found in Filer tests"); }
+        FileHelper.make(name, content);
     }
 
     @AfterEach
-    void tearDown() {
-        file.delete();
-    }
+    void tearDown() { FileHelper.delete(name); }
 
     @Test
     void checkoutReturnsTheContentsOfAFile() {
