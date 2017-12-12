@@ -29,7 +29,7 @@ public class Controller {
     private byte[] validMethod(Request request) {
         String permittedMethods = routes.get(request.getUri());
         return (permittedMethods.contains(request.getMethod()))
-                ? responseGenerator.generate200(request.getUriParams())
+                ? responseGenerator.generate200(request.getMethod(), request.getUriParams())
                 : responseGenerator.generate405(permittedMethods);
     }
 }

@@ -3,10 +3,10 @@ package FunctionalCore.Controller;
 public class ResponseGenerator {
     Response response;
 
-    public byte[] generate200(String[] params) {
+    public byte[] generate200(String method, String[] params) {
         response = new Response();
         setResponseHead(new String[]{"200", "OK"});
-        setParams(params);
+        if (!method.equals("HEAD")) setParams(params);
         return response.getResponse();
     }
 

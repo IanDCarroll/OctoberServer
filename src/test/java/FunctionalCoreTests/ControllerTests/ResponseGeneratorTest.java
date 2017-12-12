@@ -19,7 +19,7 @@ class ResponseGeneratorTest {
         //Given
         String[] emptyParams = {};
         //When
-        byte[] actual = subject.generate200(emptyParams);
+        byte[] actual = subject.generate200("GET", emptyParams);
         //Then
         String expected = "HTTP/1.1 200 OK";
         assertTrue(new String(actual).contains(expected));
@@ -32,7 +32,7 @@ class ResponseGeneratorTest {
                 "Awesome-Param=could be more awesome",
                 "Radical-Param=totally rad" };
         //When
-        byte[] actual = subject.generate200(params);
+        byte[] actual = subject.generate200("GET", params);
         //Then
         String expected = "Cool-Param = pretty cool\n" +
                 "Awesome-Param = could be more awesome\n" +

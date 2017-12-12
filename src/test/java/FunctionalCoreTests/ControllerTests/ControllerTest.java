@@ -68,4 +68,17 @@ class ControllerTest {
         String expected = "Allow: POST, PUT, EXTERMINATE";
         assertTrue(new String(actual).contains(expected));
     }
+
+    @Test
+    void getAppropriateResponseReturnsOnlyTheHeadOfARequest() {
+        //Given
+        mockRoutes.put("/", "HEAD");
+        Request request = MockRequestDealer.headHeaderRequest();
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String unExpected = "param1";
+        System.out.println(new String(actual));
+        assertFalse(new String(actual).contains(unExpected));
+    }
 }
