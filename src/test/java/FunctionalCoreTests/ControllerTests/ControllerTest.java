@@ -58,18 +58,6 @@ class ControllerTest {
     }
 
     @Test
-    void getAppropriateResponseReturnsAnAllowHeaderIfTheMethodIsNotAllowed() {
-        //Given
-        mockRoutes.put("/", "POST PUT EXTERMINATE");
-        Request request = MockRequestDealer.getRootRequest();
-        //When
-        byte[] actual = subject.getAppropriateResponse(request);
-        //Then
-        String expected = "Allow: POST, PUT, EXTERMINATE";
-        assertTrue(new String(actual).contains(expected));
-    }
-
-    @Test
     void getAppropriateResponseReturnsOnlyTheHeadOfARequest() {
         //Given
         mockRoutes.put("/", "HEAD");
@@ -78,7 +66,6 @@ class ControllerTest {
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
         String unExpected = "param1";
-        System.out.println(new String(actual));
         assertFalse(new String(actual).contains(unExpected));
     }
 }

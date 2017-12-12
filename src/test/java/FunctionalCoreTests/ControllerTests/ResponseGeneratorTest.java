@@ -49,4 +49,28 @@ class ResponseGeneratorTest {
         String expected = "404 Not Found";
         assertTrue(new String(actual).contains(expected));
     }
+
+    @Test
+    void generate405GeneratesA405Response() {
+        //Given
+        String permittedMethods = "GET OPTIONS";
+        //When
+        byte[] actual = subject.generate405(permittedMethods);
+        //Then
+        String expected = "405 Method Not Allowed";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void generate405IncludesAnAllowHeader() {
+        //Given
+        String permittedMethods = "GET OPTIONS EXFOLIATE";
+        //When
+        byte[] actual = subject.generate405(permittedMethods);
+        //Then
+        String expected = "Allow: GET, OPTIONS, EXFOLIATE\n";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+
 }
