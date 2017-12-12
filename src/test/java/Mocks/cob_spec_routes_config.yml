@@ -2,7 +2,7 @@
 
 /: GET HEAD
 
-/form: POST PUT
+/form: GET POST PUT DELETE
 
 /parameters: GET
 

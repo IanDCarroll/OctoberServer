@@ -36,6 +36,9 @@ public class Controller {
     private byte[] handleMethod(Request request) {
         if (request.getMethod().equals("HEAD")) return head();
         if (request.getMethod().equals("OPTIONS")) return options(request);
+        if (request.getMethod().equals("POST")) return post(request);
+        if (request.getMethod().equals("PUT")) return put(request);
+        if (request.getMethod().equals("DELETE")) return delete(request);
         return get(request);
     }
 
@@ -47,6 +50,12 @@ public class Controller {
         String permittedMethods = routes.get(request.getUri());
         return responseGenerator.generate200(permittedMethods);
     }
+
+    private byte[] post(Request request) { return get(request); }
+
+    private byte[] put(Request request) { return get(request); }
+
+    private byte[] delete(Request request) { return get(request); }
 
     private byte[] get(Request request) {
         return responseGenerator.generate200(request.getUriParams());
