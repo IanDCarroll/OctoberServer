@@ -10,11 +10,19 @@ public class FileUpdater implements Appender {
         boolean append = true;
         File file = new File(destination);
         try {
-            FileOutputStream outToFile = new FileOutputStream(file, append);
-            try {
-                outToFile.write(payload);
-                outToFile.close();
-            } catch (IOException e) { System.out.println( e.getMessage()); }
+            toBuildOutputStream(file, append, payload);
         } catch (FileNotFoundException e) { System.out.println( e.getMessage()); }
+    }
+
+    private void toBuildOutputStream(File file, boolean append, byte[] payload) throws FileNotFoundException {
+        FileOutputStream outToFile = new FileOutputStream(file, append);
+        try {
+            toWriteThis(payload, outToFile);
+        } catch (IOException e) { System.out.println( e.getMessage()); }
+    }
+
+    private void toWriteThis(byte[] payload, FileOutputStream outToFile) throws IOException {
+        outToFile.write(payload);
+        outToFile.close();
     }
 }
