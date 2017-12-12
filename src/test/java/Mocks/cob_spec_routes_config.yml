@@ -5,3 +5,7 @@
 /form: POST PUT
 
 /parameters: GET
+
+/file1: GET
+
+/text-file.txt: GET

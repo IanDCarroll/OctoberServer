@@ -27,7 +27,7 @@ class HTTPCoreTest {
     @Test
     void coreReturnsA200ResponseWhenTheRootIsRequested() {
         //Given
-        mockRoutes.put("/", "all");
+        mockRoutes.put("/", "GET");
         byte[] request = "GET / HTTP/1.1\r\n\r\n".getBytes();
         //When
         String actual = new String(subject.craftResponseTo(request));

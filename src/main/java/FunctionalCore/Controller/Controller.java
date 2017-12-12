@@ -14,15 +14,22 @@ public class Controller {
     }
 
     public byte[] getAppropriateResponse(Request request) {
-        return valid(request) ? responseGenerator.generate200(request.getUriParams()) : responseGenerator.generate404();
+        return valid(request);
     }
 
-    private boolean valid(Request request) {
+    private byte[] valid(Request request) {
         for (String route : routes.keySet()) {
             if (route.equals(request.getUri())) {
-                return true;
+                return validMethod(request);
             }
         }
-        return false;
+        return responseGenerator.generate404();
+    }
+
+    private byte[] validMethod(Request request) {
+        String permittedMethods = routes.get(request.getUri());
+        return (permittedMethods.contains(request.getMethod()))
+                ? responseGenerator.generate200(request.getUriParams())
+                : responseGenerator.generate405(permittedMethods);
     }
 }

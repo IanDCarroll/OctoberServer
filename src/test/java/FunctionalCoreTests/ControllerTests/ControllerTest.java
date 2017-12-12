@@ -24,7 +24,7 @@ class ControllerTest {
     @Test
     void getAppropriateResponseTakesARequestObjectAndReturnsAnAppropriateByteArray() {
         //Given
-        mockRoutes.put("/", "unused info for this operation");
+        mockRoutes.put("/", "GET");
         Request request = MockRequestDealer.getRootRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -42,6 +42,30 @@ class ControllerTest {
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
         String expected = "HTTP/1.1 404 Not Found";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void getAppropriateResponseReturns405IfTheMethodIsNotAllowed() {
+        //Given
+        mockRoutes.put("/", "POST");
+        Request request = MockRequestDealer.getRootRequest();
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String expected = "HTTP/1.1 405 Method Not Allowed";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void getAppropriateResponseReturnsAnAllowHeaderIfTheMethodIsNotAllowed() {
+        //Given
+        mockRoutes.put("/", "POST PUT EXTERMINATE");
+        Request request = MockRequestDealer.getRootRequest();
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String expected = "Allow: POST, PUT, EXTERMINATE";
         assertTrue(new String(actual).contains(expected));
     }
 }
