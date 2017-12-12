@@ -1,18 +1,19 @@
 package FunctionalCore.Controller;
 
 public class ResponseGenerator {
+    private final String[] ok200 = { "200", "OK" };
     Response response;
 
     public byte[] generate200(String[] params) {
         response = new Response();
-        setResponseHead(new String[]{"200", "OK"});
+        setResponseHead(ok200);
         setParams(params);
         return response.getResponse();
     }
 
     public byte[] generate200(String permittedMethods) {
         response = new Response();
-        setResponseHead(new String[]{"200", "OK"});
+        setResponseHead(ok200);
         setAllowHeader(permittedMethods);
         return response.getResponse();
     }
