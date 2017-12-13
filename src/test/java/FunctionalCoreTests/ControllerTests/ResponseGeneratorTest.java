@@ -21,9 +21,10 @@ class ResponseGeneratorTest {
     @Test
     void generate200GeneratesA200Response() {
         //Given
+        String root = publicDir + "/";
         String[] emptyParams = {};
         //When
-        byte[] actual = subject.generate200(emptyParams);
+        byte[] actual = subject.generate200(root, emptyParams);
         //Then
         String expected = "HTTP/1.1 200 OK";
         assertTrue(new String(actual).contains(expected));
@@ -32,11 +33,12 @@ class ResponseGeneratorTest {
     @Test
     void generate200GeneratesAResponseWithParams() {
         //Given
+        String root = publicDir + "/";
         String[] params = { "Cool-Param=pretty cool",
                 "Awesome-Param=could be more awesome",
                 "Radical-Param=totally rad" };
         //When
-        byte[] actual = subject.generate200(params);
+        byte[] actual = subject.generate200(root, params);
         //Then
         String expected = "Cool-Param = pretty cool\n" +
                 "Awesome-Param = could be more awesome\n" +
@@ -77,10 +79,10 @@ class ResponseGeneratorTest {
     }
 
     @Test
-    void getAppropriateResponseReturnTheBodyForAGetRequest() {
+    void generate200ReturnsTheBodyWithTheResponse() {
         //Given
         byte[] content = "Original content".getBytes();
-        String name = publicDir + MockRequestDealer.getRequest();
+        String name = publicDir + MockRequestDealer.getRequest("/a-file-with-a-body");
         FileHelper.make(name, content);
         String[] params = new String[0];
         //When

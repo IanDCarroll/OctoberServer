@@ -17,10 +17,9 @@ public class ResponseGenerator {
         return response.getResponse();
     }
 
-    public byte[] generate200(String[] params) {
+    public byte[] generate200() {
         response = new Response();
         setResponseHead(ok200);
-        setParams(params);
         return response.getResponse();
     }
 

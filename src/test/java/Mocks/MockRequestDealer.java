@@ -12,10 +12,10 @@ public class MockRequestDealer {
         return request;
     }
 
-    public static Request getRequest() {
+    public static Request getRequest(String uri) {
         Request request = new Request();
         request.setMethod("GET");
-        request.setUri("/get-address");
+        request.setUri(uri);
         request.setHttpV("HTTP/1.1");
         request.setBody("".getBytes());
         return request;
@@ -59,10 +59,10 @@ public class MockRequestDealer {
         return request;
     }
 
-    public static Request deleteRequest() {
+    public static Request deleteRequest(String uri) {
         Request request = new Request();
         request.setMethod("DELETE");
-        request.setUri("/address-to-be-deleted");
+        request.setUri(uri);
         return request;
     }
 

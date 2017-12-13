@@ -85,12 +85,13 @@ class ControllerTest {
     }
 
     @Test
-    void getAppropriateResponseReturnTheBodyForAGetRequest() {
+    void getAppropriateResponseReturnsTheBodyForAGETRequest() {
         //Given
+        String uri = "/a-file-to-get";
+        String name = publicDir + uri;
         byte[] content = "Original content".getBytes();
-        String name = publicDir + MockRequestDealer.getRequest().getUri();
         FileHelper.make(name, content);
-        Request request = MockRequestDealer.getRequest();
+        Request request = MockRequestDealer.getRequest(uri);
         mockRoutes.put(request.getUri(), "GET");
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -99,5 +100,27 @@ class ControllerTest {
         String expected = new String(content);
         //System.out.println(new String(actual));
         assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void getAppropriateResponseDeletesTheBodyForADELETERequest() {
+        //Given
+        String uri = "/this-will-be-deleted";
+        String name = publicDir + uri;
+        byte[] content = "Original content".getBytes();
+        FileHelper.make(name, content);
+        Request get = MockRequestDealer.getRequest(uri);
+        Request delete = MockRequestDealer.deleteRequest(uri);
+        mockRoutes.put(get.getUri(), "GET DELETE");
+        //When
+        byte[] beforeDelete = subject.getAppropriateResponse(get);
+        byte[] duringDelete = subject.getAppropriateResponse(delete);
+        byte[] afterDelete = subject.getAppropriateResponse(get);
+        //Then
+        FileHelper.delete(name);
+        String expected = new String(content);
+        assertTrue(new String(beforeDelete).contains(expected));
+        assertFalse(new String(duringDelete).contains(expected));
+        assertFalse(new String(afterDelete).contains(expected));
     }
 }

@@ -47,23 +47,27 @@ public class Controller {
         return get(request);
     }
 
-    private byte[] head() {
-        return responseGenerator.generate200(new String[0]);
-    }
+    private byte[] head() { return responseGenerator.generate200(); }
 
     private byte[] options(Request request) {
         String permittedMethods = routes.get(request.getUri());
         return responseGenerator.generate200(permittedMethods);
     }
 
-    private byte[] post(Request request) { return responseGenerator.generate200(request.getUriParams()); }
+    private byte[] post(Request request) { return get(request); }
 
     private byte[] put(Request request) { return get(request); }
 
-    private byte[] delete(Request request) { return get(request); }
+    private byte[] delete(Request request) {
+        fileClerk.delete(fsName(request));
+        return get(request);
+    }
 
     private byte[] get(Request request) {
-        String filename = publicDir + request.getUri();
-        return responseGenerator.generate200(filename, request.getUriParams());
+        return responseGenerator.generate200(fsName(request), request.getUriParams());
+    }
+
+    private String fsName(Request request) {
+        return publicDir + request.getUri();
     }
 }
