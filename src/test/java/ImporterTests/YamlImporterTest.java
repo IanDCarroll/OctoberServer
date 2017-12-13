@@ -12,9 +12,9 @@ class YamlImporterTest {
     private FileImporter subject = new YamlImporter();
     private LinkedHashMap expected = new LinkedHashMap();
     {
-        expected.put("/", "GET");
-        expected.put("/file1", "GET HEAD OPTIONS");
-        expected.put("/coffee", "GET HEAD OPTIONS");
+        expected.put("/", "GET OPTIONS");
+        expected.put("/file1", "GET PUT POST HEAD OPTIONS");
+        expected.put("/coffee", "GET HEAD");
     }
 
     @Test

@@ -1,7 +1,7 @@
 ---
 
-/: GET
+/: GET OPTIONS
 
-/file1: GET HEAD OPTIONS
+/file1: GET PUT POST HEAD OPTIONS
 
-/coffee: GET HEAD OPTIONS
+/coffee: GET HEAD
