@@ -123,4 +123,29 @@ class ControllerTest {
         assertFalse(new String(duringDelete).contains(expected));
         assertFalse(new String(afterDelete).contains(expected));
     }
+
+    @Test
+    void getAppropriateResponseReplacesTheBodyForAPUTRequest() {
+        //Given
+        String uri = "/this-will-be-deleted";
+        String name = publicDir + uri;
+        byte[] content = "Original content".getBytes();
+        FileHelper.make(name, content);
+        Request get = MockRequestDealer.getRequest(uri);
+        Request put = MockRequestDealer.putRequest(uri);
+        mockRoutes.put(get.getUri(), "GET PUT");
+        //When
+        byte[] beforePut = subject.getAppropriateResponse(get);
+        byte[] duringPut = subject.getAppropriateResponse(put);
+        byte[] afterPut = subject.getAppropriateResponse(get);
+        //Then
+        FileHelper.delete(name);
+        String expectedBefore = new String(content);
+        String expectedAfter = new String(put.getBody());
+        assertTrue(new String(beforePut).contains(expectedBefore));
+        assertTrue(new String(duringPut).contains(expectedAfter));
+        assertFalse(new String(duringPut).contains(expectedBefore));
+        assertTrue(new String(afterPut).contains(expectedAfter));
+        assertFalse(new String(afterPut).contains(expectedBefore));
+    }
 }

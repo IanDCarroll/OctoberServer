@@ -39,10 +39,10 @@ public class MockRequestDealer {
         return request;
     }
 
-    public static Request putRequest() {
+    public static Request putRequest(String uri) {
         Request request = new Request();
         request.setMethod("PUT");
-        request.setUri("/put-address");
+        request.setUri(uri);
         request.setHttpV("HTTP/1.1");
         request.setHeaders(new String[]{ "Content-Type: text/plain", "Content-Length: 34" });
         request.setBody("This represents a well--formed PUT".getBytes());

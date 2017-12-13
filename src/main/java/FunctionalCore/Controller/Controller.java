@@ -56,7 +56,10 @@ public class Controller {
 
     private byte[] post(Request request) { return get(request); }
 
-    private byte[] put(Request request) { return get(request); }
+    private byte[] put(Request request) {
+        fileClerk.rewrite(fsName(request), request.getBody());
+        return get(request);
+    }
 
     private byte[] delete(Request request) {
         fileClerk.delete(fsName(request));
