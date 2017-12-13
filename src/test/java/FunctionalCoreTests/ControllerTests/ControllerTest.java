@@ -127,7 +127,7 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReplacesTheBodyForAPUTRequest() {
         //Given
-        String uri = "/this-will-be-deleted";
+        String uri = "/this-will-be-replaced";
         String name = publicDir + uri;
         byte[] content = "Original content".getBytes();
         FileHelper.make(name, content);
@@ -147,5 +147,34 @@ class ControllerTest {
         assertFalse(new String(duringPut).contains(expectedBefore));
         assertTrue(new String(afterPut).contains(expectedAfter));
         assertFalse(new String(afterPut).contains(expectedBefore));
+    }
+
+    @Test
+    void getAppropriateResponseAppendsTheBodyForAPOSTRequest() {
+        //Given
+        String uri = "/this-will-be-added-to";
+        String name = publicDir + uri;
+        byte[] content = "Original content".getBytes();
+        FileHelper.make(name, content);
+        Request get = MockRequestDealer.getRequest(uri);
+        Request post = MockRequestDealer.postRequest(uri);
+        mockRoutes.put(get.getUri(), "GET POST");
+        //When
+        byte[] beforePost = subject.getAppropriateResponse(get);
+        byte[] duringPost1 = subject.getAppropriateResponse(post);
+        byte[] afterPost1 = subject.getAppropriateResponse(get);
+        byte[] duringPost2 = subject.getAppropriateResponse(post);
+        byte[] afterPosts = subject.getAppropriateResponse(get);
+        //Then
+        FileHelper.delete(name);
+        String postBody = new String(post.getBody());
+        String expectedBefore = new String(content);
+        String expectedAfter1 = expectedBefore + postBody;
+        String expectedAfter2 = expectedAfter1 + postBody;
+        assertTrue(new String(beforePost).contains(expectedBefore));
+        assertTrue(new String(duringPost1).contains(expectedAfter1));
+        assertTrue(new String(afterPost1).contains(expectedAfter1));
+        assertTrue(new String(duringPost2).contains(expectedAfter2));
+        assertTrue(new String(afterPosts).contains(expectedAfter2));
     }
 }

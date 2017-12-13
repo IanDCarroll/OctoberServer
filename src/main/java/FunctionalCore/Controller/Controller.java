@@ -54,7 +54,10 @@ public class Controller {
         return responseGenerator.generate200(permittedMethods);
     }
 
-    private byte[] post(Request request) { return get(request); }
+    private byte[] post(Request request) {
+        fileClerk.append(fsName(request), request.getBody());
+        return get(request);
+    }
 
     private byte[] put(Request request) {
         fileClerk.rewrite(fsName(request), request.getBody());
