@@ -1,5 +1,6 @@
 package FunctionalCoreTests;
 
+import Filers.FileClerk;
 import FunctionalCore.Controller.Controller;
 import FunctionalCore.HTTPCore;
 import FunctionalCore.Parser.Parser;
@@ -15,14 +16,17 @@ class HTTPCoreTest {
     private HTTPCore subject;
     private LinkedHashMap<String, String> mockRoutes;
     private String publicDir;
+    private FileClerk fileClerk;
+    private ResponseGenerator responseGenerator;
 
     @BeforeEach
     void setup() {
         Parser parser = new Parser();
-        ResponseGenerator responseGenerator = new ResponseGenerator();
         mockRoutes = new LinkedHashMap();
         publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
-        Controller controller = new Controller(responseGenerator, mockRoutes, publicDir);
+        fileClerk = new FileClerk(publicDir);
+        responseGenerator = new ResponseGenerator(fileClerk);
+        Controller controller = new Controller(responseGenerator, mockRoutes, fileClerk);
         subject = new HTTPCore(parser, controller);
     }
 

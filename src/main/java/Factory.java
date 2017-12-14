@@ -1,3 +1,4 @@
+import Filers.FileClerk;
 import FunctionalCore.*;
 import FunctionalCore.Controller.Controller;
 import FunctionalCore.Controller.ResponseGenerator;
@@ -68,9 +69,10 @@ public class Factory {
     }
 
     private Controller buildController() {
-        ResponseGenerator responseGenerator = new ResponseGenerator();
+        FileClerk fileClerk = new FileClerk(directory);
+        ResponseGenerator responseGenerator = new ResponseGenerator(fileClerk);
         LinkedHashMap routes = importConfigFile();
-        return new Controller(responseGenerator, routes, directory);
+        return new Controller(responseGenerator, routes, fileClerk);
     }
 
     private LinkedHashMap importConfigFile() {

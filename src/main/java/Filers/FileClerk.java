@@ -8,27 +8,27 @@ import java.nio.file.Paths;
 
 public class FileClerk extends FileUpdater implements Filer {
 
-    public byte[] checkout(String name) {
+    public FileClerk(String publicDir) {
+        super(publicDir);
+    }
+
+    public byte[] checkout(String uri) {
         byte[] bytes = new byte[0];
         try {
-            bytes = Files.readAllBytes(Paths.get(name));
+            bytes = Files.readAllBytes(Paths.get(fsName(uri)));
         } catch (IOException e) {}
         return bytes;
     }
 
-    public void rewrite(String name, byte[] newContents) {
-        File file = new File(name);
+    public void rewrite(String uri, byte[] newContents) {
+        File file = new File(fsName(uri));
         boolean replaceWith = false;
         try {
             toBuildOutputStream(file, replaceWith, newContents);
         } catch (FileNotFoundException e) { System.out.println(e.getMessage());}
     }
 
-    public void delete(String name) {
-        new File(name).delete();
-    }
-
-    public String lengthOf(String name) {
-        return String.valueOf(checkout(name).length);
+    public void delete(String uri) {
+        new File(fsName(uri)).delete();
     }
 }

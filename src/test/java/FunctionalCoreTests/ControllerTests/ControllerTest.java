@@ -1,5 +1,6 @@
 package FunctionalCoreTests.ControllerTests;
 
+import Filers.FileClerk;
 import FunctionalCore.Controller.Controller;
 import FunctionalCore.Request;
 import FunctionalCore.Controller.ResponseGenerator;
@@ -15,13 +16,17 @@ class ControllerTest {
     private Controller subject;
     private LinkedHashMap mockRoutes;
     private String publicDir;
+    private FileClerk fileClerk;
+    private ResponseGenerator responseGenerator;
 
     @BeforeEach
     void init() {
-        ResponseGenerator responseGenerator = new ResponseGenerator();
+
         mockRoutes = new LinkedHashMap();
         publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
-        subject = new Controller(responseGenerator, mockRoutes, publicDir);
+        fileClerk = new FileClerk(publicDir);
+        responseGenerator = new ResponseGenerator(fileClerk);
+        subject = new Controller(responseGenerator, mockRoutes, fileClerk);
     }
 
     @Test

@@ -119,4 +119,24 @@ class ResponseTest {
                  new String(body);
         assertTrue(new String(subject.getResponse()).contains(expected));
     }
+
+    @Test
+    void bodyLengthReturnsAStringRepresentingTheNumberOfBytesInTheBody() {
+        //Given
+        subject.setBody("RAGNAROK".getBytes());
+        //When
+        String actual = subject.bodyLength();
+        //Then
+        assertEquals("8", actual);
+    }
+
+    @Test
+    void bodyLengthReturnsAZeroStringIfThereIsNoBodyWasSet() {
+        //Given no body set
+        //When
+        String actual = subject.bodyLength();
+        //Then
+        String expected = "0";
+        assertEquals(expected, actual);
+    }
 }

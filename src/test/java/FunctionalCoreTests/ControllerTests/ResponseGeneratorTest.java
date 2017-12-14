@@ -1,5 +1,6 @@
 package FunctionalCoreTests.ControllerTests;
 
+import Filers.FileClerk;
 import FunctionalCore.Controller.ResponseGenerator;
 import FunctionalCore.Request;
 import Helpers.FileHelper;
@@ -15,13 +16,14 @@ class ResponseGeneratorTest {
 
     @BeforeEach
     void init() {
-        subject = new ResponseGenerator();
+        FileClerk fileClerk = new FileClerk(publicDir);
+        subject = new ResponseGenerator(fileClerk);
     }
 
     @Test
     void generate200GeneratesA200Response() {
         //Given
-        String root = publicDir + "/";
+        String root = "/";
         String[] emptyParams = {};
         //When
         byte[] actual = subject.generate200(root, emptyParams);
@@ -33,7 +35,7 @@ class ResponseGeneratorTest {
     @Test
     void generate200GeneratesAResponseWithParams() {
         //Given
-        String root = publicDir + "/";
+        String root = "/";
         String[] params = { "Cool-Param=pretty cool",
                 "Awesome-Param=could be more awesome",
                 "Radical-Param=totally rad" };
@@ -82,13 +84,14 @@ class ResponseGeneratorTest {
     void generate200ReturnsTheBodyWithTheResponse() {
         //Given
         byte[] content = "Original content".getBytes();
-        String name = publicDir + MockRequestDealer.getRequest("/a-file-with-a-body");
-        FileHelper.make(name, content);
+        String uri = "/a-file-with-a-body";
+        String fullPath = publicDir + uri;
+        FileHelper.make(fullPath, content);
         String[] params = new String[0];
         //When
-        byte[] actual = subject.generate200(name, params);
+        byte[] actual = subject.generate200(uri, params);
         //Then
-        FileHelper.delete(name);
+        FileHelper.delete(fullPath);
         String expected = new String(content);
         assertTrue(new String(actual).contains(expected));
     }
@@ -97,12 +100,13 @@ class ResponseGeneratorTest {
     void generate200ReturnsTheBodyWithBasicHeaders() {
         //Given
         byte[] content = "Original content".getBytes();
-        String name = publicDir + MockRequestDealer.getRequest("/a-file-with-a-body");
-        FileHelper.make(name, content);
+        String uri = "/a-file-with-a-body";
+        String fullPath = publicDir + uri;
+        FileHelper.make(fullPath, content);
         //When
-        byte[] actual = subject.generate200(name);
+        byte[] actual = subject.generate200Head(uri);
         //Then
-        FileHelper.delete(name);
+        FileHelper.delete(fullPath);
         String length = "Content-Length: " + String.valueOf(content.length);
         String type = "Content-Type: text/plain";
         assertTrue(new String(actual).contains(length));

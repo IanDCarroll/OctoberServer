@@ -17,3 +17,5 @@
 /cookie: GET
 
 /eat_cookie: GET
+
+/partial_content.txt: GET

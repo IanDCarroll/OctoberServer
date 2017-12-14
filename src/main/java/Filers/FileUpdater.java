@@ -6,9 +6,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class FileUpdater implements Appender {
-    public void append(String destination, byte[] payload) {
+    String publicDir;
+
+    public FileUpdater(String publicDir) {
+        this.publicDir = publicDir;
+    }
+
+    public void append(String uri, byte[] payload) {
+
         boolean append = true;
-        File file = new File(destination);
+        File file = new File(fsName(uri));
         try {
             toBuildOutputStream(file, append, payload);
         } catch (FileNotFoundException e) { System.out.println(e.getMessage()); }
@@ -24,5 +31,9 @@ public class FileUpdater implements Appender {
     private void toWriteThis(byte[] payload, FileOutputStream outToFile) throws IOException {
         outToFile.write(payload);
         outToFile.close();
+    }
+
+    String fsName(String uri) {
+        return publicDir + uri;
     }
 }

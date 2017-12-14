@@ -8,14 +8,13 @@ import java.util.LinkedHashMap;
 public class Controller {
     private ResponseGenerator responseGenerator;
     private LinkedHashMap<String, String> routes;
-    private String publicDir;
+    private String publicDir = "";
     private FileClerk fileClerk;
 
-    public Controller(ResponseGenerator responseGenerator, LinkedHashMap routes, String publicDir) {
+    public Controller(ResponseGenerator responseGenerator, LinkedHashMap routes, FileClerk fileClerk) {
         this.responseGenerator = responseGenerator;
         this.routes = routes;
-        this.publicDir = publicDir;
-        this.fileClerk = new FileClerk();
+        this.fileClerk = fileClerk;
     }
 
     public byte[] getAppropriateResponse(Request request) {
@@ -47,33 +46,29 @@ public class Controller {
         return get(request);
     }
 
-    private byte[] head(Request request) { return responseGenerator.generate200(fsName(request)); }
+    private byte[] head(Request request) { return responseGenerator.generate200Head(request.getUri()); }
 
     private byte[] options(Request request) {
         String permittedMethods = routes.get(request.getUri());
-        return responseGenerator.generate200(fsName(request), permittedMethods);
+        return responseGenerator.generate200Options(permittedMethods);
     }
 
     private byte[] post(Request request) {
-        fileClerk.append(fsName(request), request.getBody());
+        fileClerk.append(request.getUri(), request.getBody());
         return get(request);
     }
 
     private byte[] put(Request request) {
-        fileClerk.rewrite(fsName(request), request.getBody());
+        fileClerk.rewrite(request.getUri(), request.getBody());
         return get(request);
     }
 
     private byte[] delete(Request request) {
-        fileClerk.delete(fsName(request));
+        fileClerk.delete(request.getUri());
         return get(request);
     }
 
     private byte[] get(Request request) {
-        return responseGenerator.generate200(fsName(request), request.getUriParams());
-    }
-
-    private String fsName(Request request) {
-        return publicDir + request.getUri();
+        return responseGenerator.generate200(request.getUri(), request.getUriParams());
     }
 }

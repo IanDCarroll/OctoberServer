@@ -5,69 +5,60 @@ import Filers.FileClerk;
 public class ResponseGenerator {
     FileClerk fileClerk;
 
-    public ResponseGenerator() {
-        this.fileClerk = new FileClerk();
+    public ResponseGenerator(FileClerk fileClerk) {
+        this.fileClerk = fileClerk;
     }
 
     private final String[] ok200 = { "200", "OK" };
     Response response;
 
-    public byte[] generate200(String name, String[] params) {
+    public byte[] generate200(String uri, String[] params) {
         response = new Response();
-        setResponseHead(name, ok200);
-        setParams(params);
-        byte[] body = fileClerk.checkout(name);
-        response.setBody(body);
+        setResponseStartLine(ok200);
+        setParamsWithBody(uri, params);
         return response.getResponse();
     }
 
-    public byte[] generate200(String name) {
+    public byte[] generate200Head(String uri) {
         response = new Response();
-        setResponseHead(name, ok200);
-        return response.getResponse();
+        setResponseStartLine(ok200);
+        setBody(uri);
+        return response.getHead();
     }
 
-    public byte[] generate200(String name, String permittedMethods) {
+    public byte[] generate200Options(String permittedMethods) {
         response = new Response();
-        setResponseHead(name, ok200);
-        setAllowHeader(permittedMethods);
-        return response.getResponse();
+        setResponseStartLine(ok200);
+        HeaderGenerator.setBasics(response);
+        HeaderGenerator.setAllow(response, permittedMethods);
+        return response.getHead();
     }
 
     public byte[] generate404() {
         response = new Response();
         setResponseStartLine(new String[]{ "404", "Not Found" });
-        return response.getResponse();
+        return response.getHead();
     }
 
     public byte[] generate405(String permittedMethods) {
         response = new Response();
         setResponseStartLine(new String[]{ "405", "Method Not Allowed" });
-        setAllowHeader(permittedMethods);
-        return response.getResponse();
-    }
-
-    private void setResponseHead(String name, String[] codeTuple) {
-        setResponseStartLine(codeTuple);
-        setBasicHeaders(name);
+        HeaderGenerator.setAllow(response, permittedMethods);
+        return response.getHead();
     }
 
     private void setResponseStartLine(String[] codeTuple) {
         response.setStartLine(codeTuple[0], codeTuple[1]);
     }
 
-    private void setBasicHeaders(String name) {
-        String length = fileClerk.lengthOf(name);
-        response.setHeaders(new String[]{ "Content-Length", length, "Content-Type", "text/plain" });
-    }
-
-    public void setParams(String[] params) {
+    public void setParamsWithBody(String uri, String[] params) {
         response.setBody(params);
+        setBody(uri);
     }
 
-    private void setAllowHeader(String permittedMethods) {
-        String commaSeparatedPermissions = permittedMethods.replace(" ", ",");
-        String[] allowHeader = { "Allow", commaSeparatedPermissions };
-        response.setHeaders(allowHeader);
+    private void setBody(String uri) {
+        byte[] body = fileClerk.checkout(uri);
+        response.setBody(body);
+        HeaderGenerator.setBasics(response);
     }
 }

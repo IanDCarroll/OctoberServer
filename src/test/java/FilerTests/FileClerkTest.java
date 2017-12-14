@@ -11,25 +11,26 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileClerkTest {
-    private static final String name = System.getProperty("user.dir") + "/src/test/java/Mocks/mock_file";
+    private static final String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private static final String uri = "/mock_file";
+    private static final String fullPath = publicDir + uri;
     private static final byte[] content = "Original content".getBytes();
-    private File file;
     private FileClerk subject;
 
     @BeforeEach
     void setup() {
-        subject = new FileClerk();
-        FileHelper.make(name, content);
+        subject = new FileClerk(publicDir);
+        FileHelper.make(fullPath, content);
     }
 
     @AfterEach
-    void tearDown() { FileHelper.delete(name); }
+    void tearDown() { FileHelper.delete(fullPath); }
 
     @Test
     void checkoutReturnsTheContentsOfAFile() {
         //Given nothing
         //When
-        byte[] actual = subject.checkout(name);
+        byte[] actual = subject.checkout(uri);
         //Then
         assertEquals(new String(content), new String(actual));
     }
@@ -39,10 +40,10 @@ class FileClerkTest {
         //Given
         byte[] appendment = "this is a killer appendment, bro".getBytes();
         //When
-        subject.append(name, appendment);
+        subject.append(uri, appendment);
         //Then
         String expected = new String(content) + new String(appendment);
-        assertTrue(FileHelper.read(name).contains(expected));
+        assertTrue(FileHelper.read(fullPath).contains(expected));
     }
 
     @Test
@@ -50,49 +51,27 @@ class FileClerkTest {
         //Given
         byte[] replacement = "this will replace the other stuff".getBytes();
         //When
-        subject.rewrite(name, replacement);
+        subject.rewrite(uri, replacement);
         //Then
-        assertEquals(new String(replacement), FileHelper.read(name));
+        assertEquals(new String(replacement), FileHelper.read(fullPath));
     }
 
     @Test
     void deleteDeletesTheContentsAlongWithTheFile() {
         //Given nothing
         //When
-        subject.delete(name);
+        subject.delete(uri);
         //Then
-        assertArrayEquals(new byte[0], FileHelper.read(name).getBytes());
+        assertArrayEquals(new byte[0], FileHelper.read(fullPath).getBytes());
     }
 
     @Test
     void checkoutReturnsAnEmptyByteArrayWhenTheFileDoesNotExist() {
         //Given
-        subject.delete(name);
+        subject.delete(uri);
         //When
-        byte[] actual = subject.checkout(name);
+        byte[] actual = subject.checkout(uri);
         //Then
         assertArrayEquals(new byte[0], actual);
     }
-
-    @Test
-    void lengthOfReturnsAStringRepresentingTheNumberOfBytesTheResourceHas() {
-        //Given the file from @BeforeEach
-        //When
-        String actual = subject.lengthOf(name);
-        //Then
-        String expected = String.valueOf(content.length);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void lengthOfReturnsAZeroStringIfThereIsNoFile() {
-        //Given
-        String name = "This is not a file";
-        //When
-        String actual = subject.lengthOf(name);
-        //Then
-        String expected = "0";
-        assertEquals(expected, actual);
-    }
-
 }

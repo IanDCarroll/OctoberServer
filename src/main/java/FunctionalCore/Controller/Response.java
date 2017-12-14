@@ -15,11 +15,16 @@ public class Response {
     }
 
     public byte[] getResponse() {
-        String headers = buildStringFrom(getHeaders());
-        final String crlf = "\r\n\r\n";
-        byte[] head = (startLine + headers + crlf).getBytes();
+        byte[] head = getHead();
         return uniteBytes(head, body);
     }
+
+    public byte[] getHead() {
+        String headers = buildStringFrom(getHeaders());
+        final String crlf = "\r\n\r\n";
+        return (startLine + headers + crlf).getBytes();
+    }
+
     private String[] getHeaders() {
         return headers.toArray(new String[headers.size()]);
     }
@@ -72,4 +77,6 @@ public class Response {
         String[] formattedParams = ParamFormatter.addStyling(params);
         this.body = uniteBytes(this.body, buildStringFrom(formattedParams).getBytes());
     }
+
+    public String bodyLength() { return String.valueOf(body.length); }
 }
