@@ -74,7 +74,7 @@ class ResponseGeneratorTest {
         //When
         byte[] actual = subject.generate405(permittedMethods);
         //Then
-        String expected = "Allow: GET,OPTIONS,EXFOLIATE\n";
+        String expected = "Allow: GET,OPTIONS,EXFOLIATE";
         assertTrue(new String(actual).contains(expected));
     }
 

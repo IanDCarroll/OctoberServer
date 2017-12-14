@@ -42,7 +42,7 @@ public class Response {
 
     public void setStartLine(String code, String message) {
         final String httpV = "HTTP/1.1";
-        startLine = httpV + sp + code + sp + message + nl;
+        startLine = httpV + sp + code + sp + message;
     }
 
     public void setHeaders(String[] headers) {
@@ -56,7 +56,7 @@ public class Response {
     private void setValidHeaderArray(String[] headers) {
         final String separator = ":" + sp;
         for (int i = 0; i < headers.length; i = i+2) {
-            String header = headers[i] + separator + headers[i+1] + nl;
+            String header = nl + headers[i] + separator + headers[i+1];
             this.headers.add(header);
         }
     }

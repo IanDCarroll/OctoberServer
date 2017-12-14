@@ -1,0 +1,5 @@
+---
+
+/: GET OPTIONS
+
+/fruit-snacks: GET PUT POST HEAD DELETE OPTIONS

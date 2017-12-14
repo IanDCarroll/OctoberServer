@@ -13,3 +13,7 @@
 /method_options: GET HEAD POST OPTIONS PUT
 
 /method_options2: GET OPTIONS
+
+/cookie: GET
+
+/eat_cookie: GET

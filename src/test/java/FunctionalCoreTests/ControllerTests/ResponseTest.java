@@ -27,9 +27,9 @@ class ResponseTest {
         subject.setBody(body);
         //Then
         byte[] actual = subject.getResponse();
-        String expected = "HTTP/1.1 999 Legit Response\n" +
-                "Chill-Header: chill out of ten\n" +
-                "Sick-Header: do you even lift?\n" +
+        String expected = "HTTP/1.1 999 Legit Response" +
+                "\nChill-Header: chill out of ten" +
+                "\nSick-Header: do you even lift?" +
                 "\r\n\r\n" +
                 "Shall I compare thee to a winter's day?";
         assertEquals(expected, new String(actual));
@@ -42,7 +42,7 @@ class ResponseTest {
         //When
         subject.setStartLine(codeTuple[0], codeTuple[1]);
         //Then
-        byte[] expected = "HTTP/1.1 999 Legit Response\n".getBytes();
+        byte[] expected = "HTTP/1.1 999 Legit Response".getBytes();
         byte[] actual = subject.getResponse();
         assertTrue(new String(actual).contains(new String(expected)));
     }
