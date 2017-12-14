@@ -92,4 +92,20 @@ class ResponseGeneratorTest {
         String expected = new String(content);
         assertTrue(new String(actual).contains(expected));
     }
+
+    @Test
+    void generate200ReturnsTheBodyWithBasicHeaders() {
+        //Given
+        byte[] content = "Original content".getBytes();
+        String name = publicDir + MockRequestDealer.getRequest("/a-file-with-a-body");
+        FileHelper.make(name, content);
+        //When
+        byte[] actual = subject.generate200(name);
+        //Then
+        FileHelper.delete(name);
+        String length = "Content-Length: " + String.valueOf(content.length);
+        String type = "Content-Type: text/plain";
+        assertTrue(new String(actual).contains(length));
+        assertTrue(new String(actual).contains(type));
+    }
 }

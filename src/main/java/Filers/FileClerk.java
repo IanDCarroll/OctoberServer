@@ -27,4 +27,8 @@ public class FileClerk extends FileUpdater implements Filer {
     public void delete(String name) {
         new File(name).delete();
     }
+
+    public String lengthOf(String name) {
+        return String.valueOf(checkout(name).length);
+    }
 }

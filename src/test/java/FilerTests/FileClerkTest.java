@@ -74,4 +74,25 @@ class FileClerkTest {
         assertArrayEquals(new byte[0], actual);
     }
 
+    @Test
+    void lengthOfReturnsAStringRepresentingTheNumberOfBytesTheResourceHas() {
+        //Given the file from @BeforeEach
+        //When
+        String actual = subject.lengthOf(name);
+        //Then
+        String expected = String.valueOf(content.length);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void lengthOfReturnsAZeroStringIfThereIsNoFile() {
+        //Given
+        String name = "This is not a file";
+        //When
+        String actual = subject.lengthOf(name);
+        //Then
+        String expected = "0";
+        assertEquals(expected, actual);
+    }
+
 }
