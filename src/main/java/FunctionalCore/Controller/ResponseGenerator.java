@@ -29,30 +29,30 @@ public class ResponseGenerator {
 
     public byte[] generate200(String name, String permittedMethods) {
         response = new Response();
-        setResponseHead(ok200);
+        setResponseHead(name, ok200);
         setAllowHeader(permittedMethods);
         return response.getResponse();
     }
 
     public byte[] generate404() {
         response = new Response();
-        setResponseHead(new String[]{ "404", "Not Found" });
+        setResponseStartLine(new String[]{ "404", "Not Found" });
         return response.getResponse();
     }
 
     public byte[] generate405(String permittedMethods) {
         response = new Response();
-        setResponseHead(new String[]{ "405", "Method Not Allowed" });
+        setResponseStartLine(new String[]{ "405", "Method Not Allowed" });
         setAllowHeader(permittedMethods);
         return response.getResponse();
     }
 
     private void setResponseHead(String name, String[] codeTuple) {
-        setResponseHead(codeTuple);
+        setResponseStartLine(codeTuple);
         setBasicHeaders(name);
     }
 
-    private void setResponseHead(String[] codeTuple) {
+    private void setResponseStartLine(String[] codeTuple) {
         response.setStartLine(codeTuple[0], codeTuple[1]);
     }
 
