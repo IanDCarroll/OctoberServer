@@ -2,6 +2,8 @@ package FunctionalCore.Controller;
 
 import Filers.FileClerk;
 
+import java.util.Arrays;
+
 public class ResponseGenerator {
     FileClerk fileClerk;
 
@@ -34,6 +36,17 @@ public class ResponseGenerator {
         return response.getHead();
     }
 
+    public byte[] generate206(String uri, int start, int end) {
+        response = new Response();
+        setResponseStartLine(new String[]{ "206", "Partial Content"});
+        byte[] fullBody = fileClerk.checkout(uri);
+        byte[] partial = Arrays.copyOfRange(fullBody, start, end);
+        response.setBody(partial);
+        HeaderGenerator.setBasics(response);
+        HeaderGenerator.setContentRange(response, start, end);
+        return response.getResponse();
+    }
+
     public byte[] generate404() {
         response = new Response();
         setResponseStartLine(new String[]{ "404", "Not Found" });
@@ -44,6 +57,14 @@ public class ResponseGenerator {
         response = new Response();
         setResponseStartLine(new String[]{ "405", "Method Not Allowed" });
         HeaderGenerator.setAllow(response, permittedMethods);
+        return response.getHead();
+    }
+
+    public byte[] generate416(String uri) {
+        response = new Response();
+        setResponseStartLine(new String[]{ "416", "Range Not Satisfiable" });
+        setBody(uri);
+        HeaderGenerator.setContentRange(response);
         return response.getHead();
     }
 

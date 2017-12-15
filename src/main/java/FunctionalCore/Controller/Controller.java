@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 public class Controller {
     private ResponseGenerator responseGenerator;
     private LinkedHashMap<String, String> routes;
-    private String publicDir = "";
     private FileClerk fileClerk;
 
     public Controller(ResponseGenerator responseGenerator, LinkedHashMap routes, FileClerk fileClerk) {
