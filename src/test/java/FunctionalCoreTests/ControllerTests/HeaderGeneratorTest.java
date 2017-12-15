@@ -54,11 +54,12 @@ class HeaderGeneratorTest {
     @Test
     void setContentRangeSetsAContentRangeHeaderWithAStartAndEnd() {
         //Given
-        response.setBody("dead men tell no tales".getBytes());
+        byte[] fullBody = "dead men tell no tales".getBytes();
         int start = 5;
         int end = 10;
+        String length = String.valueOf(fullBody.length);
         //When
-        HeaderGenerator.setContentRange(response, start, end);
+        HeaderGenerator.setContentRange(response, start, end, length);
         //Then
         String contentRange = "Content-Range: bytes 5-10/22";
         assertTrue(new String(response.getHead()).contains(contentRange));
@@ -67,9 +68,10 @@ class HeaderGeneratorTest {
     @Test
     void setContentRangeSetsAContentRangeHeaderWithoutAStartAndEnd() {
         //Given
-        response.setBody("dead men tell no tales".getBytes());
+        byte[] fullBody = "dead men tell no tales".getBytes();
+        String length = String.valueOf(fullBody.length);
         //When
-        HeaderGenerator.setContentRange(response);
+        HeaderGenerator.setContentRange(response, length);
         //Then
         String contentRange = "Content-Range: bytes */22";
         assertTrue(new String(response.getHead()).contains(contentRange));

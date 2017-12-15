@@ -38,12 +38,10 @@ public class ResponseGenerator {
 
     public byte[] generate206(String uri, int start, int end) {
         response = new Response();
-        setResponseStartLine(new String[]{ "206", "Partial Content"});
-        byte[] fullBody = fileClerk.checkout(uri);
-        byte[] partial = Arrays.copyOfRange(fullBody, start, end);
-        response.setBody(partial);
-        HeaderGenerator.setBasics(response);
-        HeaderGenerator.setContentRange(response, start, end);
+        setResponseStartLine(new String[]{"206", "Partial Content"});
+        setBody(uri, start, end);
+        String length = String.valueOf(fileClerk.checkout(uri).length);
+        HeaderGenerator.setContentRange(response, start, end, length);
         return response.getResponse();
     }
 
@@ -63,8 +61,8 @@ public class ResponseGenerator {
     public byte[] generate416(String uri) {
         response = new Response();
         setResponseStartLine(new String[]{ "416", "Range Not Satisfiable" });
-        setBody(uri);
-        HeaderGenerator.setContentRange(response);
+        String length = String.valueOf(fileClerk.checkout(uri).length);
+        HeaderGenerator.setContentRange(response, length);
         return response.getHead();
     }
 
@@ -78,7 +76,13 @@ public class ResponseGenerator {
     }
 
     private void setBody(String uri) {
-        byte[] body = fileClerk.checkout(uri);
+        int start = 0;
+        int end = fileClerk.checkout(uri).length;
+        setBody(uri, start, end);
+    }
+
+    private void setBody(String uri, int start, int end) {
+        byte[] body = Arrays.copyOfRange(fileClerk.checkout(uri), start, end);
         response.setBody(body);
         HeaderGenerator.setBasics(response);
     }

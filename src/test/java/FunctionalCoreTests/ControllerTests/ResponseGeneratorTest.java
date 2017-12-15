@@ -97,7 +97,7 @@ class ResponseGeneratorTest {
     }
 
     @Test
-    void generate200ReturnsTheBodyWithBasicHeaders() {
+    void generate200HeadReturnsTheBodyWithBasicHeaders() {
         //Given
         byte[] content = "Original content".getBytes();
         String uri = "/a-file-with-a-body";
@@ -111,5 +111,81 @@ class ResponseGeneratorTest {
         String type = "Content-Type: text/plain";
         assertTrue(new String(actual).contains(length));
         assertTrue(new String(actual).contains(type));
+    }
+
+    @Test
+    void generate206ReturnsTheBodyRange() {
+        //Given
+        byte[] content = "Original content".getBytes();
+        String uri = "/a-file-with-a-body";
+        String fullPath = publicDir + uri;
+        FileHelper.make(fullPath, content);
+        //When
+        byte[] actual = subject.generate206(uri, 2, 8);
+        //Then
+        FileHelper.delete(fullPath);
+        String expected = "iginal";
+        assertTrue(new String(actual).contains(expected));
+        assertFalse(new String(actual).contains(new String(content)));
+    }
+
+    @Test
+    void generate206ReturnsA206StartLine() {
+        //Given
+        byte[] content = "Original content".getBytes();
+        String uri = "/a-file-with-a-body";
+        String fullPath = publicDir + uri;
+        FileHelper.make(fullPath, content);
+        //When
+        byte[] actual = subject.generate206(uri, 2, 8);
+        //Then
+        FileHelper.delete(fullPath);
+        String expected = "206 Partial Content";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void generate206ReturnsAContentRangeHeader() {
+        //Given
+        byte[] content = "Original content".getBytes();
+        String uri = "/a-file-with-a-body";
+        String fullPath = publicDir + uri;
+        FileHelper.make(fullPath, content);
+        //When
+        byte[] actual = subject.generate206(uri, 2, 8);
+        //Then
+        FileHelper.delete(fullPath);
+        String expected = "Content-Range: bytes 2-8/" + String.valueOf(content.length);
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void generate416ReturnsA416StartLine() {
+        //Given
+        byte[] content = "Original content".getBytes();
+        String uri = "/a-file-with-a-body";
+        String fullPath = publicDir + uri;
+        FileHelper.make(fullPath, content);
+        //When
+        byte[] actual = subject.generate416(uri);
+        //Then
+        FileHelper.delete(fullPath);
+        String expected = "416 Range Not Satisfiable";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void generate416ReturnsAContentRangeHeader() {
+        //Given
+        byte[] content = "Original content".getBytes();
+        String uri = "/a-file-with-a-body";
+        String fullPath = publicDir + uri;
+        FileHelper.make(fullPath, content);
+        //When
+        byte[] actual = subject.generate416(uri);
+        //Then
+        FileHelper.delete(fullPath);
+        String expected = "Content-Range: bytes */" + String.valueOf(content.length);
+        assertTrue(new String(actual).contains(expected));
     }
 }
