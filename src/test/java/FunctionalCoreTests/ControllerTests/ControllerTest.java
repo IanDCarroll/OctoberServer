@@ -182,4 +182,7 @@ class ControllerTest {
         assertTrue(new String(duringPost2).contains(expectedAfter2));
         assertTrue(new String(afterPosts).contains(expectedAfter2));
     }
+
+    @Test
+    void getAppropriateresponseReturns206IfThereIsARangeHeader() {}
 }

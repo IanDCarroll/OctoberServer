@@ -65,4 +65,13 @@ public class MockRequestDealer {
         request.setUri(uri);
         return request;
     }
+
+    public static Request partialRequest(String uri) {
+        Request request = new Request();
+        request.setMethod("GET");
+        request.setUri(uri);
+        request.setHttpV("HTTP/1.1");
+        request.setHeaders(new String[]{ "Range: bytes=2-8" });
+        return request;
+    }
 }
