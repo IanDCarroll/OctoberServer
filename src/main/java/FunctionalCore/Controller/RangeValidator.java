@@ -27,8 +27,9 @@ public class RangeValidator {
     }
 
     public int[] getRange(String uri, String rangeHeader) {
-        int start = -1;
-        int end = -1;
+        int notSet = -1;
+        int start = notSet;
+        int end = notSet;
         String rangeValue = rangeHeader.trim().replace(rangePrefix, withNothing);
         if(rangeValue.startsWith("-")) { start = 0; }
         if(rangeValue.endsWith("-")) { end = sizeOf(uri); }
