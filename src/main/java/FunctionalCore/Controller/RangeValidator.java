@@ -3,48 +3,39 @@ package FunctionalCore.Controller;
 import Filers.FileClerk;
 
 public class RangeValidator {
+    private final String rangePrefix = "Range: bytes=";
+    private final String withNothing = "";
     FileClerk fileClerk;
 
     public RangeValidator(FileClerk fileClerk) {
         this.fileClerk = fileClerk;
     }
 
-    public boolean valid(String uri, String rangeHeader) {
-        int[] range = getRange(uri, rangeHeader);
-        if(invalid(uri, range)) { return false; }
-        return true;
-    }
-
-    private boolean invalid(String uri, int[] range) {
-        return range[0] > range[1] || range[1] > sizeOf(uri);
+    public boolean valid(String uri, int[] range) {
+        return range[0] <= range[1] && range[1] <= sizeOf(uri);
     }
 
     private int sizeOf(String uri) {
         return fileClerk.checkout(uri).length;
     }
 
+    public String getRangeHeader(String[] headers) {
+        for(String header : headers) {
+            if(header.startsWith(rangePrefix)) return header;
+        }
+        return withNothing;
+    }
+
     public int[] getRange(String uri, String rangeHeader) {
-        String rangeValue = rangeHeader.replace("Range: bytes=", "");
-        String[] range = rangeValue.split("-");
-        return parseValues(uri, range);
+        int start = -1;
+        int end = -1;
+        String rangeValue = rangeHeader.trim().replace(rangePrefix, withNothing);
+        if(rangeValue.startsWith("-")) { start = 0; }
+        if(rangeValue.endsWith("-")) { end = sizeOf(uri); }
+        String[] bounds = rangeValue.split("-");
+        if(start!=0) { start = Integer.parseInt(bounds[0]); }
+        if(end!=sizeOf(uri)) { end = Integer.parseInt(bounds[1]); }
+        return new int[]{ start, end };
     }
 
-    private int[] parseValues(String uri, String[] values) {
-        int[] range = new int[2];
-        range[0] = parseValue(values[0]);
-        try {
-            range[1] = parseValue(values[1]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            range[1] = sizeOf(uri);
-        }
-        return range;
-    }
-
-    private int parseValue(String value) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
 }

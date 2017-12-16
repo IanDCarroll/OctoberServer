@@ -34,9 +34,29 @@ class RangeValidatorTest {
     @Test
     void validReturnsTrueIfTheRangeIsGood() {
         //Given
-        String rangeHeader = "Range: bytes=2-6";
+        int[] range = { 2, 6 };
         //When
-        boolean actual = subject.valid(uri, rangeHeader);
+        boolean actual = subject.valid(uri, range);
+        //Then
+        assertTrue(actual);
+    }
+
+    @Test
+    void validReturnsTrueIfTheRangeIsEqual() {
+        //Given
+        int[] range = { 6, 6 };
+        //When
+        boolean actual = subject.valid(uri, range);
+        //Then
+        assertTrue(actual);
+    }
+
+    @Test
+    void validReturnsTrueIfTheRangeIsEqualToTheFileLength() {
+        //Given
+        int[] range = { 2, content.length };
+        //When
+        boolean actual = subject.valid(uri, range);
         //Then
         assertTrue(actual);
     }
@@ -44,19 +64,19 @@ class RangeValidatorTest {
     @Test
     void validReturnsFalseIfTheRangeStartIsMoreThanTheRangeEnd() {
         //Given
-        String rangeHeader = "Range: bytes=6-5";
+        int[] range = { 4, 3 };
         //When
-        boolean actual = subject.valid(uri, rangeHeader);
+        boolean actual = subject.valid(uri, range);
         //Then
         assertFalse(actual);
     }
 
     @Test
-    void validReturnsFalseIfTheRangeEndisMoreThanTheFileSize() {
+    void validReturnsFalseIfTheRangeEndIsMoreThanTheFileSize() {
         //Given
-        String rangeHeader = "Range: bytes=-" + String.valueOf(content.length + 1);
+        int[] range = { 0, (content.length + 1) };
         //When
-        boolean actual = subject.valid(uri, rangeHeader);
+        boolean actual = subject.valid(uri, range);
         //Then
         assertFalse(actual);
     }
@@ -64,11 +84,11 @@ class RangeValidatorTest {
     @Test
     void getRangeReturnsAnIntArrayRepresentingTheStartAndEndOFTheRange() {
         //Given
-        String rangeHeader = "Range: bytes=2-6";
+        String rangeHeader = "Range: bytes=0-4";
         //When
         int[] actual = subject.getRange(uri, rangeHeader);
         //Then
-        int[] expected = { 2, 6 };
+        int[] expected = { 0, 4 };
         assertArrayEquals(expected, actual);
     }
 
@@ -86,11 +106,32 @@ class RangeValidatorTest {
     @Test
     void getRangeHandlesEmptyLastValue() {
         //Given
-        String rangeHeader = "Range: bytes=2-";
+        String rangeHeader = "Range: bytes=4-";
         //When
         int[] actual = subject.getRange(uri, rangeHeader);
         //Then
-        int[] expected = { 2, content.length };
+        int[] expected = { 4, content.length };
         assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void getRangeHeaderGetsTheRangeHeaderFromAnArrayOfHeaders() {
+        //Given
+        String rangeHeader = "Range: bytes=2-6";
+        String[] headers = { "Header1: value1", rangeHeader, "Header2: value2" };
+        //When
+        String actual = subject.getRangeHeader(headers);
+        //Then
+        assertEquals(rangeHeader, actual);
+    }
+
+    @Test
+    void getRangeHeaderReturnsEmptyStringIfNoRangeHeaderIsFound() {
+        //Given
+        String[] headers = { "Header1: value1", "Header2: value2" };
+        //When
+        String actual = subject.getRangeHeader(headers);
+        //Then
+        assertEquals("", actual);
     }
 }

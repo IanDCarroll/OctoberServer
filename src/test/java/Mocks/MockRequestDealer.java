@@ -74,4 +74,13 @@ public class MockRequestDealer {
         request.setHeaders(new String[]{ "Range: bytes=2-8" });
         return request;
     }
+
+    public static Request badPartialRequest(String uri) {
+        Request request = new Request();
+        request.setMethod("GET");
+        request.setUri(uri);
+        request.setHttpV("HTTP/1.1");
+        request.setHeaders(new String[]{ "Range: bytes=3-2" });
+        return request;
+    }
 }

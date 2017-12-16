@@ -9,11 +9,13 @@ public class Controller {
     private ResponseGenerator responseGenerator;
     private LinkedHashMap<String, String> routes;
     private FileClerk fileClerk;
+    private RangeValidator rangeValidator;
 
     public Controller(ResponseGenerator responseGenerator, LinkedHashMap routes, FileClerk fileClerk) {
         this.responseGenerator = responseGenerator;
         this.routes = routes;
         this.fileClerk = fileClerk;
+        this.rangeValidator = new RangeValidator(fileClerk);
     }
 
     public byte[] getAppropriateResponse(Request request) {
@@ -42,7 +44,20 @@ public class Controller {
         if (request.getMethod().equals("POST")) return post(request);
         if (request.getMethod().equals("PUT")) return put(request);
         if (request.getMethod().equals("DELETE")) return delete(request);
-        return get(request);
+        return checkRange(request);
+    }
+
+    private byte[] checkRange(Request request) {
+        String rangeHeader = rangeValidator.getRangeHeader(request.getHeaders());
+        return rangeHeader.isEmpty() ? get(request) : range(request.getUri(), rangeHeader);
+
+    }
+
+    private byte[] range(String uri, String rangeHeader) {
+        int[] range = rangeValidator.getRange(uri, rangeHeader);
+        return rangeValidator.valid(uri, range)
+                ? responseGenerator.generate206(uri, range[0], range[1])
+                : responseGenerator.generate416(uri);
     }
 
     private byte[] head(Request request) { return responseGenerator.generate200Head(request.getUri()); }

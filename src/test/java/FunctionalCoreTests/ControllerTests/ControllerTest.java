@@ -93,17 +93,16 @@ class ControllerTest {
     void getAppropriateResponseReturnsTheBodyForAGETRequest() {
         //Given
         String uri = "/a-file-to-get";
-        String name = publicDir + uri;
+        String fullPath = publicDir + uri;
         byte[] content = "Original content".getBytes();
-        FileHelper.make(name, content);
+        FileHelper.make(fullPath, content);
         Request request = MockRequestDealer.getRequest(uri);
         mockRoutes.put(request.getUri(), "GET");
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
-        FileHelper.delete(name);
+        FileHelper.delete(fullPath);
         String expected = new String(content);
-        //System.out.println(new String(actual));
         assertTrue(new String(actual).contains(expected));
     }
 
@@ -111,9 +110,9 @@ class ControllerTest {
     void getAppropriateResponseDeletesTheBodyForADELETERequest() {
         //Given
         String uri = "/this-will-be-deleted";
-        String name = publicDir + uri;
+        String fullPath = publicDir + uri;
         byte[] content = "Original content".getBytes();
-        FileHelper.make(name, content);
+        FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request delete = MockRequestDealer.deleteRequest(uri);
         mockRoutes.put(get.getUri(), "GET DELETE");
@@ -122,7 +121,7 @@ class ControllerTest {
         byte[] duringDelete = subject.getAppropriateResponse(delete);
         byte[] afterDelete = subject.getAppropriateResponse(get);
         //Then
-        FileHelper.delete(name);
+        FileHelper.delete(fullPath);
         String expected = new String(content);
         assertTrue(new String(beforeDelete).contains(expected));
         assertFalse(new String(duringDelete).contains(expected));
@@ -133,9 +132,9 @@ class ControllerTest {
     void getAppropriateResponseReplacesTheBodyForAPUTRequest() {
         //Given
         String uri = "/this-will-be-replaced";
-        String name = publicDir + uri;
+        String fullPath = publicDir + uri;
         byte[] content = "Original content".getBytes();
-        FileHelper.make(name, content);
+        FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request put = MockRequestDealer.putRequest(uri);
         mockRoutes.put(get.getUri(), "GET PUT");
@@ -144,7 +143,7 @@ class ControllerTest {
         byte[] duringPut = subject.getAppropriateResponse(put);
         byte[] afterPut = subject.getAppropriateResponse(get);
         //Then
-        FileHelper.delete(name);
+        FileHelper.delete(fullPath);
         String expectedBefore = new String(content);
         String expectedAfter = new String(put.getBody());
         assertTrue(new String(beforePut).contains(expectedBefore));
@@ -158,9 +157,9 @@ class ControllerTest {
     void getAppropriateResponseAppendsTheBodyForAPOSTRequest() {
         //Given
         String uri = "/this-will-be-added-to";
-        String name = publicDir + uri;
+        String fullPath = publicDir + uri;
         byte[] content = "Original content".getBytes();
-        FileHelper.make(name, content);
+        FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request post = MockRequestDealer.postRequest(uri);
         mockRoutes.put(get.getUri(), "GET POST");
@@ -171,7 +170,7 @@ class ControllerTest {
         byte[] duringPost2 = subject.getAppropriateResponse(post);
         byte[] afterPosts = subject.getAppropriateResponse(get);
         //Then
-        FileHelper.delete(name);
+        FileHelper.delete(fullPath);
         String postBody = new String(post.getBody());
         String expectedBefore = new String(content);
         String expectedAfter1 = expectedBefore + postBody;
@@ -184,5 +183,36 @@ class ControllerTest {
     }
 
     @Test
-    void getAppropriateresponseReturns206IfThereIsARangeHeader() {}
+    void getAppropriateResponseReturns206IfThereIsARangeHeader() {
+        //Given
+        String uri = "/a-file-for-rangers";
+        String fullPath = publicDir + uri;
+        byte[] content = "Original content".getBytes();
+        FileHelper.make(fullPath, content);
+        Request request = MockRequestDealer.partialRequest(uri);
+        mockRoutes.put(request.getUri(), "GET");
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        FileHelper.delete(fullPath);
+        String expected = "HTTP/1.1 206 Partial Content";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void getAppropriateResponseReturns416IfTheRangeHeaderIsNotGood() {
+        //Given
+        String uri = "/a-file-for-rangers";
+        String fullPath = publicDir + uri;
+        byte[] content = "Original content".getBytes();
+        FileHelper.make(fullPath, content);
+        Request request = MockRequestDealer.badPartialRequest(uri);
+        mockRoutes.put(request.getUri(), "GET");
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        FileHelper.delete(fullPath);
+        String expected = "HTTP/1.1 416 Range Not Satisfiable";
+        assertTrue(new String(actual).contains(expected));
+    }
 }
