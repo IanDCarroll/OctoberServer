@@ -35,4 +35,9 @@ public class HeaderGenerator {
         String[] locationHeader = { "Location", redirectToThisUri };
         response.setHeaders(locationHeader);
     }
+
+    public static void setWWWAuthenticate(Response response) {
+        String[] wwwAuthenticateHeader = { "WWW-Authenticate", "Basic realm=\"Access to URI\"" };
+        response.setHeaders(wwwAuthenticateHeader);
+    }
 }

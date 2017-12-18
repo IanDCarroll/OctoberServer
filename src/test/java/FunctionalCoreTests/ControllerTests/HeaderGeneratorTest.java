@@ -87,4 +87,14 @@ class HeaderGeneratorTest {
         String location = "Location: " + redirectToThisUri;
         assertTrue(new String(response.getHead()).contains(location));
     }
+
+    @Test
+    void setWWWAuthenticateSetsAWWWAuthenticateHeader() {
+        //Given nothing extra
+        //When
+        HeaderGenerator.setWWWAuthenticate(response);
+        //Then
+        String wwwAuthenticate = "WWW-Authenticate: Basic realm=\"Access to URI\"";
+        assertTrue(new String(response.getHead()).contains(wwwAuthenticate));
+    }
 }

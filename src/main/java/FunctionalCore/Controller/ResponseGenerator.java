@@ -52,6 +52,13 @@ public class ResponseGenerator {
         return response.getHead();
     }
 
+    public byte[] generate401() {
+        response = new Response();
+        setResponseStartLine(new String[]{"401", "Unauthorized"});
+        HeaderGenerator.setWWWAuthenticate(response);
+        return response.getHead();
+    }
+
     public byte[] generate404() {
         response = new Response();
         setResponseStartLine(new String[]{ "404", "Not Found" });
