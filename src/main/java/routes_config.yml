@@ -1,7 +1,16 @@
 ---
 
-/: GET
+/:
+  allowed-methods: GET
+  redirect-uri: ""
+  authorization: ""
 
-/exampleRoute1: GET HEAD OPTIONS
+/exampleRoute1:
+  allowed-methods: GET HEAD OPTIONS
+  redirect-uri: ""
+  authorization: ""
 
-/exampleRoute2: POST PUT
+/exampleRoute2:
+  allowed-methods: POST PUT
+  redirect-uri: ""
+  authorization: ""

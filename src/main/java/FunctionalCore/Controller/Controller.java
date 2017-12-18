@@ -7,11 +7,13 @@ import java.util.LinkedHashMap;
 
 public class Controller {
     private ResponseGenerator responseGenerator;
-    private LinkedHashMap<String, String> routes;
+    private LinkedHashMap<String, LinkedHashMap<String, String>> routes;
     private FileClerk fileClerk;
     private RangeValidator rangeValidator;
 
-    public Controller(ResponseGenerator responseGenerator, LinkedHashMap routes, FileClerk fileClerk) {
+    public Controller(ResponseGenerator responseGenerator,
+                      LinkedHashMap<String, LinkedHashMap<String, String>> routes,
+                      FileClerk fileClerk) {
         this.responseGenerator = responseGenerator;
         this.routes = routes;
         this.fileClerk = fileClerk;
@@ -32,7 +34,7 @@ public class Controller {
     }
 
     private byte[] validMethod(Request request) {
-        String permittedMethods = routes.get(request.getUri());
+        String permittedMethods = routes.get(request.getUri()).get("allowed-methods");
         return (permittedMethods.contains(request.getMethod()))
                 ? handleMethod(request)
                 : responseGenerator.generate405(permittedMethods);
@@ -63,7 +65,7 @@ public class Controller {
     private byte[] head(Request request) { return responseGenerator.generate200Head(request.getUri()); }
 
     private byte[] options(Request request) {
-        String permittedMethods = routes.get(request.getUri());
+        String permittedMethods = routes.get(request.getUri()).get("allowed-methods");
         return responseGenerator.generate200Options(permittedMethods);
     }
 

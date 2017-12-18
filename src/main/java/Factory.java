@@ -5,7 +5,7 @@ import FunctionalCore.Controller.ResponseGenerator;
 import FunctionalCore.Core;
 import FunctionalCore.Parser.Parser;
 import Importers.FileImporter;
-import Importers.YamlImporter;
+import Importers.NewYamlImporter;
 import Loggers.ConsoleLogger;
 import Loggers.Logger;
 import ServerShell.*;
@@ -76,7 +76,7 @@ public class Factory {
     }
 
     private LinkedHashMap importConfigFile() {
-        FileImporter configImporter = new YamlImporter();
+        FileImporter configImporter = new NewYamlImporter();
         return configImporter.importAsHash(configFile);
     }
 }

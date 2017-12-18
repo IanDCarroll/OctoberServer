@@ -14,14 +14,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
     private Controller subject;
-    private LinkedHashMap mockRoutes;
+    private LinkedHashMap<String, LinkedHashMap<String, String>> mockRoutes;
+    private LinkedHashMap<String, String> mockPermissions;
     private String publicDir;
     private FileClerk fileClerk;
     private ResponseGenerator responseGenerator;
 
     @BeforeEach
     void init() {
-
+        mockPermissions = new LinkedHashMap();
         mockRoutes = new LinkedHashMap();
         publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
         fileClerk = new FileClerk(publicDir);
@@ -32,7 +33,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseTakesARequestObjectAndReturnsAnAppropriateByteArray() {
         //Given
-        mockRoutes.put("/", "GET");
+        mockPermissions.put("allowed-methods", "GET");
+        mockRoutes.put("/", mockPermissions);
         Request request = MockRequestDealer.getRootRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -43,8 +45,7 @@ class ControllerTest {
 
     @Test
     void getAppropriateResponseReturnsA404IfTheUriIsNotFoundInRoutes() {
-        //Given
-        mockRoutes.put("/not-found", "unused info for this operation");
+        //Given no route for root
         Request request = MockRequestDealer.getRootRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -56,7 +57,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturns405IfTheMethodIsNotAllowed() {
         //Given
-        mockRoutes.put("/", "POST");
+        mockPermissions.put("allowed-methods", "OPTIONS");
+        mockRoutes.put("/", mockPermissions);
         Request request = MockRequestDealer.getRootRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -68,7 +70,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturnsOnlyTheHeadForAHEADRequest() {
         //Given
-        mockRoutes.put("/", "HEAD");
+        mockPermissions.put("allowed-methods", "HEAD");
+        mockRoutes.put("/", mockPermissions);
         Request request = MockRequestDealer.headHeaderRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -80,7 +83,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturnsAnAllowHeaderForAnOPTIONSRequest() {
         //Given
-        mockRoutes.put("/", "GET HEAD OPTIONS");
+        mockPermissions.put("allowed-methods", "GET,HEAD,OPTIONS");
+        mockRoutes.put("/", mockPermissions);
         Request request = MockRequestDealer.optionsRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -97,7 +101,8 @@ class ControllerTest {
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request request = MockRequestDealer.getRequest(uri);
-        mockRoutes.put(request.getUri(), "GET");
+        mockPermissions.put("allowed-methods", "GET");
+        mockRoutes.put(uri, mockPermissions);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -115,7 +120,8 @@ class ControllerTest {
         FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request delete = MockRequestDealer.deleteRequest(uri);
-        mockRoutes.put(get.getUri(), "GET DELETE");
+        mockPermissions.put("allowed-methods", "GET DELETE");
+        mockRoutes.put(uri, mockPermissions);
         //When
         byte[] beforeDelete = subject.getAppropriateResponse(get);
         byte[] duringDelete = subject.getAppropriateResponse(delete);
@@ -137,7 +143,8 @@ class ControllerTest {
         FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request put = MockRequestDealer.putRequest(uri);
-        mockRoutes.put(get.getUri(), "GET PUT");
+        mockPermissions.put("allowed-methods", "GET PUT");
+        mockRoutes.put(uri, mockPermissions);
         //When
         byte[] beforePut = subject.getAppropriateResponse(get);
         byte[] duringPut = subject.getAppropriateResponse(put);
@@ -162,7 +169,8 @@ class ControllerTest {
         FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request post = MockRequestDealer.postRequest(uri);
-        mockRoutes.put(get.getUri(), "GET POST");
+        mockPermissions.put("allowed-methods", "GET POST");
+        mockRoutes.put(uri, mockPermissions);
         //When
         byte[] beforePost = subject.getAppropriateResponse(get);
         byte[] duringPost1 = subject.getAppropriateResponse(post);
@@ -190,7 +198,8 @@ class ControllerTest {
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request request = MockRequestDealer.partialRequest(uri);
-        mockRoutes.put(request.getUri(), "GET");
+        mockPermissions.put("allowed-methods", "GET");
+        mockRoutes.put(uri, mockPermissions);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -207,7 +216,8 @@ class ControllerTest {
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request request = MockRequestDealer.badPartialRequest(uri);
-        mockRoutes.put(request.getUri(), "GET");
+        mockPermissions.put("allowed-methods", "GET");
+        mockRoutes.put(uri, mockPermissions);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then

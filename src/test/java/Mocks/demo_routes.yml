@@ -1,5 +1,11 @@
 ---
 
-/: GET OPTIONS
+/:
+  allowed-methods: GET OPTIONS
+  redirect-uri: ""
+  authorization: ""
 
-/fruit-snacks: GET PUT POST HEAD DELETE OPTIONS
+/fruit-snacks:
+  allowed-methods: GET PUT POST HEAD DELETE OPTIONS
+  redirect-uri: ""
+  authorization: ""
