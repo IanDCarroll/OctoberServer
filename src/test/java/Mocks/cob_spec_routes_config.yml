@@ -54,3 +54,8 @@
   allowed-methods: GET
   redirect-uri: "/"
   authorization: ""
+
+/logs:
+  allowed-methods: GET
+  redirect-uri: ""
+  authorization: "admin hunter2"
