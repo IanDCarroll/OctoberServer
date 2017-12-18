@@ -45,6 +45,13 @@ public class ResponseGenerator {
         return response.getResponse();
     }
 
+    public byte[] generate302(String redirectToThisUri) {
+        response = new Response();
+        setResponseStartLine(new String[]{"302", "Found"});
+        HeaderGenerator.setLocation(response, redirectToThisUri);
+        return response.getHead();
+    }
+
     public byte[] generate404() {
         response = new Response();
         setResponseStartLine(new String[]{ "404", "Not Found" });

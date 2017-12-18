@@ -188,4 +188,26 @@ class ResponseGeneratorTest {
         String expected = "Content-Range: bytes */" + String.valueOf(content.length);
         assertTrue(new String(actual).contains(expected));
     }
+
+    @Test
+    void generate302ReturnsA302StartLine() {
+        //Given
+        String redirectToThisUri = "/the-uri-redirect-location";
+        //When
+        byte[] actual = subject.generate302(redirectToThisUri);
+        //Then
+        String expected = "302 Found";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void generate302ReturnsALocationHeader() {
+        //Given
+        String redirectToThisUri = "/the-uri-redirect-location";
+        //When
+        byte[] actual = subject.generate302(redirectToThisUri);
+        //Then
+        String expected = "Location: " + redirectToThisUri;
+        assertTrue(new String(actual).contains(expected));
+    }
 }
