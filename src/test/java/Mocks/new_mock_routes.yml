@@ -1,0 +1,16 @@
+---
+
+/:
+  allowed-methods: GET OPTIONS
+  redirect-uri: ""
+  authorization: ""
+
+/file1:
+  allowed-methods: GET PUT POST HEAD DELETE OPTIONS
+  redirect-uri: ""
+  authorization: ""
+
+/coffee:
+  allowed-methods: GET HEAD
+  redirect-uri: ""
+  authorization: ""
