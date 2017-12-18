@@ -1,7 +1,0 @@
----
-
-/: GET OPTIONS
-
-/file1: GET PUT POST HEAD DELETE OPTIONS
-
-/coffee: GET HEAD
