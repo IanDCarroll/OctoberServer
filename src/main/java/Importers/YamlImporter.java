@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 
-public class NewYamlImporter implements FileImporter {
+public class YamlImporter implements FileImporter {
     private Yaml yaml = new Yaml();
     private InputStream input = null;
 

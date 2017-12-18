@@ -12,7 +12,7 @@ class ArgParserTest {
     private static String configFlag = "-c";
     private static String port = "1701";
     private static String directory = System.getProperty("user.dir") + "/target";
-    private static String configFile = System.getProperty("user.dir") + "/src/test/java/Mocks/new_mock_routes.yml";
+    private static String configFile = System.getProperty("user.dir") + "/src/test/java/Mocks/mock_routes.yml";
 
     @Test
     void argParserGetsDefaultPort5000() {

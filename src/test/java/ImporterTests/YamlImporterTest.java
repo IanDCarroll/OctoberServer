@@ -1,16 +1,15 @@
 package ImporterTests;
 
 import Importers.FileImporter;
-import Importers.NewYamlImporter;
+import Importers.YamlImporter;
 import org.junit.jupiter.api.Test;
-import sun.awt.image.ImageWatched;
 
 import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NewYamlImporterTest {
-    private FileImporter subject = new NewYamlImporter();
+class YamlImporterTest {
+    private FileImporter subject = new YamlImporter();
     private LinkedHashMap expected = new LinkedHashMap();
     private LinkedHashMap root = new LinkedHashMap();
     private LinkedHashMap file1 = new LinkedHashMap();
@@ -33,7 +32,7 @@ class NewYamlImporterTest {
     @Test
     void importAsHashImportsAHashOfHashes() {
         //Given
-        String ymlPath = "src/test/java/Mocks/new_mock_routes.yml";
+        String ymlPath = "src/test/java/Mocks/mock_routes.yml";
         //When
         LinkedHashMap actual = subject.importAsHash(ymlPath);
         //Then
@@ -43,7 +42,7 @@ class NewYamlImporterTest {
     @Test
     void importAsHashImportsAHashThatCanBeAccessedForLeafValues() {
         //Given
-        String ymlPath = "src/test/java/Mocks/new_mock_routes.yml";
+        String ymlPath = "src/test/java/Mocks/mock_routes.yml";
         //When
         LinkedHashMap<String, LinkedHashMap<String, String>> actual = subject.importAsHash(ymlPath);
         LinkedHashMap<String, String> actualRoot = actual.get("/");
