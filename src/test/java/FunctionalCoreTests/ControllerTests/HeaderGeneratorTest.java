@@ -76,4 +76,15 @@ class HeaderGeneratorTest {
         String contentRange = "Content-Range: bytes */22";
         assertTrue(new String(response.getHead()).contains(contentRange));
     }
+
+    @Test
+    void setLocationSetsALocationHeaderWithASpecifiedUri() {
+        //Given
+        String redirectToThisUri = "/redirect-to-here";
+        //When
+        HeaderGenerator.setLocation(response, redirectToThisUri);
+        //Then
+        String location = "Location: " + redirectToThisUri;
+        assertTrue(new String(response.getHead()).contains(location));
+    }
 }

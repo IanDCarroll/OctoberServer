@@ -6,7 +6,8 @@ public class HeaderGenerator {
 
     public static void setBasics(Response response) {
         String length = response.bodyLength();
-        response.setHeaders(new String[]{ "Content-Length", length, "Content-Type", "text/plain" });
+        String[] basicHeaders = { "Content-Length", length, "Content-Type", "text/plain" };
+        response.setHeaders(basicHeaders);
     }
 
     public static void setContentRange(Response response, int start, int end, String length) {
@@ -20,12 +21,18 @@ public class HeaderGenerator {
     }
 
     private static void setContentRangeValue(Response response, String range) {
-        response.setHeaders(new String[]{"Content-Range", range});
+        String[] contentRangeHeader = { "Content-Range", range};
+        response.setHeaders(contentRangeHeader);
     }
 
     public static void setAllow(Response response, String permittedMethods) {
         String commaSeparatedPermissions = permittedMethods.replace(" ", ",");
         String[] allowHeader = { "Allow", commaSeparatedPermissions };
         response.setHeaders(allowHeader);
+    }
+
+    public static void setLocation(Response response, String redirectToThisUri) {
+        String[] locationHeader = { "Location", redirectToThisUri };
+        response.setHeaders(locationHeader);
     }
 }
