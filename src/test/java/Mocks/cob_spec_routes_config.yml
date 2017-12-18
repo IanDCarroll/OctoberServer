@@ -52,5 +52,5 @@
 
 /redirect:
   allowed-methods: GET
-  redirect-uri: ""
+  redirect-uri: "/"
   authorization: ""
