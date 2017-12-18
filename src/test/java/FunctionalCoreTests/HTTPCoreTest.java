@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class HTTPCoreTest {
     private HTTPCore subject;
     private LinkedHashMap<String, LinkedHashMap<String, String>> mockRoutes;
-    private LinkedHashMap<String, String> mockPermissions;
+    private LinkedHashMap<String, String> mockRouteAttributes;
     private String publicDir;
     private FileClerk fileClerk;
     private ResponseGenerator responseGenerator;
@@ -24,7 +24,7 @@ class HTTPCoreTest {
     void setup() {
         Parser parser = new Parser();
         mockRoutes = new LinkedHashMap();
-        mockPermissions = new LinkedHashMap();
+        mockRouteAttributes = new LinkedHashMap();
         publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
         fileClerk = new FileClerk(publicDir);
         responseGenerator = new ResponseGenerator(fileClerk);
@@ -35,8 +35,9 @@ class HTTPCoreTest {
     @Test
     void coreReturnsA200ResponseWhenTheRootIsRequested() {
         //Given
-        mockPermissions.put("allowed-methods", "GET");
-        mockRoutes.put("/", mockPermissions);
+        mockRouteAttributes.put("allowed-methods", "GET");
+        mockRouteAttributes.put("redirect-uri", "");
+        mockRoutes.put("/", mockRouteAttributes);
         byte[] request = "GET / HTTP/1.1\r\n\r\n".getBytes();
         //When
         String actual = new String(subject.craftResponseTo(request));

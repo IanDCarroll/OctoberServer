@@ -36,8 +36,15 @@ public class Controller {
     private byte[] validMethod(Request request) {
         String permittedMethods = routes.get(request.getUri()).get("allowed-methods");
         return (permittedMethods.contains(request.getMethod()))
-                ? handleMethod(request)
+                ? directUri(request)
                 : responseGenerator.generate405(permittedMethods);
+    }
+
+    private byte[] directUri(Request request) {
+        String redirectUri = routes.get(request.getUri()).get("redirect-uri");
+        return (redirectUri.isEmpty())
+                ? handleMethod(request)
+                : responseGenerator.generate302(redirectUri);
     }
 
     private byte[] handleMethod(Request request) {

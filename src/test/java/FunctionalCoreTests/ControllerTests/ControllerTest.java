@@ -15,15 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class ControllerTest {
     private Controller subject;
     private LinkedHashMap<String, LinkedHashMap<String, String>> mockRoutes;
-    private LinkedHashMap<String, String> mockPermissions;
+    private LinkedHashMap<String, String> mockRouteAttributes;
     private String publicDir;
     private FileClerk fileClerk;
     private ResponseGenerator responseGenerator;
 
     @BeforeEach
     void init() {
-        mockPermissions = new LinkedHashMap();
         mockRoutes = new LinkedHashMap();
+        mockRouteAttributes = new LinkedHashMap();
+        mockRouteAttributes.put("allowed-methods", "GET");
+        mockRouteAttributes.put("redirect-uri", "");
         publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
         fileClerk = new FileClerk(publicDir);
         responseGenerator = new ResponseGenerator(fileClerk);
@@ -33,8 +35,7 @@ class ControllerTest {
     @Test
     void getAppropriateResponseTakesARequestObjectAndReturnsAnAppropriateByteArray() {
         //Given
-        mockPermissions.put("allowed-methods", "GET");
-        mockRoutes.put("/", mockPermissions);
+        mockRoutes.put("/", mockRouteAttributes);
         Request request = MockRequestDealer.getRootRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -57,8 +58,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturns405IfTheMethodIsNotAllowed() {
         //Given
-        mockPermissions.put("allowed-methods", "OPTIONS");
-        mockRoutes.put("/", mockPermissions);
+        mockRouteAttributes.put("allowed-methods", "OPTIONS");
+        mockRoutes.put("/", mockRouteAttributes);
         Request request = MockRequestDealer.getRootRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -70,8 +71,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturnsOnlyTheHeadForAHEADRequest() {
         //Given
-        mockPermissions.put("allowed-methods", "HEAD");
-        mockRoutes.put("/", mockPermissions);
+        mockRouteAttributes.put("allowed-methods", "HEAD");
+        mockRoutes.put("/", mockRouteAttributes);
         Request request = MockRequestDealer.headHeaderRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -83,8 +84,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturnsAnAllowHeaderForAnOPTIONSRequest() {
         //Given
-        mockPermissions.put("allowed-methods", "GET,HEAD,OPTIONS");
-        mockRoutes.put("/", mockPermissions);
+        mockRouteAttributes.put("allowed-methods", "GET,HEAD,OPTIONS");
+        mockRoutes.put("/", mockRouteAttributes);
         Request request = MockRequestDealer.optionsRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -101,8 +102,7 @@ class ControllerTest {
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request request = MockRequestDealer.getRequest(uri);
-        mockPermissions.put("allowed-methods", "GET");
-        mockRoutes.put(uri, mockPermissions);
+        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -120,8 +120,8 @@ class ControllerTest {
         FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request delete = MockRequestDealer.deleteRequest(uri);
-        mockPermissions.put("allowed-methods", "GET DELETE");
-        mockRoutes.put(uri, mockPermissions);
+        mockRouteAttributes.put("allowed-methods", "GET DELETE");
+        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] beforeDelete = subject.getAppropriateResponse(get);
         byte[] duringDelete = subject.getAppropriateResponse(delete);
@@ -143,8 +143,8 @@ class ControllerTest {
         FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request put = MockRequestDealer.putRequest(uri);
-        mockPermissions.put("allowed-methods", "GET PUT");
-        mockRoutes.put(uri, mockPermissions);
+        mockRouteAttributes.put("allowed-methods", "GET PUT");
+        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] beforePut = subject.getAppropriateResponse(get);
         byte[] duringPut = subject.getAppropriateResponse(put);
@@ -169,8 +169,8 @@ class ControllerTest {
         FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request post = MockRequestDealer.postRequest(uri);
-        mockPermissions.put("allowed-methods", "GET POST");
-        mockRoutes.put(uri, mockPermissions);
+        mockRouteAttributes.put("allowed-methods", "GET POST");
+        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] beforePost = subject.getAppropriateResponse(get);
         byte[] duringPost1 = subject.getAppropriateResponse(post);
@@ -198,8 +198,7 @@ class ControllerTest {
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request request = MockRequestDealer.partialRequest(uri);
-        mockPermissions.put("allowed-methods", "GET");
-        mockRoutes.put(uri, mockPermissions);
+        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -216,13 +215,27 @@ class ControllerTest {
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request request = MockRequestDealer.badPartialRequest(uri);
-        mockPermissions.put("allowed-methods", "GET");
-        mockRoutes.put(uri, mockPermissions);
+        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
         FileHelper.delete(fullPath);
         String expected = "HTTP/1.1 416 Range Not Satisfiable";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void getAppropriateResponseReturns302IfTheRedirectUriIsNotAnEmptyString() {
+        //Given
+        String uri = "/a-uri-marked-for-redirection";
+        Request request = MockRequestDealer.getRequest(uri);
+        mockRouteAttributes.put("redirect-uri", "/");
+        mockRoutes.put(uri, mockRouteAttributes);
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String expected = "HTTP/1.1 302 Found";
+        System.out.println(new String(actual));
         assertTrue(new String(actual).contains(expected));
     }
 }

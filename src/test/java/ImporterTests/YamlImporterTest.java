@@ -22,7 +22,7 @@ class YamlImporterTest {
         file1.put("redirect-uri", "");
         file1.put("authorization", "");
         coffee.put("allowed-methods", "GET HEAD");
-        coffee.put("redirect-uri", "");
+        coffee.put("redirect-uri", "/tea-earl-grey-hot");
         coffee.put("authorization", "");
         expected.put("/", root);
         expected.put("/file1", file1);
@@ -49,6 +49,18 @@ class YamlImporterTest {
         String actualRootAllowedMethods = actualRoot.get("allowed-methods");
         //Then
         assertEquals(root.get("allowed-methods"), actualRootAllowedMethods);
+    }
+
+    @Test
+    void importAsHashImportsAHashThatCanBeAccessedForRedirectValues() {
+        //Given
+        String ymlPath = "src/test/java/Mocks/mock_routes.yml";
+        //When
+        LinkedHashMap<String, LinkedHashMap<String, String>> actual = subject.importAsHash(ymlPath);
+        LinkedHashMap<String, String> actualRoot = actual.get("/");
+        String actualRootRedirectUri = actualRoot.get("redirect-uri");
+        //Then
+        assertEquals(root.get("redirect-uri"), actualRootRedirectUri);
     }
 
 }
