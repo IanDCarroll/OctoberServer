@@ -19,3 +19,5 @@
 /eat_cookie: GET
 
 /partial_content.txt: GET
+
+/redirect: GET
