@@ -235,7 +235,6 @@ class ControllerTest {
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
         String expected = "HTTP/1.1 302 Found";
-        System.out.println(new String(actual));
         assertTrue(new String(actual).contains(expected));
     }
 }
