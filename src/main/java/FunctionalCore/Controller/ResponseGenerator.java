@@ -59,6 +59,12 @@ public class ResponseGenerator {
         return response.getHead();
     }
 
+    public byte[] generate403() {
+        response = new Response();
+        setResponseStartLine(new String[]{"403", "Forbidden"});
+        return response.getHead();
+    }
+
     public byte[] generate404() {
         response = new Response();
         setResponseStartLine(new String[]{ "404", "Not Found" });

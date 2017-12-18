@@ -222,12 +222,22 @@ class ResponseGeneratorTest {
     }
 
     @Test
-    void generate3401ReturnsAWWWAuthenticateHeader() {
+    void generate401ReturnsAWWWAuthenticateHeader() {
         //Given nothing
         //When
         byte[] actual = subject.generate401();
         //Then
         String expected = "WWW-Authenticate: Basic realm=";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void generate403ReturnsA403StartLine() {
+        //Given nothing
+        //When
+        byte[] actual = subject.generate403();
+        //Then
+        String expected = "403 Forbidden";
         assertTrue(new String(actual).contains(expected));
     }
 }
