@@ -59,3 +59,8 @@
   allowed-methods: GET
   redirect-uri: ""
   authorization: "admin:hunter2"
+
+/tea:
+  allowed-methods: GET
+  redirect-uri: ""
+  authorization: ""

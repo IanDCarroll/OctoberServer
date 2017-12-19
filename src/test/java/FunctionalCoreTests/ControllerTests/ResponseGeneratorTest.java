@@ -240,4 +240,24 @@ class ResponseGeneratorTest {
         String expected = "403 Forbidden";
         assertTrue(new String(actual).contains(expected));
     }
+
+    @Test
+    void generate418ReturnsA418StartLine() {
+        //Given nothing
+        //When
+        byte[] actual = subject.generate418();
+        //Then
+        String expected = "418 I'm a teapot";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void generate418ReturnsA418MessageBody() {
+        //Given nothing
+        //When
+        byte[] actual = subject.generate418();
+        //Then
+        String expected = "\r\n\r\nI'm a teapot";
+        assertTrue(new String(actual).contains(expected));
+    }
 }

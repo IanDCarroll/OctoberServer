@@ -86,6 +86,14 @@ public class ResponseGenerator {
         return response.getHead();
     }
 
+    public byte[] generate418() {
+        response = new Response();
+        String message = "I'm a teapot";
+        setResponseStartLine(new String[]{ "418", message });
+        setBody(message.getBytes());
+        return response.getResponse();
+    }
+
     private void setResponseStartLine(String[] codeTuple) {
         response.setStartLine(codeTuple[0], codeTuple[1]);
     }
@@ -103,6 +111,10 @@ public class ResponseGenerator {
 
     private void setBody(String uri, int start, int end) {
         byte[] body = Arrays.copyOfRange(fileClerk.checkout(uri), start, end);
+        setBody(body);
+    }
+
+    private void setBody(byte[] body) {
         response.setBody(body);
         HeaderGenerator.setBasics(response);
     }

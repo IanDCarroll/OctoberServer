@@ -278,4 +278,15 @@ class ControllerTest {
         String expected = "HTTP/1.1 403 Forbidden";
         assertTrue(new String(actual).contains(expected));
     }
+
+    @Test
+    void getAppropriateResponseReturns418IfRequestIsForCoffee() {
+        String uri = "/coffee";
+        Request request = MockRequestDealer.getRequest(uri);
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String expected = "HTTP/1.1 418 I'm a teapot";
+        assertTrue(new String(actual).contains(expected));
+    }
 }

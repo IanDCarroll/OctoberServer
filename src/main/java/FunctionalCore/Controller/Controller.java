@@ -6,6 +6,7 @@ import FunctionalCore.Request;
 import java.util.LinkedHashMap;
 
 public class Controller {
+    private final String teaPotRoute = "/coffee";
     private ResponseGenerator responseGenerator;
     private LinkedHashMap<String, LinkedHashMap<String, String>> routes;
     private FileClerk fileClerk;
@@ -23,7 +24,13 @@ public class Controller {
     }
 
     public byte[] getAppropriateResponse(Request request) {
-        return valid(request);
+        return teaEarlGreyHot(request);
+    }
+
+    private byte[] teaEarlGreyHot(Request request) {
+        return request.getUri().equals(teaPotRoute)
+                ? responseGenerator.generate418()
+                : valid(request);
     }
 
     private byte[] valid(Request request) {
@@ -59,7 +66,7 @@ public class Controller {
 
     private byte[] directedUri(Request request) {
         String redirectUri = routes.get(request.getUri()).get("redirect-uri");
-        return (redirectUri.isEmpty())
+        return redirectUri.isEmpty()
                 ? handleMethod(request)
                 : responseGenerator.generate302(redirectUri);
     }
