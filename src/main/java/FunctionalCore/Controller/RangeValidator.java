@@ -2,7 +2,7 @@ package FunctionalCore.Controller;
 
 import Filers.FileClerk;
 
-public class RangeValidator {
+public class RangeValidator extends Validator {
     private final String rangePrefix = "Range: bytes=";
     private final String withNothing = "";
     FileClerk fileClerk;
@@ -20,10 +20,7 @@ public class RangeValidator {
     }
 
     public String getRangeHeader(String[] headers) {
-        for(String header : headers) {
-            if(header.startsWith(rangePrefix)) return header;
-        }
-        return withNothing;
+        return getHeader(headers, rangePrefix);
     }
 
     public int[] getRange(String uri, String rangeHeader) {
@@ -34,8 +31,8 @@ public class RangeValidator {
         if(rangeValue.startsWith("-")) { start = 0; }
         if(rangeValue.endsWith("-")) { end = sizeOf(uri); }
         String[] bounds = rangeValue.split("-");
-        if(start!=0) { start = Integer.parseInt(bounds[0]); }
-        if(end!=sizeOf(uri)) { end = Integer.parseInt(bounds[1]); }
+        if(start==notSet) { start = Integer.parseInt(bounds[0]); }
+        if(end==notSet) { end = Integer.parseInt(bounds[1]); }
         return new int[]{ start, end };
     }
 
