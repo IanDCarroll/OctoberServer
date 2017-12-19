@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 public class MockPrintStreamDealer {
-    private static byte[] bytes = new byte[50];
+    private static byte[] bytes = new byte[100];
     private static int count = 0;
 
     public static String getEntry() {

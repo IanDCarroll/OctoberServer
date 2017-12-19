@@ -1,4 +1,5 @@
 import Filers.FileClerk;
+import Filers.FileUpdater;
 import FunctionalCore.*;
 import FunctionalCore.Controller.Controller;
 import FunctionalCore.Controller.ResponseGenerator;
@@ -18,12 +19,18 @@ public class Factory {
     private int port;
     private String directory;
     private String configFile;
-    private Logger logger = new ConsoleLogger();
+    private Logger logger;
 
     public Factory(int port, String directory, String configFile) {
         this.port = port;
         this.directory = directory;
         this.configFile = configFile;
+        this.logger = buildLogger();
+    }
+
+    private Logger buildLogger() {
+        FileUpdater fileUpdater = new FileUpdater(directory);
+        return new ConsoleLogger(fileUpdater);
     }
 
     public Server buildServer() {
