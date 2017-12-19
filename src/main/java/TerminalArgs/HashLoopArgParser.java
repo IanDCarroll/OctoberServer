@@ -9,7 +9,7 @@ public class HashLoopArgParser implements ArgParser {
     private static final String DIRECTORY_FLAG = "-d";
     private static final String CONFIG_FLAG = "-c";
     private static final String defaultPort = "5000";
-    private static final String defaultDirectory = System.getProperty("user.dir");
+    private static final String defaultDirectory = System.getProperty("user.dir") + "/public";
     private static final String defaultConfigFile = "src/main/java/routes_config.yml";
 
     private int argsAccountedFor = 0;

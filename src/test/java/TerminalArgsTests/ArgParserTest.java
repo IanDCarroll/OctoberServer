@@ -34,7 +34,7 @@ class ArgParserTest {
         //When
         String actual = subject.getDirectory();
         //Then
-        String expected = System.getProperty("user.dir");
+        String expected = System.getProperty("user.dir") + "/public";
         assertEquals(expected, actual);
     }
 

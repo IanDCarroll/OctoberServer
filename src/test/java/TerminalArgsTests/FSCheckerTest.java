@@ -88,18 +88,6 @@ class FSCheckerTest {
     }
 
     @Test
-    void validateDirThrowsAnIllegalArgumentExceptionForAnyStringIsNotADir() {
-        //Given
-        String thingToSet = "This is totally not valid";
-        //Then
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            FSChecker.validateDir(thingToSet);
-        });
-        //And
-        assertEquals(FSChecker.notInFSMessage(thingToSet), exception.getMessage());
-    }
-
-    @Test
     void validateFileThrowsAnIllegalArgumentExceptionForAnyStringIsNotAFile() {
         //Given
         String thingToSet = "This is totally not valid";
