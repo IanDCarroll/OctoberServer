@@ -10,6 +10,7 @@ public class Controller {
     private LinkedHashMap<String, LinkedHashMap<String, String>> routes;
     private FileClerk fileClerk;
     private RangeValidator rangeValidator;
+    private AuthValidator authValidator;
 
     public Controller(ResponseGenerator responseGenerator,
                       LinkedHashMap<String, LinkedHashMap<String, String>> routes,
@@ -18,6 +19,7 @@ public class Controller {
         this.routes = routes;
         this.fileClerk = fileClerk;
         this.rangeValidator = new RangeValidator(fileClerk);
+        this.authValidator = new AuthValidator();
     }
 
     public byte[] getAppropriateResponse(Request request) {
@@ -36,11 +38,26 @@ public class Controller {
     private byte[] validMethod(Request request) {
         String permittedMethods = routes.get(request.getUri()).get("allowed-methods");
         return (permittedMethods.contains(request.getMethod()))
-                ? directUri(request)
+                ? restrictedUri(request)
                 : responseGenerator.generate405(permittedMethods);
     }
 
-    private byte[] directUri(Request request) {
+    private byte[] restrictedUri(Request request) {
+        String authRoute = routes.get(request.getUri()).get("authorization");
+        return authRoute.isEmpty() ? directedUri(request) : authorize(request, authRoute);
+    }
+
+    private byte[] authorize(Request request, String authRoute) {
+        String authHeader = authValidator.getAuthHeader(request.getHeaders());
+        String authValue = authValidator.getAuth(authHeader);
+        return authHeader.isEmpty() ? responseGenerator.generate401() : authorize(request, authRoute, authValue);
+    }
+
+    private byte[] authorize(Request request, String authRoute, String authValue) {
+        return authValidator.valid(authRoute, authValue) ? directedUri(request) : responseGenerator.generate403();
+    }
+
+    private byte[] directedUri(Request request) {
         String redirectUri = routes.get(request.getUri()).get("redirect-uri");
         return (redirectUri.isEmpty())
                 ? handleMethod(request)

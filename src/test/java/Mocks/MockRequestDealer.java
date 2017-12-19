@@ -83,4 +83,13 @@ public class MockRequestDealer {
         request.setHeaders(new String[]{ "Range: bytes=3-2" });
         return request;
     }
+
+    public static Request authRequest(String uri) {
+        Request request = new Request();
+        request.setMethod("GET");
+        request.setUri(uri);
+        request.setHttpV("HTTP/1.1");
+        request.setHeaders(new String[]{ "Authorization: Basic YWRtaW46aHVudGVyMg==" });
+        return request;
+    }
 }

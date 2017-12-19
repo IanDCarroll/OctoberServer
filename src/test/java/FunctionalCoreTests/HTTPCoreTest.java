@@ -37,6 +37,7 @@ class HTTPCoreTest {
         //Given
         mockRouteAttributes.put("allowed-methods", "GET");
         mockRouteAttributes.put("redirect-uri", "");
+        mockRouteAttributes.put("authorization", "");
         mockRoutes.put("/", mockRouteAttributes);
         byte[] request = "GET / HTTP/1.1\r\n\r\n".getBytes();
         //When

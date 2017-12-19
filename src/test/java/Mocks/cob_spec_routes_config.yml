@@ -58,4 +58,4 @@
 /logs:
   allowed-methods: GET
   redirect-uri: ""
-  authorization: "admin hunter2"
+  authorization: "admin:hunter2"

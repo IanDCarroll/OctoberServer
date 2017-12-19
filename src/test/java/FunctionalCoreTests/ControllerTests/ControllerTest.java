@@ -26,6 +26,7 @@ class ControllerTest {
         mockRouteAttributes = new LinkedHashMap();
         mockRouteAttributes.put("allowed-methods", "GET");
         mockRouteAttributes.put("redirect-uri", "");
+        mockRouteAttributes.put("authorization", "");
         publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
         fileClerk = new FileClerk(publicDir);
         responseGenerator = new ResponseGenerator(fileClerk);
@@ -235,6 +236,46 @@ class ControllerTest {
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
         String expected = "HTTP/1.1 302 Found";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void getAppropriateResponseReturns200IfRequestIsAuthorized() {
+        //Given
+        String uri = "/a-uri-that-needs-authorization";
+        Request request = MockRequestDealer.authRequest(uri);
+        mockRouteAttributes.put("authorization", "admin:hunter2");
+        mockRoutes.put(uri, mockRouteAttributes);
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String expected = "HTTP/1.1 200 OK";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void getAppropriateResponseReturns401IfRequestHasNoAuthHeader() {
+        String uri = "/a-uri-that-needs-authorization";
+        Request request = MockRequestDealer.getRequest(uri);
+        mockRouteAttributes.put("authorization", "Wont:Pass");
+        mockRoutes.put(uri, mockRouteAttributes);
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String expected = "HTTP/1.1 401 Unauthorized";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void getAppropriateResponseReturns403IfRequestHasIncorrectAuthHeader() {
+        String uri = "/a-uri-that-needs-authorization";
+        Request request = MockRequestDealer.authRequest(uri);
+        mockRouteAttributes.put("authorization", "Wont:Pass");
+        mockRoutes.put(uri, mockRouteAttributes);
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String expected = "HTTP/1.1 403 Forbidden";
         assertTrue(new String(actual).contains(expected));
     }
 }
