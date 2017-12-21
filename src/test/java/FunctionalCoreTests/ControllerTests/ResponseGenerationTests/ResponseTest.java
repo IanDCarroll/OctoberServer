@@ -1,6 +1,6 @@
-package FunctionalCoreTests.ControllerTests;
+package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
-import FunctionalCore.Controller.Response;
+import FunctionalCore.Controller.ResponseGeneration.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

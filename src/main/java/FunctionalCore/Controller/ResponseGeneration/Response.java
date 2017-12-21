@@ -1,4 +1,4 @@
-package FunctionalCore.Controller;
+package FunctionalCore.Controller.ResponseGeneration;
 
 import java.util.LinkedList;
 

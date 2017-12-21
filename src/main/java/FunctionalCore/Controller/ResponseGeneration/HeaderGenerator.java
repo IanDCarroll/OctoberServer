@@ -1,6 +1,4 @@
-package FunctionalCore.Controller;
-
-import Filers.FileClerk;
+package FunctionalCore.Controller.ResponseGeneration;
 
 public class HeaderGenerator {
 

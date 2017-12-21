@@ -2,7 +2,7 @@ import Filers.FileClerk;
 import Filers.FileUpdater;
 import FunctionalCore.*;
 import FunctionalCore.Controller.Controller;
-import FunctionalCore.Controller.ResponseGenerator;
+import FunctionalCore.Controller.ResponseGeneration.ResponseGenerator;
 import FunctionalCore.Core;
 import FunctionalCore.Parser.Parser;
 import Importers.FileImporter;

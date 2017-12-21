@@ -1,10 +1,8 @@
-package FunctionalCoreTests.ControllerTests;
+package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
 import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGenerator;
-import FunctionalCore.Request;
+import FunctionalCore.Controller.ResponseGeneration.ResponseGenerator;
 import Helpers.FileHelper;
-import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

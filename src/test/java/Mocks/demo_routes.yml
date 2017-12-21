@@ -9,3 +9,18 @@
   allowed-methods: GET PUT POST HEAD DELETE OPTIONS
   redirect-uri: ""
   authorization: ""
+
+/delicious:
+  allowed-methods: GET PUT POST HEAD DELETE OPTIONS
+  redirect-uri: "/fruit-snacks"
+  authorization: ""
+
+/death-star-plans:
+  allowed-methods: GET PUT POST HEAD DELETE OPTIONS
+  redirect-uri: ""
+  authorization: "tarkin:mclovin"
+
+/tea:
+  allowed-methods: GET
+  redirect-uri: ""
+  authorization: ""

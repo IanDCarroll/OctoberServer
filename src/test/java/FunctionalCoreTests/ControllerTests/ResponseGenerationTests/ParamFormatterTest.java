@@ -1,6 +1,6 @@
-package FunctionalCoreTests.ControllerTests;
+package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
-import FunctionalCore.Controller.ParamFormatter;
+import FunctionalCore.Controller.ResponseGeneration.ParamFormatter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

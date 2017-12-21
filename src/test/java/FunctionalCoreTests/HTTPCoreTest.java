@@ -4,7 +4,7 @@ import Filers.FileClerk;
 import FunctionalCore.Controller.Controller;
 import FunctionalCore.HTTPCore;
 import FunctionalCore.Parser.Parser;
-import FunctionalCore.Controller.ResponseGenerator;
+import FunctionalCore.Controller.ResponseGeneration.ResponseGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

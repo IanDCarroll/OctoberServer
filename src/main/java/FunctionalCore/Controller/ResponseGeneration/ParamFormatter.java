@@ -1,4 +1,4 @@
-package FunctionalCore.Controller;
+package FunctionalCore.Controller.ResponseGeneration;
 
 public class ParamFormatter {
     public static String[] addStyling(String[] params) {

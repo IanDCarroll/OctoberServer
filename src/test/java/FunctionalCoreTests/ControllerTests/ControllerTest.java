@@ -3,7 +3,7 @@ package FunctionalCoreTests.ControllerTests;
 import Filers.FileClerk;
 import FunctionalCore.Controller.Controller;
 import FunctionalCore.Request;
-import FunctionalCore.Controller.ResponseGenerator;
+import FunctionalCore.Controller.ResponseGeneration.ResponseGenerator;
 import Helpers.FileHelper;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
