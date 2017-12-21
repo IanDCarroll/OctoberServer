@@ -2,15 +2,11 @@
 
 /:
   allowed-methods: GET OPTIONS
-  redirect-uri: ""
-  authorization: ""
 
 /file1:
   allowed-methods: GET PUT POST HEAD DELETE OPTIONS
-  redirect-uri: ""
-  authorization: ""
+  authorization: admin:12345
 
 /coffee:
   allowed-methods: GET HEAD
   redirect-uri: /tea-earl-grey-hot
-  authorization: ""

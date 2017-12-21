@@ -2,65 +2,41 @@
 
 /:
   allowed-methods: GET HEAD
-  redirect-uri: ""
-  authorization: ""
 
 /form:
   allowed-methods: GET POST PUT DELETE
-  redirect-uri: ""
-  authorization: ""
 
 /parameters:
   allowed-methods: GET
-  redirect-uri: ""
-  authorization: ""
 
 /file1:
   allowed-methods: GET
-  redirect-uri: ""
-  authorization: ""
 
 /text-file.txt:
   allowed-methods: GET
-  redirect-uri: ""
-  authorization: ""
 
 /method_options:
   allowed-methods: GET HEAD POST OPTIONS PUT
-  redirect-uri: ""
-  authorization: ""
 
 /method_options2:
   allowed-methods: GET OPTIONS
-  redirect-uri: ""
-  authorization: ""
 
 /cookie:
   allowed-methods: GET
-  redirect-uri: ""
-  authorization: ""
 
 /eat_cookie:
   allowed-methods: GET
-  redirect-uri: ""
-  authorization: ""
 
 /partial_content.txt:
   allowed-methods: GET
-  redirect-uri: ""
-  authorization: ""
 
 /redirect:
   allowed-methods: GET
-  redirect-uri: "/"
-  authorization: ""
+  redirect-uri: /
 
 /logs:
   allowed-methods: GET
-  redirect-uri: ""
-  authorization: "admin:hunter2"
+  authorization: admin:hunter2
 
 /tea:
   allowed-methods: GET
-  redirect-uri: ""
-  authorization: ""

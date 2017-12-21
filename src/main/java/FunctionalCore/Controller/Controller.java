@@ -51,25 +51,29 @@ public class Controller {
     }
 
     private byte[] restrictedUri(Request request) {
-        String authRoute = routes.get(request.getUri()).get("authorization");
-        return authRoute.isEmpty() ? directedUri(request) : authorize(request, authRoute);
+        return routes.get(request.getUri()).containsKey("authorization")
+                ? authorize(request, routes.get(request.getUri()).get("authorization"))
+                : directedUri(request);
     }
 
     private byte[] authorize(Request request, String authRoute) {
         String authHeader = authValidator.getAuthHeader(request.getHeaders());
         String authValue = authValidator.getAuth(authHeader);
-        return authHeader.isEmpty() ? responseGenerator.generate401() : authorize(request, authRoute, authValue);
+        return authHeader.isEmpty()
+                ? responseGenerator.generate401()
+                : authorize(request, authRoute, authValue);
     }
 
     private byte[] authorize(Request request, String authRoute, String authValue) {
-        return authValidator.valid(authRoute, authValue) ? directedUri(request) : responseGenerator.generate403();
+        return authValidator.valid(authRoute, authValue)
+                ? directedUri(request)
+                : responseGenerator.generate403();
     }
 
     private byte[] directedUri(Request request) {
-        String redirectUri = routes.get(request.getUri()).get("redirect-uri");
-        return redirectUri.isEmpty()
-                ? handleMethod(request)
-                : responseGenerator.generate302(redirectUri);
+        return routes.get(request.getUri()).containsKey("redirect-uri")
+                ? responseGenerator.generate302(routes.get(request.getUri()).get("redirect-uri"))
+                : handleMethod(request);
     }
 
     private byte[] handleMethod(Request request) {
@@ -83,7 +87,9 @@ public class Controller {
 
     private byte[] checkRange(Request request) {
         String rangeHeader = rangeValidator.getRangeHeader(request.getHeaders());
-        return rangeHeader.isEmpty() ? get(request) : range(request.getUri(), rangeHeader);
+        return rangeHeader.isEmpty()
+                ? get(request)
+                : range(request.getUri(), rangeHeader);
 
     }
 

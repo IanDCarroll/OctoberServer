@@ -2,25 +2,17 @@
 
 /:
   allowed-methods: GET OPTIONS
-  redirect-uri: ""
-  authorization: ""
 
 /fruit-snacks:
   allowed-methods: GET PUT POST HEAD DELETE OPTIONS
-  redirect-uri: ""
-  authorization: ""
 
 /delicious:
-  allowed-methods: GET PUT POST HEAD DELETE OPTIONS
-  redirect-uri: "/fruit-snacks"
-  authorization: ""
+  allowed-methods: GET
+  redirect-uri: /fruit-snacks
 
 /death-star-plans:
-  allowed-methods: GET PUT POST HEAD DELETE OPTIONS
-  redirect-uri: ""
-  authorization: "tarkin:mclovin"
+  allowed-methods: GET
+  authorization: tarkin:mclovin
 
 /tea:
   allowed-methods: GET
-  redirect-uri: ""
-  authorization: ""

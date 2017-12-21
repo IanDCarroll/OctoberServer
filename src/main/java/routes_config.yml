@@ -2,15 +2,17 @@
 
 /:
   allowed-methods: GET
-  redirect-uri: ""
-  authorization: ""
 
-/exampleRoute1:
+/exampleRoute:
+  allowed-methods: GET
+
+/exampleAllMethodsRoute:
+  allowed-methods: GET HEAD POST PUT DELETE OPTIONS
+
+/exampleRedirectRoute:
   allowed-methods: GET HEAD OPTIONS
-  redirect-uri: ""
-  authorization: ""
+  redirect-uri: /exampleRoute1
 
-/exampleRoute2:
-  allowed-methods: POST PUT
-  redirect-uri: ""
-  authorization: ""
+/exampleAuthorizedRoute:
+  allowed-methods: GET
+  authorization: username:password

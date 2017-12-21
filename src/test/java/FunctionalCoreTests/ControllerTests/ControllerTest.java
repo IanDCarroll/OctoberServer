@@ -25,8 +25,6 @@ class ControllerTest {
         mockRoutes = new LinkedHashMap();
         mockRouteAttributes = new LinkedHashMap();
         mockRouteAttributes.put("allowed-methods", "GET");
-        mockRouteAttributes.put("redirect-uri", "");
-        mockRouteAttributes.put("authorization", "");
         publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
         fileClerk = new FileClerk(publicDir);
         responseGenerator = new ResponseGenerator(fileClerk);
