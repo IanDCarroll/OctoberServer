@@ -12,5 +12,5 @@
 
 /coffee:
   allowed-methods: GET HEAD
-  redirect-uri: "/tea-earl-grey-hot"
+  redirect-uri: /tea-earl-grey-hot
   authorization: ""
