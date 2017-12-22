@@ -7,10 +7,10 @@
   allowed-methods: GET
 
 /exampleAllMethodsRoute:
-  allowed-methods: GET HEAD POST PUT DELETE OPTIONS
+  allowed-methods: GET,HEAD,POST,PUT,DELETE,OPTIONS
 
 /exampleRedirectRoute:
-  allowed-methods: GET HEAD OPTIONS
+  allowed-methods: GET,HEAD,OPTIONS
   redirect-uri: /exampleRoute1
 
 /exampleAuthorizedRoute:

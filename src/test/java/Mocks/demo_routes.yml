@@ -1,10 +1,10 @@
 ---
 
 /:
-  allowed-methods: GET OPTIONS
+  allowed-methods: GET,OPTIONS
 
 /fruit-snacks:
-  allowed-methods: GET PUT POST HEAD DELETE OPTIONS
+  allowed-methods: GET,PUT,POST,HEAD,DELETE,OPTIONS
 
 /delicious:
   allowed-methods: GET

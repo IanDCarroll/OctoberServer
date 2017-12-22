@@ -31,8 +31,7 @@ public class ResponseGenerator {
     public byte[] generate200Options(String permittedMethods) {
         response = new Response();
         setResponseStartLine(ok200);
-        HeaderGenerator.setBasics(response);
-        HeaderGenerator.setAllow(response, permittedMethods);
+        response.setHeader(Response.Header.ALLOW, permittedMethods);
         return response.getHead();
     }
 
@@ -40,22 +39,21 @@ public class ResponseGenerator {
         response = new Response();
         setResponseStartLine(new String[]{"206", "Partial Content"});
         setBody(uri, start, end);
-        String length = String.valueOf(fileClerk.checkout(uri).length);
-        HeaderGenerator.setContentRange(response, start, end, length);
+        response.setHeader(Response.Header.CONTENT_RANGE, rangeValue(uri, start, end));
         return response.getResponse();
     }
 
     public byte[] generate302(String redirectToThisUri) {
         response = new Response();
         setResponseStartLine(new String[]{"302", "Found"});
-        HeaderGenerator.setLocation(response, redirectToThisUri);
+        response.setHeader(Response.Header.LOCATION, redirectToThisUri);
         return response.getHead();
     }
 
     public byte[] generate401() {
         response = new Response();
         setResponseStartLine(new String[]{"401", "Unauthorized"});
-        HeaderGenerator.setWWWAuthenticate(response);
+        response.setHeader(Response.Header.WWW_AUTHENTICATE, "Basic realm=\"Access to URI\"");
         return response.getHead();
     }
 
@@ -74,15 +72,14 @@ public class ResponseGenerator {
     public byte[] generate405(String permittedMethods) {
         response = new Response();
         setResponseStartLine(new String[]{ "405", "Method Not Allowed" });
-        HeaderGenerator.setAllow(response, permittedMethods);
+        response.setHeader(Response.Header.ALLOW, permittedMethods);
         return response.getHead();
     }
 
     public byte[] generate416(String uri) {
         response = new Response();
         setResponseStartLine(new String[]{ "416", "Range Not Satisfiable" });
-        String length = String.valueOf(fileClerk.checkout(uri).length);
-        HeaderGenerator.setContentRange(response, length);
+        response.setHeader(Response.Header.CONTENT_RANGE, rangeValue(uri));
         return response.getHead();
     }
 
@@ -96,6 +93,18 @@ public class ResponseGenerator {
 
     private void setResponseStartLine(String[] codeTuple) {
         response.setStartLine(codeTuple[0], codeTuple[1]);
+    }
+
+    private String rangeValue(String uri, int start, int end) {
+        return "bytes " + String.valueOf(start) + "-" + String.valueOf(end) + "/" + fileLengthOf(uri);
+    }
+
+    private String rangeValue(String uri) {
+        return "bytes */" + fileLengthOf(uri);
+    }
+
+    private String fileLengthOf(String uri) {
+        return String.valueOf(fileClerk.checkout(uri).length);
     }
 
     public void setParamsWithBody(String uri, String[] params) {
@@ -116,6 +125,11 @@ public class ResponseGenerator {
 
     private void setBody(byte[] body) {
         response.setBody(body);
-        HeaderGenerator.setBasics(response);
+        setBasicHeaders(response.bodyLength());
+    }
+
+    private void setBasicHeaders(String length) {
+        response.setHeader(Response.Header.CONTENT_LENGTH, length);
+        response.setHeader(Response.Header.CONTENT_TYPE, "text/plain");
     }
 }

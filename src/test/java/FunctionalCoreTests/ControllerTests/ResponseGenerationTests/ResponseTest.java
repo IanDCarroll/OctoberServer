@@ -79,6 +79,18 @@ class ResponseTest {
     }
 
     @Test
+    void setHeaderLetsYouSetADefinedHeaderToAnArbitraryValue() {
+        //Given
+        Response.Header key = Response.Header.CONTENT_LENGTH;
+        String value = "Any value at all: foosbol=yogurt395-33,the-Muchacho!$#@*";
+        //When
+        subject.setHeader(key, value);
+        //Then
+        String expected = Response.Header.CONTENT_LENGTH.key + ": " + value;
+        assertTrue(new String(subject.getHead()).contains(expected));
+    }
+
+    @Test
     void setBodySetsTheBodyToAGivenByteArray() {
         //Given
         byte[] body = "Any arbitrary byte array".getBytes();

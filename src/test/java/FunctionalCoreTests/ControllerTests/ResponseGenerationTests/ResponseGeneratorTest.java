@@ -70,7 +70,7 @@ class ResponseGeneratorTest {
     @Test
     void generate405IncludesAnAllowHeader() {
         //Given
-        String permittedMethods = "GET OPTIONS EXFOLIATE";
+        String permittedMethods = "GET,OPTIONS,EXFOLIATE";
         //When
         byte[] actual = subject.generate405(permittedMethods);
         //Then

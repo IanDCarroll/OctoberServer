@@ -1,12 +1,12 @@
 ---
 
 /:
-  allowed-methods: GET OPTIONS
+  allowed-methods: GET,OPTIONS
 
 /file1:
-  allowed-methods: GET PUT POST HEAD DELETE OPTIONS
+  allowed-methods: GET,PUT,POST,HEAD,DELETE,OPTIONS
   authorization: admin:12345
 
 /coffee:
-  allowed-methods: GET HEAD
+  allowed-methods: GET,HEAD
   redirect-uri: /tea-earl-grey-hot

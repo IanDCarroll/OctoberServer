@@ -15,10 +15,10 @@ class YamlImporterTest {
     private LinkedHashMap file1 = new LinkedHashMap();
     private LinkedHashMap coffee = new LinkedHashMap();
     {
-        root.put("allowed-methods", "GET OPTIONS");
-        file1.put("allowed-methods", "GET PUT POST HEAD DELETE OPTIONS");
+        root.put("allowed-methods", "GET,OPTIONS");
+        file1.put("allowed-methods", "GET,PUT,POST,HEAD,DELETE,OPTIONS");
         file1.put("authorization", "admin:12345");
-        coffee.put("allowed-methods", "GET HEAD");
+        coffee.put("allowed-methods", "GET,HEAD");
         coffee.put("redirect-uri", "/tea-earl-grey-hot");
         expected.put("/", root);
         expected.put("/file1", file1);

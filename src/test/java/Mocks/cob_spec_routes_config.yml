@@ -1,10 +1,10 @@
 ---
 
 /:
-  allowed-methods: GET HEAD
+  allowed-methods: GET,HEAD
 
 /form:
-  allowed-methods: GET POST PUT DELETE
+  allowed-methods: GET,POST,PUT,DELETE
 
 /parameters:
   allowed-methods: GET
@@ -16,10 +16,10 @@
   allowed-methods: GET
 
 /method_options:
-  allowed-methods: GET HEAD POST OPTIONS PUT
+  allowed-methods: GET,HEAD,POST,OPTIONS,PUT
 
 /method_options2:
-  allowed-methods: GET OPTIONS
+  allowed-methods: GET,OPTIONS
 
 /cookie:
   allowed-methods: GET

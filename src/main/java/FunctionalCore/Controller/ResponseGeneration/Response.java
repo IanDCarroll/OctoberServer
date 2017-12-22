@@ -1,5 +1,7 @@
 package FunctionalCore.Controller.ResponseGeneration;
 
+import sun.security.util.Length;
+
 import java.util.LinkedList;
 
 public class Response {
@@ -8,6 +10,19 @@ public class Response {
     private String startLine;
     private LinkedList<String> headers;
     private byte[] body;
+    public enum Header {
+        CONTENT_LENGTH("Content-Length"),
+        CONTENT_TYPE("Content-Type"),
+        CONTENT_RANGE("Content-Range"),
+        WWW_AUTHENTICATE("WWW-Authenticate"),
+        ALLOW("Allow"),
+        LOCATION("Location"),
+        SET_COOKIE("Set-Cookie");
+        public String key;
+        Header(String key) {
+            this.key = key;
+        }
+    }
 
     public Response() {
         this.headers = new LinkedList<>();
@@ -56,6 +71,10 @@ public class Response {
         } catch(ArrayIndexOutOfBoundsException e) {
             throw new ArrayIndexOutOfBoundsException("Response Object received an odd Array length");
         }
+    }
+
+    public void setHeader(Header header, String value) {
+        setValidHeaderArray(new String[]{header.key, value});
     }
 
     private void setValidHeaderArray(String[] headers) {
