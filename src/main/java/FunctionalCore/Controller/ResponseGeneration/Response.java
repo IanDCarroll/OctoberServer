@@ -1,7 +1,5 @@
 package FunctionalCore.Controller.ResponseGeneration;
 
-import sun.security.util.Length;
-
 import java.util.LinkedList;
 
 public class Response {
@@ -65,24 +63,10 @@ public class Response {
         startLine = httpV + sp + code + sp + message;
     }
 
-    public void setHeaders(String[] headers) {
-        try {
-            setValidHeaderArray(headers);
-        } catch(ArrayIndexOutOfBoundsException e) {
-            throw new ArrayIndexOutOfBoundsException("Response Object received an odd Array length");
-        }
-    }
-
     public void setHeader(Header header, String value) {
-        setValidHeaderArray(new String[]{header.key, value});
-    }
-
-    private void setValidHeaderArray(String[] headers) {
         final String separator = ":" + sp;
-        for (int i = 0; i < headers.length; i = i+2) {
-            String header = nl + headers[i] + separator + headers[i+1];
-            this.headers.add(header);
-        }
+        String formattedHeader = nl + header.key + separator + value;
+        this.headers.add(formattedHeader);
     }
 
     public void setBody(byte[] body) { this.body = uniteBytes(this.body, body); }

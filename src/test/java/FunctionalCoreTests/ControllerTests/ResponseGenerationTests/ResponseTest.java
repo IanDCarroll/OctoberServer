@@ -18,18 +18,18 @@ class ResponseTest {
     void getResponseReturnsAValidByteArray() {
         //Given
         String[] code = { "999", "Legit Response" };
-        String[] headers = { "Chill-Header", "chill out of ten",
-                            "Sick-Header", "do you even lift?" };
+        String[] headerValue = { "chill out of ten", "do you even lift?" };
         byte[] body = "Shall I compare thee to a winter's day?".getBytes();
         //When
         subject.setStartLine( code[0], code[1]);
-        subject.setHeaders(headers);
+        subject.setHeader(Response.Header.CONTENT_LENGTH, headerValue[0]);
+        subject.setHeader(Response.Header.CONTENT_TYPE, headerValue[1]);
         subject.setBody(body);
         //Then
         byte[] actual = subject.getResponse();
         String expected = "HTTP/1.1 999 Legit Response" +
-                "\nChill-Header: chill out of ten" +
-                "\nSick-Header: do you even lift?" +
+                "\nContent-Length: chill out of ten" +
+                "\nContent-Type: do you even lift?" +
                 "\r\n\r\n" +
                 "Shall I compare thee to a winter's day?";
         assertEquals(expected, new String(actual));
@@ -45,37 +45,6 @@ class ResponseTest {
         byte[] expected = "HTTP/1.1 999 Legit Response".getBytes();
         byte[] actual = subject.getResponse();
         assertTrue(new String(actual).contains(new String(expected)));
-    }
-
-    @Test
-    void setHeadersBuildsHeaders() {
-        //Given
-        String[] headerInput = { "Cool-Header", "pretty cool",
-                "Awesome-Header", "could be more awesome",
-                "Radical-Header", "totally rad" };
-        //When
-        subject.setHeaders(headerInput);
-        //Then
-        byte[] expected = ("Cool-Header: pretty cool\n" +
-                "Awesome-Header: could be more awesome\n" +
-                "Radical-Header: totally rad").getBytes();
-        byte[] actual = subject.getResponse();
-        assertTrue(new String(actual).contains(new String(expected)));
-    }
-
-    @Test
-    void setHeadersLetsYouKnowIfYouGaveItOddInput() {
-        //Given
-        String[] oddInput = { "Cool-Header", "pretty cool",
-                "Awesome-Header", "could be more awesome",
-                "Radical-Header" };
-        //When
-        Throwable exception = assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            subject.setHeaders(oddInput);
-        });
-        //Then
-        String expected = "Response Object received an odd Array length";
-        assertEquals(expected, exception.getMessage());
     }
 
     @Test
