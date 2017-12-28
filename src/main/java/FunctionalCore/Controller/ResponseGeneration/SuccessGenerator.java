@@ -7,6 +7,7 @@ public class SuccessGenerator {
     private StartLineSetter startLineSetter;
     private BodySetter bodySetter;
     private RangeHeaderSetter rangeHeaderSetter;
+    private AllowHeaderSetter allowHeaderSetter;
 
     public enum Code {
         OK                      (new String[]{"200", "OK"}),
@@ -21,6 +22,7 @@ public class SuccessGenerator {
         this.startLineSetter = new StartLineSetter();
         this.bodySetter = new BodySetter(fileClerk);
         this.rangeHeaderSetter = new RangeHeaderSetter(fileClerk);
+        this.allowHeaderSetter = new AllowHeaderSetter();
     }
 
     public byte[] generate(Code code, String uri) {
@@ -47,7 +49,7 @@ public class SuccessGenerator {
     public byte[] generateOptions(Code code, String permittedMethods) {
         response = new Response();
         startLineSetter.setStartLine(response, code.tuple);
-        response.setHeader(Response.Header.ALLOW, permittedMethods);
+        allowHeaderSetter.setAllow(response, permittedMethods);
         return response.getHead();
     }
 
