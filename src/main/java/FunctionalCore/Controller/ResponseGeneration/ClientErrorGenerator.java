@@ -7,6 +7,8 @@ public class ClientErrorGenerator {
     StartLineSetter startLineSetter;
     BodySetter bodySetter;
     RangeHeaderSetter rangeHeaderSetter;
+    AllowHeaderSetter allowHeaderSetter;
+    AuthenticateHeaderSetter authenticateHeaderSetter;
     public enum Code {
         UNAUTHORIZED            (new String[]{"401", "Unauthorized"}),
         FORBIDDEN               (new String[]{"403", "Forbidden"}),
@@ -25,6 +27,8 @@ public class ClientErrorGenerator {
         bodySetter = new BodySetter(fileClerk);
         startLineSetter = new StartLineSetter();
         rangeHeaderSetter = new RangeHeaderSetter(fileClerk);
+        allowHeaderSetter = new AllowHeaderSetter();
+        authenticateHeaderSetter = new AuthenticateHeaderSetter();
     }
 
     Response response;
@@ -32,7 +36,7 @@ public class ClientErrorGenerator {
     public byte[] generate401() {
         response = new Response();
         startLineSetter.setStartLine(response, Code.UNAUTHORIZED.tuple);
-        response.setHeader(Response.Header.WWW_AUTHENTICATE, "Basic realm=\"Access to URI\"");
+        authenticateHeaderSetter.setWWWAuth(response);
         return response.getHead();
     }
 
@@ -45,7 +49,7 @@ public class ClientErrorGenerator {
     public byte[] generate405(String permittedMethods) {
         response = new Response();
         startLineSetter.setStartLine(response, Code.METHOD_NOT_ALLOWED.tuple);
-        response.setHeader(Response.Header.ALLOW, permittedMethods);
+        allowHeaderSetter.setAllow(response, permittedMethods);
         return response.getHead();
     }
 
