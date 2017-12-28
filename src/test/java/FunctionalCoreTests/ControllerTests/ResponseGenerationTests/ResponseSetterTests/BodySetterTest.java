@@ -1,7 +1,7 @@
-package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
+package FunctionalCoreTests.ControllerTests.ResponseGenerationTests.ResponseSetterTests;
 
 import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGeneration.BodySetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
 import FunctionalCore.Controller.ResponseGeneration.Response;
 import Helpers.FileHelper;
 import org.junit.jupiter.api.AfterEach;

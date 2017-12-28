@@ -1,7 +1,7 @@
-package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
+package FunctionalCoreTests.ControllerTests.ResponseGenerationTests.ResponseSetterTests;
 
 import FunctionalCore.Controller.ResponseGeneration.Response;
-import FunctionalCore.Controller.ResponseGeneration.StartLineSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,7 @@
 package FunctionalCore.Controller.ResponseGeneration;
 
 import Filers.FileClerk;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.*;
 
 public class ClientErrorGenerator {
     FileClerk fileClerk;

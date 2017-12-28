@@ -1,6 +1,7 @@
-package FunctionalCore.Controller.ResponseGeneration;
+package FunctionalCore.Controller.ResponseGeneration.ResponseSetter;
 
 import Filers.FileClerk;
+import FunctionalCore.Controller.ResponseGeneration.Response;
 
 public class RangeHeaderSetter {
     FileClerk fileClerk;

@@ -1,5 +1,8 @@
 package FunctionalCore.Controller.ResponseGeneration;
 
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.LocationHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
+
 public class RedirectionGenerator {
     private StartLineSetter startLineSetter;
     private LocationHeaderSetter locationHeaderSetter;

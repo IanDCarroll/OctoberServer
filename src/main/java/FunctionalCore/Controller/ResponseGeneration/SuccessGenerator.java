@@ -1,6 +1,10 @@
 package FunctionalCore.Controller.ResponseGeneration;
 
 import Filers.FileClerk;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.AllowHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.RangeHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 
 public class SuccessGenerator {
     private Response response;

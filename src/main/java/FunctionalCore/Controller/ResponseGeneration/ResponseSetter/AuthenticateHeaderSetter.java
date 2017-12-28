@@ -1,4 +1,6 @@
-package FunctionalCore.Controller.ResponseGeneration;
+package FunctionalCore.Controller.ResponseGeneration.ResponseSetter;
+
+import FunctionalCore.Controller.ResponseGeneration.Response;
 
 public class AuthenticateHeaderSetter {
     private final String meansOfAuthentication = "Basic realm=\"Access to URI\"";

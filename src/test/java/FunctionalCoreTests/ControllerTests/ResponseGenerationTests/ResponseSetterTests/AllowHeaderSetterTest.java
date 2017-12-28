@@ -1,6 +1,6 @@
-package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
+package FunctionalCoreTests.ControllerTests.ResponseGenerationTests.ResponseSetterTests;
 
-import FunctionalCore.Controller.ResponseGeneration.AllowHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.AllowHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

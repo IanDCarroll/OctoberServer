@@ -1,4 +1,6 @@
-package FunctionalCore.Controller.ResponseGeneration;
+package FunctionalCore.Controller.ResponseGeneration.ResponseSetter;
+
+import FunctionalCore.Controller.ResponseGeneration.Response;
 
 public class StartLineSetter {
     public Response setStartLine(Response response, String[] codeTuple) {
