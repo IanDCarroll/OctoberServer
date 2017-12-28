@@ -1,10 +1,7 @@
 package FunctionalCore.Controller.ResponseGeneration;
 
 import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.AllowHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.RangeHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.*;
 
 public class SuccessGenerator {
     private Response response;
@@ -12,6 +9,7 @@ public class SuccessGenerator {
     private BodySetter bodySetter;
     private RangeHeaderSetter rangeHeaderSetter;
     private AllowHeaderSetter allowHeaderSetter;
+    private SetCookieHeaderSetter setCookieHeaderSetter;
 
     public enum Code {
         OK                      (new String[]{"200", "OK"}),
@@ -27,6 +25,7 @@ public class SuccessGenerator {
         this.bodySetter = new BodySetter(fileClerk);
         this.rangeHeaderSetter = new RangeHeaderSetter(fileClerk);
         this.allowHeaderSetter = new AllowHeaderSetter();
+        this.setCookieHeaderSetter = new SetCookieHeaderSetter();
     }
 
     public byte[] generate(Code code, String uri) {
@@ -55,6 +54,19 @@ public class SuccessGenerator {
         startLineSetter.setStartLine(response, code.tuple);
         allowHeaderSetter.setAllow(response, permittedMethods);
         return response.getHead();
+    }
+
+    public byte[] generateSetCookie(Code code) {
+        response = new Response();
+        startLineSetter.setStartLine(response, code.tuple);
+        setCookieHeaderSetter.setSetCookie(response);
+        bodySetter.setBody(response, "Eat".getBytes());
+        return response.getResponse();
+    }
+
+    public byte[] generateGetCookie(Code code, String uri) {
+        String[] cookie = { "mmmm chocolate" };
+        return generate(code, uri, cookie);
     }
 
     public byte[] generate(Code code, String uri, int[] rangeTuple) {

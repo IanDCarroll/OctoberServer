@@ -23,6 +23,7 @@
 
 /cookie:
   allowed-methods: GET
+  set-a-cookie: do it
 
 /eat_cookie:
   allowed-methods: GET

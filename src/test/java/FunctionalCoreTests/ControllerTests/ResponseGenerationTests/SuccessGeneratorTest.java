@@ -127,4 +127,38 @@ class SuccessGeneratorTest {
         assertTrue(new String(actual).contains(expected));
     }
 
+    @Test
+    void generateOptionsReturnsAnAllowHeader() {
+        //Given
+        String permittedMethods = "GET,OPTIONS,EAT_SPAGETTIOS";
+        //When
+        byte[] actual = subject.generateOptions(SuccessGenerator.Code.OK, permittedMethods);
+        //Then
+        String expected = "Allow: " + permittedMethods;
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void generateSetCookieReturnsASetCookieHeaderAndABodyThatSaysEat() {
+        //Given nothing
+        //When
+        byte[] actual = subject.generateSetCookie(SuccessGenerator.Code.OK);
+        //Then
+        String cookie = "Set-Cookie: ";
+        assertTrue(new String(actual).contains(cookie));
+        String body = "Eat";
+        assertTrue(new String(actual).contains(body));
+    }
+
+    @Test
+    void generateGetCookieSendsBackABodyThatIncludesmmmm_chocolate() {
+        //Given
+        String uri = "/a-uri-that-goes-to-nowhere";
+        //When
+        byte[] actual = subject.generateGetCookie(SuccessGenerator.Code.OK, uri);
+        //Then
+        String body = "mmmm chocolate";
+        assertTrue(new String(actual).contains(body));
+    }
+
 }
