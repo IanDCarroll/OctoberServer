@@ -3,7 +3,6 @@ package FunctionalCoreTests.ControllerTests;
 import Filers.FileClerk;
 import FunctionalCore.Controller.Controller;
 import FunctionalCore.Request;
-import FunctionalCore.Controller.ResponseGeneration.ResponseGenerator;
 import Helpers.FileHelper;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +17,6 @@ class ControllerTest {
     private LinkedHashMap<String, String> mockRouteAttributes;
     private String publicDir;
     private FileClerk fileClerk;
-    private ResponseGenerator responseGenerator;
 
     @BeforeEach
     void init() {
@@ -27,8 +25,7 @@ class ControllerTest {
         mockRouteAttributes.put("allowed-methods", "GET");
         publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
         fileClerk = new FileClerk(publicDir);
-        responseGenerator = new ResponseGenerator(fileClerk);
-        subject = new Controller(responseGenerator, mockRoutes, fileClerk);
+        subject = new Controller(mockRoutes, fileClerk);
     }
 
     @Test

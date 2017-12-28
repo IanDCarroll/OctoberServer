@@ -1,23 +1,28 @@
 package FunctionalCore.Controller;
 
 import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGeneration.ResponseGenerator;
+import FunctionalCore.Controller.ResponseGeneration.RedirectionGenerator;
+import FunctionalCore.Controller.ResponseGeneration.ClientErrorGenerator;
+import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import FunctionalCore.Request;
 
 import java.util.LinkedHashMap;
 
 public class Controller {
     private final String teaPotRoute = "/coffee";
-    private ResponseGenerator responseGenerator;
+    private SuccessGenerator successGenerator;
+    private RedirectionGenerator redirectionGenerator;
+    private ClientErrorGenerator clientErrorGenerator;
     private LinkedHashMap<String, LinkedHashMap<String, String>> routes;
     private FileClerk fileClerk;
     private RangeValidator rangeValidator;
     private AuthValidator authValidator;
 
-    public Controller(ResponseGenerator responseGenerator,
-                      LinkedHashMap<String, LinkedHashMap<String, String>> routes,
+    public Controller(LinkedHashMap<String, LinkedHashMap<String, String>> routes,
                       FileClerk fileClerk) {
-        this.responseGenerator = responseGenerator;
+        this.successGenerator = new SuccessGenerator(fileClerk);
+        this.redirectionGenerator = new RedirectionGenerator();
+        this.clientErrorGenerator = new ClientErrorGenerator(fileClerk);
         this.routes = routes;
         this.fileClerk = fileClerk;
         this.rangeValidator = new RangeValidator(fileClerk);
@@ -30,7 +35,7 @@ public class Controller {
 
     private byte[] teaEarlGreyHot(Request request) {
         return request.getUri().equals(teaPotRoute)
-                ? responseGenerator.generate418()
+                ? clientErrorGenerator.generate418()
                 : valid(request);
     }
 
@@ -40,14 +45,14 @@ public class Controller {
                 return validMethod(request);
             }
         }
-        return responseGenerator.generate404();
+        return clientErrorGenerator.generate(ClientErrorGenerator.Code.NOT_FOUND);
     }
 
     private byte[] validMethod(Request request) {
         String permittedMethods = routes.get(request.getUri()).get("allowed-methods");
         return (permittedMethods.contains(request.getMethod()))
                 ? restrictedUri(request)
-                : responseGenerator.generate405(permittedMethods);
+                : clientErrorGenerator.generate405(permittedMethods);
     }
 
     private byte[] restrictedUri(Request request) {
@@ -60,20 +65,26 @@ public class Controller {
         String authHeader = authValidator.getAuthHeader(request.getHeaders());
         String authValue = authValidator.getAuth(authHeader);
         return authHeader.isEmpty()
-                ? responseGenerator.generate401()
+                ? clientErrorGenerator.generate401()
                 : authorize(request, authRoute, authValue);
     }
 
     private byte[] authorize(Request request, String authRoute, String authValue) {
         return authValidator.valid(authRoute, authValue)
                 ? directedUri(request)
-                : responseGenerator.generate403();
+                : clientErrorGenerator.generate(ClientErrorGenerator.Code.FORBIDDEN);
     }
 
     private byte[] directedUri(Request request) {
         return routes.get(request.getUri()).containsKey("redirect-uri")
-                ? responseGenerator.generate302(routes.get(request.getUri()).get("redirect-uri"))
+                ? redirectRequest(request)
                 : handleMethod(request);
+    }
+
+    private byte[] redirectRequest(Request request) {
+        RedirectionGenerator.Code code = RedirectionGenerator.Code.FOUND;
+        String redirectUri = routes.get(request.getUri()).get("redirect-uri");
+        return redirectionGenerator.generate(code, redirectUri);
     }
 
     private byte[] handleMethod(Request request) {
@@ -94,17 +105,17 @@ public class Controller {
     }
 
     private byte[] range(String uri, String rangeHeader) {
-        int[] range = rangeValidator.getRange(uri, rangeHeader);
-        return rangeValidator.valid(uri, range)
-                ? responseGenerator.generate206(uri, range[0], range[1])
-                : responseGenerator.generate416(uri);
+        int[] rangeTuple = rangeValidator.getRange(uri, rangeHeader);
+        return rangeValidator.valid(uri, rangeTuple)
+                ? successGenerator.generate(SuccessGenerator.Code.PARTIAL_CONTENT, uri, rangeTuple)
+                : clientErrorGenerator.generate416(uri);
     }
 
-    private byte[] head(Request request) { return responseGenerator.generate200Head(request.getUri()); }
+    private byte[] head(Request request) { return successGenerator.generateHead(SuccessGenerator.Code.OK, request.getUri()); }
 
     private byte[] options(Request request) {
         String permittedMethods = routes.get(request.getUri()).get("allowed-methods");
-        return responseGenerator.generate200Options(permittedMethods);
+        return successGenerator.generateOptions(SuccessGenerator.Code.OK, permittedMethods);
     }
 
     private byte[] post(Request request) {
@@ -123,6 +134,6 @@ public class Controller {
     }
 
     private byte[] get(Request request) {
-        return responseGenerator.generate200(request.getUri(), request.getUriParams());
+        return successGenerator.generate(SuccessGenerator.Code.OK, request.getUri(), request.getUriParams());
     }
 }

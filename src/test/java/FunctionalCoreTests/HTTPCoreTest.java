@@ -4,7 +4,6 @@ import Filers.FileClerk;
 import FunctionalCore.Controller.Controller;
 import FunctionalCore.HTTPCore;
 import FunctionalCore.Parser.Parser;
-import FunctionalCore.Controller.ResponseGeneration.ResponseGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +17,6 @@ class HTTPCoreTest {
     private LinkedHashMap<String, String> mockRouteAttributes;
     private String publicDir;
     private FileClerk fileClerk;
-    private ResponseGenerator responseGenerator;
 
     @BeforeEach
     void setup() {
@@ -27,8 +25,7 @@ class HTTPCoreTest {
         mockRouteAttributes = new LinkedHashMap();
         publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
         fileClerk = new FileClerk(publicDir);
-        responseGenerator = new ResponseGenerator(fileClerk);
-        Controller controller = new Controller(responseGenerator, mockRoutes, fileClerk);
+        Controller controller = new Controller(mockRoutes, fileClerk);
         subject = new HTTPCore(parser, controller);
     }
 
