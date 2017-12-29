@@ -15,7 +15,8 @@ public class Response {
         WWW_AUTHENTICATE("WWW-Authenticate"),
         ALLOW("Allow"),
         LOCATION("Location"),
-        SET_COOKIE("Set-Cookie");
+        SET_COOKIE("Set-Cookie"),
+        SET_ETAG("ETag");
         public String key;
         Header(String key) {
             this.key = key;
