@@ -32,7 +32,7 @@
   allowed-methods: GET
 
 /patch-content.txt:
-  allowed-methods: GET PATCH
+  allowed-methods: GET,PATCH
 
 /redirect:
   allowed-methods: GET
