@@ -4,7 +4,7 @@
   allowed-methods: GET,OPTIONS
 
 /fruit-snacks:
-  allowed-methods: GET,PUT,POST,HEAD,DELETE,OPTIONS
+  allowed-methods: GET,PUT,POST,HEAD,DELETE,OPTIONS,PATCH
 
 /delicious:
   allowed-methods: GET
@@ -16,3 +16,10 @@
 
 /tea:
   allowed-methods: GET
+
+/patch-me-into-the-mainframe:
+  allowed-methods: GET,PATCH
+
+/cookie:
+  allowed-methods: GET
+  set-a-cookie: do it
