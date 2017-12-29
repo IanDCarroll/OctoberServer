@@ -10,11 +10,14 @@ public class SuccessGenerator {
     private RangeHeaderSetter rangeHeaderSetter;
     private AllowHeaderSetter allowHeaderSetter;
     private SetCookieHeaderSetter setCookieHeaderSetter;
+    private ETagHeaderSetter eTagHeaderSetter;
 
     public enum Code {
-        OK                      (new String[]{"200", "OK"}),
-        PARTIAL_CONTENT         (new String[]{"206", "Partial Content"});
+        OK(new String[]{"200", "OK"}),
+        NO_CONTENT(new String[]{"204", "No Content"}),
+        PARTIAL_CONTENT(new String[]{"206", "Partial Content"});
         public String[] tuple;
+
         Code(String[] tuple) {
             this.tuple = tuple;
         }
@@ -26,6 +29,7 @@ public class SuccessGenerator {
         this.rangeHeaderSetter = new RangeHeaderSetter(fileClerk);
         this.allowHeaderSetter = new AllowHeaderSetter();
         this.setCookieHeaderSetter = new SetCookieHeaderSetter();
+        this.eTagHeaderSetter = new ETagHeaderSetter();
     }
 
     public byte[] generate(Code code, String uri) {
@@ -39,6 +43,22 @@ public class SuccessGenerator {
         response = new Response();
         startLineSetter.setStartLine(response, code.tuple);
         bodySetter.setParamsWithBody(response, uri, params);
+        return response.getResponse();
+    }
+
+    public byte[] generate(Code code, String uri, String ifMatch) {
+        response = new Response();
+        startLineSetter.setStartLine(response, code.tuple);
+        eTagHeaderSetter.setETag(response, ifMatch);
+        bodySetter.setBody(response, uri);
+        return response.getResponse();
+    }
+
+    public byte[] generate(Code code, String uri, int[] rangeTuple) {
+        response = new Response();
+        startLineSetter.setStartLine(response, code.tuple);
+        bodySetter.setBody(response, uri, rangeTuple);
+        rangeHeaderSetter.setRange(response, uri, rangeTuple);
         return response.getResponse();
     }
 
@@ -65,15 +85,7 @@ public class SuccessGenerator {
     }
 
     public byte[] generateGetCookie(Code code, String uri) {
-        String[] cookie = { "mmmm chocolate" };
+        String[] cookie = {"mmmm chocolate"};
         return generate(code, uri, cookie);
-    }
-
-    public byte[] generate(Code code, String uri, int[] rangeTuple) {
-        response = new Response();
-        startLineSetter.setStartLine(response, code.tuple);
-        bodySetter.setBody(response, uri, rangeTuple);
-        rangeHeaderSetter.setRange(response, uri, rangeTuple);
-        return response.getResponse();
     }
 }

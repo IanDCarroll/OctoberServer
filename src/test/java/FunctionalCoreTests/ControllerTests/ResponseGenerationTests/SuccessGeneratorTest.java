@@ -79,7 +79,7 @@ class SuccessGeneratorTest {
     }
 
     @Test
-    void generate206ReturnsTheBodyRange() {
+    void generateReturnsTheBodyRange() {
         //Given
         int[] rangeTuple = { 2, 8 };
         byte[] content = "Original content".getBytes();
@@ -96,7 +96,7 @@ class SuccessGeneratorTest {
     }
 
     @Test
-    void generate206ReturnsA206StartLine() {
+    void generateReturnsA206StartLine() {
         //Given
         int[] rangeTuple = { 2, 8 };
         byte[] content = "Original content".getBytes();
@@ -112,7 +112,7 @@ class SuccessGeneratorTest {
     }
 
     @Test
-    void generate206ReturnsAContentRangeHeader() {
+    void generateReturnsAContentRangeHeader() {
         //Given
         int[] rangeTuple = { 2, 8 };
         byte[] content = "Original content".getBytes();
@@ -124,6 +124,38 @@ class SuccessGeneratorTest {
         //Then
         FileHelper.delete(fullPath);
         String expected = "Content-Range: bytes 2-8/" + String.valueOf(content.length);
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void generateReturnsA204StartLine() {
+        //Given
+        String ifMatch = "c001c0de";
+        byte[] content = "Original content".getBytes();
+        String uri = "/a-file-with-a-body";
+        String fullPath = publicDir + uri;
+        FileHelper.make(fullPath, content);
+        //When
+        byte[] actual = subject.generate(SuccessGenerator.Code.NO_CONTENT, uri, ifMatch);
+        //Then
+        FileHelper.delete(fullPath);
+        String expected = "204 No Content";
+        assertTrue(new String(actual).contains(expected));
+    }
+
+    @Test
+    void generateReturnsAnEtagHeader() {
+        //Given
+        String ifMatch = "c001c0de";
+        byte[] content = "Original content".getBytes();
+        String uri = "/a-file-with-a-body";
+        String fullPath = publicDir + uri;
+        FileHelper.make(fullPath, content);
+        //When
+        byte[] actual = subject.generate(SuccessGenerator.Code.NO_CONTENT, uri, ifMatch);
+        //Then
+        FileHelper.delete(fullPath);
+        String expected = "ETag: " + ifMatch;
         assertTrue(new String(actual).contains(expected));
     }
 
