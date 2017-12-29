@@ -38,6 +38,6 @@ Make sure to specify the path to the `.jar` and the `cob_spec_config.yml` from t
 - __in a separate terminal:__
 - `$ cd LOCAL/REPO/ROOT`
 - `$ mvn clean compile assembly:single`
-- `java -jar /PATH/TO/OctoberServer/target/OctoberServer.jar -c /PATH/TO/OctoberServer/src/test/java/Mocks/cob_spec_routes_config.yml`
+- `java -jar /PATH/TO/OctoberServer/target/OctoberServer.jar -c /PATH/TO/OctoberServer/src/test/java/Mocks/cob_spec_routes_config.yml -d PATH/TO/cob_spec/public`
 - __in the browser:__
 - Load [this link](http://localhost:9090/HttpTestSuite?suite) to start the test, or just click the `suite` link at the top of the page.
