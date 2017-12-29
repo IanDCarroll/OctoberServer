@@ -31,6 +31,9 @@
 /partial_content.txt:
   allowed-methods: GET
 
+/patch-content.txt:
+  allowed-methods: GET PATCH
+
 /redirect:
   allowed-methods: GET
   redirect-uri: /

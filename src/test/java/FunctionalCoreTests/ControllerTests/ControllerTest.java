@@ -284,4 +284,21 @@ class ControllerTest {
         String expected = "HTTP/1.1 418 I'm a teapot";
         assertTrue(new String(actual).contains(expected));
     }
+
+    @Test
+    void getAppropriateResponseReturns204IfRequestMethodIsPatch() {
+        //Given
+        mockRouteAttributes.put("allowed-methods", "PATCH");
+        String uri = "/patch-this";
+        mockRoutes.put(uri, mockRouteAttributes);
+        String ifMatch = "900dE7a9";
+        Request request = MockRequestDealer.patchRequest(uri, ifMatch);
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        FileHelper.delete(publicDir + uri);
+        String startline = "204 No Content";
+        assertTrue(new String(actual).contains(startline));
+        assertTrue(new String(actual).contains(ifMatch));
+    }
 }

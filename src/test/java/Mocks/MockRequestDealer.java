@@ -66,6 +66,14 @@ public class MockRequestDealer {
         return request;
     }
 
+    public static Request patchRequest(String uri, String ifMatch) {
+        Request request = new Request();
+        request.setMethod("PATCH");
+        request.setUri(uri);
+        request.setHeaders(new String[]{ "If-Match: " + ifMatch });
+        return request;
+    }
+
     public static Request partialRequest(String uri) {
         Request request = new Request();
         request.setMethod("GET");

@@ -109,6 +109,7 @@ public class Controller {
         if (request.getMethod().equals("POST")) return post(request);
         if (request.getMethod().equals("PUT")) return put(request);
         if (request.getMethod().equals("DELETE")) return delete(request);
+        if (request.getMethod().equals("PATCH")) return patch(request);
         return checkRange(request);
     }
 
@@ -151,5 +152,15 @@ public class Controller {
 
     private byte[] get(Request request) {
         return successGenerator.generate(SuccessGenerator.Code.OK, request.getUri(), request.getUriParams());
+    }
+
+    private byte[] patch(Request request) {
+        String ifMatch = "badE7a9";
+        String prefix = "If-Match: ";
+        for (String header : request.getHeaders()) {
+            if (header.startsWith(prefix)) { ifMatch = header.replace(prefix, ""); }
+        }
+        fileClerk.append(request.getUri(), request.getBody());
+        return successGenerator.generate(SuccessGenerator.Code.NO_CONTENT, request.getUri(), ifMatch);
     }
 }
