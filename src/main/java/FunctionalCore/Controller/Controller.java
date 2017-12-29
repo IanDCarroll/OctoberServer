@@ -78,19 +78,13 @@ public class Controller {
     private byte[] directedUri(Request request) {
         return routes.get(request.getUri()).containsKey("redirect-uri")
                 ? redirectRequest(request)
-                : setCookieUri(request);
+                : getCookieUri(request);
     }
 
     private byte[] redirectRequest(Request request) {
         RedirectionGenerator.Code code = RedirectionGenerator.Code.FOUND;
         String redirectUri = routes.get(request.getUri()).get("redirect-uri");
         return redirectionGenerator.generate(code, redirectUri);
-    }
-
-    private byte[] setCookieUri(Request request) {
-        return routes.get(request.getUri()).containsKey("set-a-cookie")
-                ? successGenerator.generateSetCookie(SuccessGenerator.Code.OK)
-                : getCookieUri(request);
     }
 
     private byte[] getCookieUri(Request request) {
@@ -100,7 +94,13 @@ public class Controller {
                 return successGenerator.generateGetCookie(SuccessGenerator.Code.OK, request.getUri());
             }
         }
-        return handleMethod(request);
+        return setCookieUri(request);
+    }
+
+    private byte[] setCookieUri(Request request) {
+        return routes.get(request.getUri()).containsKey("set-a-cookie")
+                ? successGenerator.generateSetCookie(SuccessGenerator.Code.OK)
+                : handleMethod(request);
     }
 
     private byte[] handleMethod(Request request) {
