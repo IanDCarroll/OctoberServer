@@ -14,6 +14,7 @@ public class ClientErrorGenerator {
     AllowHeaderSetter allowHeaderSetter;
     AuthenticateHeaderSetter authenticateHeaderSetter;
     public enum Code {
+        BAD_REQUEST             (new String[]{"400", "Bad Request"}),
         UNAUTHORIZED            (new String[]{"401", "Unauthorized"}),
         FORBIDDEN               (new String[]{"403", "Forbidden"}),
         NOT_FOUND               (new String[]{"404", "Not Found"}),
