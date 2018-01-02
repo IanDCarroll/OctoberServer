@@ -4,6 +4,7 @@ import FunctionalCore.Controller.ResponseGeneration.Response;
 
 public class ContentTypeHeaderSetter {
     public enum Type {
+        HTML_TEXT(".html", "text/html"),
         PLAIN_TEXT(".txt", "text/plain"),
         JPEG_IMAGE(".jpeg", "image/jpeg"),
         PNG_IMAGE(".png", "image/png"),
@@ -25,6 +26,6 @@ public class ContentTypeHeaderSetter {
         for (Type type : Type.values()) {
             if (uri.endsWith(type.key)) { return type.value; }
         }
-        return Type.PLAIN_TEXT.value;
+        return Type.HTML_TEXT.value;
     }
 }

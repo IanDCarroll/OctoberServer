@@ -73,7 +73,7 @@ class SuccessGeneratorTest {
         //Then
         FileHelper.delete(fullPath);
         String length = "Content-Length: " + String.valueOf(content.length);
-        String type = "Content-Type: text/plain";
+        String type = "Content-Type: text/";
         assertTrue(new String(actual).contains(length));
         assertTrue(new String(actual).contains(type));
     }

@@ -16,10 +16,34 @@ class ContentTypeHeaderSetterTest {
     }
 
     @Test
-    void setContentTypeReturnsAResponseWithAContentTypeHeaderTextPlainAsDefault() {
+    void setContentTypeReturnsAResponseWithAContentTypeHeaderTextHtmlAsDefault() {
         //Given
         Response emptyResponse = new Response();
         String testUri = "/any-old-resource";
+        //When
+        Response actual = subject.setContentType(emptyResponse, testUri);
+        //Then
+        String expected = "Content-Type: text/html";
+        assertTrue(new String(actual.getResponse()).contains(expected));
+    }
+
+    @Test
+    void setContentTypeReturnsAResponseWithAContentTypeHeaderTextHtmlWhenTheUriIsHTML() {
+        //Given
+        Response emptyResponse = new Response();
+        String testUri = "/resource.html";
+        //When
+        Response actual = subject.setContentType(emptyResponse, testUri);
+        //Then
+        String expected = "Content-Type: text/html";
+        assertTrue(new String(actual.getResponse()).contains(expected));
+    }
+
+    @Test
+    void setContentTypeReturnsAResponseWithAContentTypeHeaderTextPlainWhenTheUriIsTxt() {
+        //Given
+        Response emptyResponse = new Response();
+        String testUri = "/resource.txt";
         //When
         Response actual = subject.setContentType(emptyResponse, testUri);
         //Then
