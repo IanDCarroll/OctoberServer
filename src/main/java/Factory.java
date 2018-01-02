@@ -6,7 +6,7 @@ import FunctionalCore.Core;
 import FunctionalCore.Parser.Parser;
 import Importers.FileImporter;
 import Importers.YamlImporter;
-import Loggers.ConsoleLogger;
+import Loggers.FileLogger;
 import Loggers.Logger;
 import ServerShell.*;
 import ServerShell.Server;
@@ -29,7 +29,7 @@ public class Factory {
 
     private Logger buildLogger() {
         FileUpdater fileUpdater = new FileUpdater(directory);
-        return new ConsoleLogger(fileUpdater);
+        return new FileLogger(fileUpdater);
     }
 
     public Server buildServer() {

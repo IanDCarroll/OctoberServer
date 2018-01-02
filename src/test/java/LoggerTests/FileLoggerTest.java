@@ -2,7 +2,7 @@ package LoggerTests;
 
 import Filers.FileUpdater;
 import Helpers.FileHelper;
-import Loggers.ConsoleLogger;
+import Loggers.FileLogger;
 import Loggers.Logger;
 import Mocks.MockPrintStreamDealer;
 import org.junit.jupiter.api.AfterEach;
@@ -13,35 +13,21 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConsoleLoggerTest {
+class FileLoggerTest {
     private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
     private String fullPath = directory + "/logs";
     private FileUpdater fileUpdater;
-    private PrintStream printStream;
     private Logger logger;
 
     @BeforeEach
     void setup() {
         fileUpdater = new FileUpdater(directory);
-        printStream = MockPrintStreamDealer.printStream;
-        logger = new ConsoleLogger(fileUpdater, printStream);
+        logger = new FileLogger(fileUpdater);
     }
 
     @AfterEach
     void tearDown() {
         FileHelper.delete(fullPath);
-    }
-
-    @Test
-    void logReturnsALogEntryWithATimeStamp() {
-        //Given
-        String entry = "This is an entry";
-        String partOfTheYearInATimeStamp = "20";
-        //When
-        logger.log(entry);
-        //Then
-        assertTrue(MockPrintStreamDealer.getEntry().contains(entry));
-        assertTrue(MockPrintStreamDealer.getEntry().contains(partOfTheYearInATimeStamp));
     }
 
     @Test
