@@ -16,7 +16,7 @@ class LocationHeaderSetterTest {
     }
 
     @Test
-    void setRangeReturnsAResponseWithAStarredRangeHeaderWhenOnlyPassedAUri() {
+    void setLocationReturnsAResponseWithALocationHeaderWhenPassedAUriWhereTheResourceCanBeFound() {
         //Given
         Response emptyResponse = new Response();
         String testUri = "/this-is-where-it-is";
