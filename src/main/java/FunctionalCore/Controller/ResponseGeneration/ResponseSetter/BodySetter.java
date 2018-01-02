@@ -2,14 +2,20 @@ package FunctionalCore.Controller.ResponseGeneration.ResponseSetter;
 
 import Filers.FileClerk;
 import FunctionalCore.Controller.ResponseGeneration.Response;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ContentLengthHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ContentTypeHeaderSetter;
 
 import java.util.Arrays;
 
 public class BodySetter {
     FileClerk fileClerk;
+    ContentLengthHeaderSetter contentLengthHeaderSetter;
+    ContentTypeHeaderSetter contentTypeHeaderSetter;
 
     public BodySetter(FileClerk fileClerk) {
         this.fileClerk = fileClerk;
+        this.contentLengthHeaderSetter = new ContentLengthHeaderSetter();
+        this.contentTypeHeaderSetter = new ContentTypeHeaderSetter();
     }
 
     public Response setParamsWithBody(Response response, String uri, String[] params) {
@@ -24,17 +30,21 @@ public class BodySetter {
 
     public Response setBody(Response response, String uri, int[] rangeTuple) {
         byte[] body = Arrays.copyOfRange(fileClerk.checkout(uri), rangeTuple[0], rangeTuple[1]);
-        return setBody(response, body);
+        return setBody(response, uri, body);
     }
 
     public Response setBody(Response response, byte[] body) {
-        response.setBody(body);
-        return setBasicHeaders(response, response.bodyLength());
+        return setBody(response, "", body);
     }
 
-    private Response setBasicHeaders(Response response, String length) {
-        response.setHeader(Response.Header.CONTENT_LENGTH, length);
-        response.setHeader(Response.Header.CONTENT_TYPE, "text/plain");
+    public Response setBody(Response response, String uri, byte[] body) {
+        response.setBody(body);
+        return setBasicHeaders(response, uri, response.bodyLength());
+    }
+
+    private Response setBasicHeaders(Response response, String uri, String length) {
+        contentLengthHeaderSetter.setContentLength(response, length);
+        contentTypeHeaderSetter.setContentType(response, uri);
         return response;
     }
 }
