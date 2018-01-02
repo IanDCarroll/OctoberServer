@@ -1,14 +1,18 @@
 package FunctionalCore.Controller;
 
 import Filers.FileClerk;
+import Filers.FileUpdater;
 import FunctionalCore.Controller.ResponseGeneration.RedirectionGenerator;
 import FunctionalCore.Controller.ResponseGeneration.ClientErrorGenerator;
 import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import FunctionalCore.Request;
+import Loggers.FileLogger;
+import Loggers.Logger;
 
 import java.util.LinkedHashMap;
 
 public class Controller {
+    private Logger logger;
     private final String teaPotRoute = "/coffee";
     private SuccessGenerator successGenerator;
     private RedirectionGenerator redirectionGenerator;
@@ -20,6 +24,7 @@ public class Controller {
 
     public Controller(LinkedHashMap<String, LinkedHashMap<String, String>> routes,
                       FileClerk fileClerk) {
+        this.logger = new FileLogger(fileClerk);
         this.successGenerator = new SuccessGenerator(fileClerk);
         this.redirectionGenerator = new RedirectionGenerator();
         this.clientErrorGenerator = new ClientErrorGenerator(fileClerk);
@@ -42,6 +47,7 @@ public class Controller {
     private byte[] valid(Request request) {
         for (String route : routes.keySet()) {
             if (route.equals(request.getUri())) {
+                if (routes.get(request.getUri()).containsKey("log-activity")) { logger.log(request.record()); }
                 return validMethod(request);
             }
         }

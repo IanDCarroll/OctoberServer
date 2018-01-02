@@ -37,4 +37,6 @@ public class Request {
 
     public void setBody(byte[] body) { this.body = body; }
     public byte[] getBody() { return body; }
+
+    public String record() { return method + " " + uri + " " + httpV; }
 }

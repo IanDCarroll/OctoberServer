@@ -148,4 +148,20 @@ class RequestTest {
         //Then
         assertArrayEquals(expected, actual);
     }
+
+    @Test
+    void recordReturnsAFormattedRecordOfTheRequestStartLine() {
+        //Given
+        String method = "GET";
+        String uri = "/This-is-a-uri";
+        String httpV = "HTTP/1.1";
+        //When
+        subject.setMethod(method);
+        subject.setUri(uri);
+        subject.setHttpV(httpV);
+        String actual = subject.record();
+        //Then
+        String expected = method + " " + uri + " " + httpV;
+        assertEquals(expected, actual);
+    }
 }

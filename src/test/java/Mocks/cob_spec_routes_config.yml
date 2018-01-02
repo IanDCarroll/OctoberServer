@@ -23,7 +23,7 @@
 
 /cookie:
   allowed-methods: GET
-  set-a-cookie: do it
+  set-a-cookie:
 
 /eat_cookie:
   allowed-methods: GET
@@ -41,6 +41,18 @@
 /logs:
   allowed-methods: GET
   authorization: admin:hunter2
+
+/log:
+  allowed-methods: GET
+  log-activity:
+
+/these:
+  allowed-methods: GET
+  log-activity:
+
+/requests:
+  allowed-methods: GET
+  log-activity:
 
 /tea:
   allowed-methods: GET
