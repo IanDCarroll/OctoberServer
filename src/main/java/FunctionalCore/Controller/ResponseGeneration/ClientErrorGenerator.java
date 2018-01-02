@@ -2,6 +2,9 @@ package FunctionalCore.Controller.ResponseGeneration;
 
 import Filers.FileClerk;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.*;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.AllowHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.AuthenticateHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.RangeHeaderSetter;
 
 public class ClientErrorGenerator {
     FileClerk fileClerk;

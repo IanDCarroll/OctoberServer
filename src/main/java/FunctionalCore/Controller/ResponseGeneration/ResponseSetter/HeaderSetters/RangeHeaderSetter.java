@@ -1,4 +1,4 @@
-package FunctionalCore.Controller.ResponseGeneration.ResponseSetter;
+package FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters;
 
 import Filers.FileClerk;
 import FunctionalCore.Controller.ResponseGeneration.Response;

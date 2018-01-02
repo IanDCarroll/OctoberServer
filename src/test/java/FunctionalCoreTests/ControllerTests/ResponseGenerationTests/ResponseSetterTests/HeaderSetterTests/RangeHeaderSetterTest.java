@@ -1,7 +1,7 @@
-package FunctionalCoreTests.ControllerTests.ResponseGenerationTests.ResponseSetterTests;
+package FunctionalCoreTests.ControllerTests.ResponseGenerationTests.ResponseSetterTests.HeaderSetterTests;
 
 import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.RangeHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.RangeHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.Response;
 import Helpers.FileHelper;
 import org.junit.jupiter.api.AfterEach;

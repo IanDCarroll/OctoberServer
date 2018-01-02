@@ -1,7 +1,7 @@
-package FunctionalCoreTests.ControllerTests.ResponseGenerationTests.ResponseSetterTests;
+package FunctionalCoreTests.ControllerTests.ResponseGenerationTests.ResponseSetterTests.HeaderSetterTests;
 
 import FunctionalCore.Controller.ResponseGeneration.Response;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.ETagHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ETagHeaderSetter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -2,6 +2,10 @@ package FunctionalCore.Controller.ResponseGeneration;
 
 import Filers.FileClerk;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.*;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.AllowHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ETagHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.RangeHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.SetCookieHeaderSetter;
 
 public class SuccessGenerator {
     private Response response;
