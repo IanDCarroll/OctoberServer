@@ -44,3 +44,15 @@
 
 /tea:
   allowed-methods: GET
+
+/image.jpeg:
+  allowed-methods: GET
+
+/image.png:
+  allowed-methods: GET
+
+/image.gif:
+  allowed-methods: GET
+
+/text-file.txt:
+  allowed-methods: GET
