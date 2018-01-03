@@ -250,6 +250,7 @@ class ControllerTest {
 
     @Test
     void getAppropriateResponseReturns401IfRequestHasNoAuthHeader() {
+        //Given
         String uri = "/a-uri-that-needs-authorization";
         Request request = MockRequestDealer.getRequest(uri);
         mockRouteAttributes.put("authorization", "Wont:Pass");
@@ -263,6 +264,7 @@ class ControllerTest {
 
     @Test
     void getAppropriateResponseReturns403IfRequestHasIncorrectAuthHeader() {
+        //Given
         String uri = "/a-uri-that-needs-authorization";
         Request request = MockRequestDealer.authRequest(uri);
         mockRouteAttributes.put("authorization", "Wont:Pass");
@@ -276,6 +278,7 @@ class ControllerTest {
 
     @Test
     void getAppropriateResponseReturns418IfRequestIsForCoffee() {
+        //Given
         String uri = "/coffee";
         Request request = MockRequestDealer.getRequest(uri);
         //When
@@ -301,4 +304,18 @@ class ControllerTest {
         assertTrue(new String(actual).contains(startline));
         assertTrue(new String(actual).contains(ifMatch));
     }
+/*
+    @Test
+    void getAppropriateResponseReturns400ForBadParams() {
+        //Given
+        mockRoutes.put("/", mockRouteAttributes);
+        Request request = MockRequestDealer.badParamRequest();
+        //When
+        byte[] actual = subject.getAppropriateResponse(request);
+        //Then
+        String expected = "400 Bad Request";
+        System.out.println(new String(actual));
+        assertTrue(new String(actual).contains(expected));
+    }
+*/
 }

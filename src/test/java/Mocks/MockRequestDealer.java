@@ -100,4 +100,15 @@ public class MockRequestDealer {
         request.setHeaders(new String[]{ "Authorization: Basic YWRtaW46aHVudGVyMg==" });
         return request;
     }
+
+    public static Request badParamRequest() {
+        Request request = new Request();
+        request.setMethod("GET");
+        request.setUri("/");
+        request.setUriParams(new String[]{ "param1value1", "param2=value2" });
+        request.setHttpV("HTTP/1.1");
+        request.setHeaders(new String[]{ "Content-Type: text/plain", "Content-Length: 34" });
+        request.setBody("This represents a well-formed body".getBytes());
+        return request;
+    }
 }
