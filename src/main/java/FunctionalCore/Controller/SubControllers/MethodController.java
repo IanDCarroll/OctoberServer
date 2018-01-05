@@ -52,13 +52,17 @@ public class MethodController implements SubController {
     }
 
     private byte[] patch(Request request) {
-        String ifMatch = "badE7a9";
-        String prefix = "If-Match: ";
-        for (String header : request.getHeaders()) {
-            if (header.startsWith(prefix)) { ifMatch = header.replace(prefix, ""); }
-        }
+        String eTag = generateETag(request);
         fileClerk.append(request.getUri(), request.getBody());
-        return successGenerator.generate(SuccessGenerator.Code.NO_CONTENT, request.getUri(), ifMatch);
+        return successGenerator.generate(SuccessGenerator.Code.NO_CONTENT, request.getUri(), eTag);
+    }
+
+    private String generateETag(Request request) {
+        String eTag = "badE7a9";
+        String prefix = "If-Match: ";
+        String header = request.getHeader(prefix);
+        if (!header.isEmpty()) { eTag = header.replace(prefix, ""); }
+        return eTag;
     }
 
     private byte[] get(Request request) {

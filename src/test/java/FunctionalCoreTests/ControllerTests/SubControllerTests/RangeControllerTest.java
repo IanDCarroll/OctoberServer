@@ -130,27 +130,6 @@ class RangeControllerTest {
     }
 
     @Test
-    void getRangeHeaderGetsTheRangeHeaderFromAnArrayOfHeaders() {
-        //Given
-        String rangeHeader = "Range: bytes=2-6";
-        String[] headers = { "Header1: value1", rangeHeader, "Header2: value2" };
-        //When
-        String actual = subject.getRangeHeader(headers);
-        //Then
-        assertEquals(rangeHeader, actual);
-    }
-
-    @Test
-    void getRangeHeaderReturnsEmptyStringIfNoRangeHeaderIsFound() {
-        //Given
-        String[] headers = { "Header1: value1", "Header2: value2" };
-        //When
-        String actual = subject.getRangeHeader(headers);
-        //Then
-        assertEquals("", actual);
-    }
-
-    @Test
     void relevantReturnsTrueIfThereIsARangeHeaderInTheRequest() {
         //Given
         Request request = MockRequestDealer.partialRequest(uri);

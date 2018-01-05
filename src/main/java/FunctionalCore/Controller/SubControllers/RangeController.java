@@ -6,7 +6,7 @@ import FunctionalCore.Request;
 
 import java.util.LinkedHashMap;
 
-public class RangeController extends HeadHunter implements SubController {
+public class RangeController implements SubController {
     private final String rangePrefix = "Range: bytes=";
     private final String withNothing = "";
     FileClerk fileClerk;
@@ -18,13 +18,16 @@ public class RangeController extends HeadHunter implements SubController {
     }
 
     public boolean relevant(Request request, LinkedHashMap<String, LinkedHashMap<String, String>> routes) {
-        String isThisARangeHeader = getRangeHeader(request.getHeaders());
-        return !isThisARangeHeader.isEmpty();
+        return thereIsARangeHeader(request);
+    }
+
+    private boolean thereIsARangeHeader(Request request) {
+        return !request.getHeader(rangePrefix).isEmpty();
     }
 
     public byte[] generate(Request request, LinkedHashMap<String, LinkedHashMap<String, String>> routes) {
         String uri = request.getUri();
-        String rangeHeader = getRangeHeader(request.getHeaders());
+        String rangeHeader = request.getHeader(rangePrefix);
         return findRange(uri, rangeHeader);
     }
 
@@ -40,10 +43,6 @@ public class RangeController extends HeadHunter implements SubController {
     }
 
     private int sizeOf(String uri) { return fileClerk.checkout(uri).length; }
-
-    public String getRangeHeader(String[] headers) {
-        return getHeader(headers, rangePrefix);
-    }
 
     public int[] getRange(String uri, String rangeHeader) {
         int notSet = -1;

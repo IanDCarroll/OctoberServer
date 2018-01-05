@@ -33,7 +33,16 @@ public class Request {
             headers.add(header);
         }
     }
-    public String[] getHeaders() { return headers.toArray(new String[headers.size()]); }
+
+    public String getHeader(String key) {
+        String headerNotFound = "";
+        for(String header : getHeaders()) {
+            if(header.startsWith(key)) return header;
+        }
+        return headerNotFound;
+    }
+
+    private String[] getHeaders() { return headers.toArray(new String[headers.size()]); }
 
     public void setBody(byte[] body) { this.body = body; }
     public byte[] getBody() { return body; }

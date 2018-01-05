@@ -78,21 +78,23 @@ class RequestTest {
     @Test
     void setHeadersAddsOneHeaderToTheLinkedListOfHeaders() {
         //Given
-        String[] expected = { "A string representing an arbitrary header" };
+        String[] headers = { "A string representing an arbitrary header" };
         //When
-        subject.setHeaders(expected);
+        subject.setHeaders(headers);
         //Then
-        assertArrayEquals(expected, subject.getHeaders());
+        assertEquals(headers[0], subject.getHeader("A"));
     }
 
     @Test
     void setHeadersAcceptsAnArbitraryNumberOfHeaders() {
         //Given
-        String[] expected = { "header1", "header2", "header3" };
+        String[] headers = { "first-header", "second-header", "third-header" };
         //When
-        subject.setHeaders(expected);
+        subject.setHeaders(headers);
         //Then
-        assertArrayEquals(expected, subject.getHeaders());
+        assertEquals(headers[0], subject.getHeader("f"));
+        assertEquals(headers[1], subject.getHeader("s"));
+        assertEquals(headers[2], subject.getHeader("t"));
     }
 
     @Test
@@ -130,13 +132,13 @@ class RequestTest {
     }
 
     @Test
-    void getHeadersReturnsAnEmptyStringArrayIfNoHeadersWereAdded() {
+    void getHeaderReturnsAnEmptyStringIfNoHeaderWasAdded() {
         //Given
-        String[] expected = {};
+        String expected = "";
         //When
-        String[] actual = subject.getHeaders();
+        String actual = subject.getHeader("Not-Present_Header: ");
         //Then
-        assertArrayEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test

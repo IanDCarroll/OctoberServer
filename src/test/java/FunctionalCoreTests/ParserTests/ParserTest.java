@@ -26,16 +26,6 @@ class ParserTest {
     }
 
     @Test
-    void parseReturnsARequestObjectWithNoHeadersFromAByteArrayWithNoCRLF() {
-        //Given
-        byte[] source = "GET / HTTP/1.1".getBytes();
-        //When
-        String[] actual = subject.parse(source).getHeaders();
-        //Then
-        assertArrayEquals(new String[0], actual);
-    }
-
-    @Test
     void parseReturnsARequestObjectWithTheRightUriFromAByteArray() {
         //Given
         byte[] source = "GET / HTTP/1.1\r\n\r\n".getBytes();
@@ -70,16 +60,21 @@ class ParserTest {
     @Test
     void parseReturnsARequestObjectWithAllTheHeadersFromAByteArray() {
         //Given
+        String typePrefix = "Content-Type: ";
+        String lengthPrefix = "Content-Length: ";
         byte[] source = ("GET / HTTP/1.1\n" +
-                "Content-Type: text/plain\n" +
-                "Content-Length: 34" +
+                typePrefix + "text/plain\n" +
+                lengthPrefix + "34" +
                 "\r\n\r\n" +
                 "This represents a well-formed body").getBytes();
         //When
-        String[] actual = subject.parse(source).getHeaders();
+        String actualType = subject.parse(source).getHeader(typePrefix);
+        String actualLength = subject.parse(source).getHeader(lengthPrefix);
         //Then
-        String[] expected = { "Content-Type: text/plain", "Content-Length: 34" };
-        assertArrayEquals(expected, actual);
+        String expectedType = "Content-Type: text/plain";
+        String expectedLength = "Content-Length: 34";
+        assertEquals(expectedType, actualType);
+        assertEquals(expectedLength, actualLength);
     }
 
     @Test

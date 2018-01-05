@@ -36,11 +36,7 @@ public class CookieController implements SubController {
     }
 
     private boolean thereIsACookieHeader(Request request) {
-        String[] headers = request.getHeaders();
-        for (String header : headers) {
-            if (header.startsWith(cookieHeaderPrefix)) { return true; }
-        }
-        return false;
+        return !request.getHeader(cookieHeaderPrefix).isEmpty();
     }
 
     public byte[] generate(Request request, LinkedHashMap<String, LinkedHashMap<String, String>> routes) {

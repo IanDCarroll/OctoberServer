@@ -6,7 +6,7 @@ import FunctionalCore.Request;
 import java.util.Base64;
 import java.util.LinkedHashMap;
 
-public class AuthController extends HeadHunter implements SubController {
+public class AuthController implements SubController {
     private final String authPrefix = "Authorization: Basic";
     private final String authKey = "authorization";
     private final String withNothing = "";
@@ -25,13 +25,9 @@ public class AuthController extends HeadHunter implements SubController {
     }
 
     private boolean invalid(Request request, LinkedHashMap<String, LinkedHashMap<String, String>> routes) {
-        String requestAuth = getAuthValueFrom(authHeaderIn(request.getHeaders()));
+        String requestAuth = getAuthValueFrom(request.getHeader(authPrefix));
         String routeAuth = routes.get(request.getUri()).get(authKey);
         return !requestAuth.equals(routeAuth);
-    }
-
-    private String authHeaderIn(String[] headers) {
-        return getHeader(headers, authPrefix);
     }
 
     private String getAuthValueFrom(String authHeader) {
@@ -40,8 +36,12 @@ public class AuthController extends HeadHunter implements SubController {
     }
 
     public byte[] generate(Request request, LinkedHashMap<String, LinkedHashMap<String, String>> routes) {
-        return authHeaderIn(request.getHeaders()).isEmpty()
-                ? authGenerator.generate401()
-                : authGenerator.generate403();
+        return thereIsAnAuthHeader(request)
+                ? authGenerator.generate403()
+                : authGenerator.generate401();
+    }
+
+    private boolean thereIsAnAuthHeader(Request request) {
+        return !request.getHeader(authPrefix).isEmpty();
     }
 }
