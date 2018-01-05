@@ -1,12 +1,11 @@
 package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
 import Filers.FileClerk;
+import FunctionalCore.Controller.ResponseGeneration.CookieGenerator;
 import FunctionalCore.Controller.SubControllers.CookieController;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ETagHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.SetCookieHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
-import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import FunctionalCore.Request;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,9 +29,8 @@ class CookieControllerTest {
         StartLineSetter s = new StartLineSetter();
         BodySetter b = new BodySetter(fileClerk);
         SetCookieHeaderSetter c = new SetCookieHeaderSetter();
-        ETagHeaderSetter e = new ETagHeaderSetter();
-        SuccessGenerator successGenerator = new SuccessGenerator(s, b, c, e);
-        subject = new CookieController(successGenerator);
+        CookieGenerator cookieGenerator = new CookieGenerator(s, b, c);
+        subject = new CookieController(cookieGenerator);
     }
 
     @Test

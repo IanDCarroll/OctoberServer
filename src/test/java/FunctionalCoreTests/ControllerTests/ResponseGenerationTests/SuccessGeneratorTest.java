@@ -21,9 +21,7 @@ class SuccessGeneratorTest {
         FileClerk fileClerk = new FileClerk(publicDir);
         StartLineSetter startLineSetter = new StartLineSetter();
         BodySetter bodySetter = new BodySetter(fileClerk);
-        SetCookieHeaderSetter setCookieHeaderSetter = new SetCookieHeaderSetter();
-        ETagHeaderSetter eTagHeaderSetter = new ETagHeaderSetter();
-        subject = new SuccessGenerator(startLineSetter, bodySetter, setCookieHeaderSetter, eTagHeaderSetter);
+        subject = new SuccessGenerator(startLineSetter, bodySetter);
     }
 
     @Test
@@ -85,60 +83,4 @@ class SuccessGeneratorTest {
         assertTrue(new String(actual).contains(length));
         assertTrue(new String(actual).contains(type));
     }
-
-    @Test
-    void generateReturnsA204StartLine() {
-        //Given
-        String ifMatch = "c001c0de";
-        byte[] content = "Original content".getBytes();
-        String uri = "/a-file-with-a-body";
-        String fullPath = publicDir + uri;
-        FileHelper.make(fullPath, content);
-        //When
-        byte[] actual = subject.generate(SuccessGenerator.Code.NO_CONTENT, uri, ifMatch);
-        //Then
-        FileHelper.delete(fullPath);
-        String expected = "204 No Content";
-        assertTrue(new String(actual).contains(expected));
-    }
-
-    @Test
-    void generateReturnsAnEtagHeader() {
-        //Given
-        String ifMatch = "c001c0de";
-        byte[] content = "Original content".getBytes();
-        String uri = "/a-file-with-a-body";
-        String fullPath = publicDir + uri;
-        FileHelper.make(fullPath, content);
-        //When
-        byte[] actual = subject.generate(SuccessGenerator.Code.NO_CONTENT, uri, ifMatch);
-        //Then
-        FileHelper.delete(fullPath);
-        String expected = "ETag: " + ifMatch;
-        assertTrue(new String(actual).contains(expected));
-    }
-
-    @Test
-    void generateSetCookieReturnsASetCookieHeaderAndABodyThatSaysEat() {
-        //Given nothing
-        //When
-        byte[] actual = subject.generateSetCookie(SuccessGenerator.Code.OK);
-        //Then
-        String cookie = "Set-Cookie: ";
-        assertTrue(new String(actual).contains(cookie));
-        String body = "Eat";
-        assertTrue(new String(actual).contains(body));
-    }
-
-    @Test
-    void generateGetCookieSendsBackABodyThatIncludesmmmm_chocolate() {
-        //Given
-        String uri = "/a-uri-that-goes-to-nowhere";
-        //When
-        byte[] actual = subject.generateGetCookie(SuccessGenerator.Code.OK, uri);
-        //Then
-        String body = "mmmm chocolate";
-        assertTrue(new String(actual).contains(body));
-    }
-
 }

@@ -140,4 +140,14 @@ public class MockRequestDealer {
         request.setBody("".getBytes());
         return request;
     }
+
+    public static Request eTagRequest(String uri, String ifMatch) {
+        Request request = new Request();
+        request.setMethod("GET");
+        request.setUri(uri);
+        request.setHttpV("HTTP/1.1");
+        request.setHeaders(new String[]{"If-Match: " + ifMatch});
+        request.setBody("".getBytes());
+        return request;
+    }
 }

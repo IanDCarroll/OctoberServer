@@ -49,12 +49,13 @@ class HTTPCoreTest {
         RedirectionController d = new RedirectionController(rdg);
         SetCookieHeaderSetter schs = new SetCookieHeaderSetter();
         ETagHeaderSetter eths = new ETagHeaderSetter();
-        SuccessGenerator sg = new SuccessGenerator(sls, bs, schs, eths);
-        CookieController c = new CookieController(sg);
+        CookieGenerator cg = new CookieGenerator(sls, bs, schs);
+        CookieController c = new CookieController(cg);
         RangeHeaderSetter rhs = new RangeHeaderSetter(fileClerk);
         RangeGenerator rg = new RangeGenerator(sls, bs, rhs);
         RangeController r = new RangeController(fileClerk, rg);
-        MethodController m = new MethodController(fileClerk, sg);
+        ETagGenerator etg = new ETagGenerator(sls, bs, eths);
+        MethodController m = new MethodController(fileClerk, etg);
         Controller controller = new Controller(mockRoutes, fileLogger, t, u, a, o, d, c, r, m, ceg);
         subject = new HTTPCore(parser, controller);
     }

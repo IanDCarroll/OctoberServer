@@ -1,6 +1,7 @@
 package FunctionalCore.Controller.SubControllers;
 
 import Filers.FileClerk;
+import FunctionalCore.Controller.ResponseGeneration.ETagGenerator;
 import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import FunctionalCore.Request;
 
@@ -8,11 +9,11 @@ import java.util.LinkedHashMap;
 
 public class MethodController implements SubController {
     private FileClerk fileClerk;
-    private SuccessGenerator successGenerator;
+    private ETagGenerator eTagGenerator;
 
-    public MethodController(FileClerk fileClerk, SuccessGenerator successGenerator) {
+    public MethodController(FileClerk fileClerk, ETagGenerator eTagGenerator) {
         this.fileClerk = fileClerk;
-        this.successGenerator = successGenerator;
+        this.eTagGenerator =   eTagGenerator;
     }
 
     public boolean relevant(Request request, LinkedHashMap<String, LinkedHashMap<String, String>> routes) {
@@ -36,7 +37,7 @@ public class MethodController implements SubController {
         return get(request);
     }
 
-    private byte[] head(Request request) { return successGenerator.generateHead(SuccessGenerator.Code.OK, request.getUri()); }
+    private byte[] head(Request request) { return eTagGenerator.generateHead(SuccessGenerator.Code.OK, request.getUri()); }
 
     private byte[] post(Request request) {
         fileClerk.append(request.getUri(), request.getBody());
@@ -54,20 +55,11 @@ public class MethodController implements SubController {
     }
 
     private byte[] patch(Request request) {
-        String eTag = generateETag(request);
         fileClerk.append(request.getUri(), request.getBody());
-        return successGenerator.generate(SuccessGenerator.Code.NO_CONTENT, request.getUri(), eTag);
-    }
-
-    private String generateETag(Request request) {
-        String eTag = "badE7a9";
-        String prefix = "If-Match: ";
-        String header = request.getHeader(prefix);
-        if (!header.isEmpty()) { eTag = header.replace(prefix, ""); }
-        return eTag;
+        return eTagGenerator.generate(SuccessGenerator.Code.NO_CONTENT, request);
     }
 
     private byte[] get(Request request) {
-        return successGenerator.generate(SuccessGenerator.Code.OK, request.getUri(), request.getUriParams());
+        return eTagGenerator.generate(SuccessGenerator.Code.OK, request.getUri(), request.getUriParams());
     }
 }

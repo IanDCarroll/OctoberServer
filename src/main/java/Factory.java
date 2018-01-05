@@ -165,16 +165,22 @@ public class Factory {
     }
 
     private CookieController buildCookieController() {
-        SuccessGenerator successGenerator = buildSuccessGenerator();
-        return new CookieController(successGenerator);
+        CookieGenerator cookieGenerator = buildCookieGenerator();
+        return new CookieController(cookieGenerator);
     }
 
-    private SuccessGenerator buildSuccessGenerator() {
+    private CookieGenerator buildCookieGenerator() {
         StartLineSetter startLineSetter = buildStartLineSetter();
         BodySetter bodySetter = buildBodySetter();
         SetCookieHeaderSetter setCookieHeaderSetter = new SetCookieHeaderSetter();
+        return new CookieGenerator(startLineSetter, bodySetter, setCookieHeaderSetter);
+    }
+
+    private ETagGenerator buildETagGenerator() {
+        StartLineSetter startLineSetter = buildStartLineSetter();
+        BodySetter bodySetter = buildBodySetter();
         ETagHeaderSetter eTagHeaderSetter = new ETagHeaderSetter();
-        return new SuccessGenerator(startLineSetter, bodySetter, setCookieHeaderSetter, eTagHeaderSetter);
+        return new ETagGenerator(startLineSetter, bodySetter, eTagHeaderSetter);
     }
 
     private RangeController buildRangeController() {
@@ -190,7 +196,7 @@ public class Factory {
     }
 
     private MethodController buildMethodController() {
-        SuccessGenerator successGenerator = buildSuccessGenerator();
-        return new MethodController(fileClerk, buildSuccessGenerator());
+        ETagGenerator eTagGenerator = buildETagGenerator();
+        return new MethodController(fileClerk, eTagGenerator);
     }
 }

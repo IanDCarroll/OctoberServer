@@ -1,6 +1,7 @@
 package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
 import Filers.FileClerk;
+import FunctionalCore.Controller.ResponseGeneration.ETagGenerator;
 import FunctionalCore.Controller.SubControllers.MethodController;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ETagHeaderSetter;
@@ -29,10 +30,9 @@ class MethodControllerTest {
         FileClerk fileClerk = new FileClerk(publicDir);
         StartLineSetter s = new StartLineSetter();
         BodySetter b = new BodySetter(fileClerk);
-        SetCookieHeaderSetter c = new SetCookieHeaderSetter();
         ETagHeaderSetter e = new ETagHeaderSetter();
-        SuccessGenerator successGenerator = new SuccessGenerator(s, b, c, e);
-        subject = new MethodController(fileClerk, successGenerator);
+        ETagGenerator eTagGenerator = new ETagGenerator(s, b, e);
+        subject = new MethodController(fileClerk, eTagGenerator);
     }
 
     @Test
