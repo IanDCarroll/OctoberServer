@@ -1,6 +1,8 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
 import FunctionalCore.Controller.ResponseGeneration.RedirectionGenerator;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.LocationHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,11 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RedirectionGeneratorTest {
     private RedirectionGenerator subject;
-    private String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
 
     @BeforeEach
     void setup() {
-        subject = new RedirectionGenerator();
+        StartLineSetter startLineSetter = new StartLineSetter();
+        LocationHeaderSetter locationHeaderSetter = new LocationHeaderSetter();
+        subject = new RedirectionGenerator(startLineSetter, locationHeaderSetter);
     }
 
     @Test

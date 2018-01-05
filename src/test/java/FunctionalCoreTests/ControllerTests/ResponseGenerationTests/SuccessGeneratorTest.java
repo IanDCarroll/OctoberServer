@@ -1,6 +1,10 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
 import Filers.FileClerk;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ETagHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.SetCookieHeaderSetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import Helpers.FileHelper;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +19,11 @@ class SuccessGeneratorTest {
     @BeforeEach
     void init() {
         FileClerk fileClerk = new FileClerk(publicDir);
-        subject = new SuccessGenerator(fileClerk);
+        StartLineSetter startLineSetter = new StartLineSetter();
+        BodySetter bodySetter = new BodySetter(fileClerk);
+        SetCookieHeaderSetter setCookieHeaderSetter = new SetCookieHeaderSetter();
+        ETagHeaderSetter eTagHeaderSetter = new ETagHeaderSetter();
+        subject = new SuccessGenerator(startLineSetter, bodySetter, setCookieHeaderSetter, eTagHeaderSetter);
     }
 
     @Test
@@ -79,55 +87,6 @@ class SuccessGeneratorTest {
     }
 
     @Test
-    void generateReturnsTheBodyRange() {
-        //Given
-        int[] rangeTuple = { 2, 8 };
-        byte[] content = "Original content".getBytes();
-        String uri = "/a-file-with-a-body";
-        String fullPath = publicDir + uri;
-        FileHelper.make(fullPath, content);
-        //When
-        byte[] actual = subject.generate(SuccessGenerator.Code.PARTIAL_CONTENT, uri, rangeTuple);
-        //Then
-        FileHelper.delete(fullPath);
-        String expected = "iginal";
-        assertTrue(new String(actual).contains(expected));
-        assertFalse(new String(actual).contains(new String(content)));
-    }
-
-    @Test
-    void generateReturnsA206StartLine() {
-        //Given
-        int[] rangeTuple = { 2, 8 };
-        byte[] content = "Original content".getBytes();
-        String uri = "/a-file-with-a-body";
-        String fullPath = publicDir + uri;
-        FileHelper.make(fullPath, content);
-        //When
-        byte[] actual = subject.generate(SuccessGenerator.Code.PARTIAL_CONTENT, uri, rangeTuple);
-        //Then
-        FileHelper.delete(fullPath);
-        String expected = "206 Partial Content";
-        assertTrue(new String(actual).contains(expected));
-    }
-
-    @Test
-    void generateReturnsAContentRangeHeader() {
-        //Given
-        int[] rangeTuple = { 2, 8 };
-        byte[] content = "Original content".getBytes();
-        String uri = "/a-file-with-a-body";
-        String fullPath = publicDir + uri;
-        FileHelper.make(fullPath, content);
-        //When
-        byte[] actual = subject.generate(SuccessGenerator.Code.PARTIAL_CONTENT, uri, rangeTuple);
-        //Then
-        FileHelper.delete(fullPath);
-        String expected = "Content-Range: bytes 2-8/" + String.valueOf(content.length);
-        assertTrue(new String(actual).contains(expected));
-    }
-
-    @Test
     void generateReturnsA204StartLine() {
         //Given
         String ifMatch = "c001c0de";
@@ -156,17 +115,6 @@ class SuccessGeneratorTest {
         //Then
         FileHelper.delete(fullPath);
         String expected = "ETag: " + ifMatch;
-        assertTrue(new String(actual).contains(expected));
-    }
-
-    @Test
-    void generateOptionsReturnsAnAllowHeader() {
-        //Given
-        String permittedMethods = "GET,OPTIONS,EAT_SPAGETTIOS";
-        //When
-        byte[] actual = subject.generateOptions(SuccessGenerator.Code.OK, permittedMethods);
-        //Then
-        String expected = "Allow: " + permittedMethods;
         assertTrue(new String(actual).contains(expected));
     }
 

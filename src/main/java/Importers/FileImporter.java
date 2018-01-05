@@ -3,5 +3,5 @@ package Importers;
 import java.util.LinkedHashMap;
 
 public interface FileImporter {
-    LinkedHashMap importAsHash(String filePath);
+    LinkedHashMap<String,  LinkedHashMap<String, String>> importAsHash(String filePath);
 }

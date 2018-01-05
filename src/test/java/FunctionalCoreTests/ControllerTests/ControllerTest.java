@@ -1,9 +1,14 @@
 package FunctionalCoreTests.ControllerTests;
 
 import Filers.FileClerk;
-import FunctionalCore.Controller.Controller;
+import FunctionalCore.Controller.*;
+import FunctionalCore.Controller.ResponseGeneration.*;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.*;
+import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Request;
 import Helpers.FileHelper;
+import Loggers.FileLogger;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +30,31 @@ class ControllerTest {
         mockRouteAttributes.put("allowed-methods", "GET");
         publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
         fileClerk = new FileClerk(publicDir);
-        subject = new Controller(mockRoutes, fileClerk);
+        FileLogger fileLogger = new FileLogger(fileClerk);
+                StartLineSetter sls = new StartLineSetter();
+                BodySetter bs = new BodySetter(fileClerk);
+            TeaPotGenerator tg = new TeaPotGenerator(sls, bs);
+        TeaPotController t = new TeaPotController(tg);
+        ClientErrorGenerator ceg = new ClientErrorGenerator(sls);
+        UriController u = new UriController(ceg);
+                AuthenticateHeaderSetter authHS = new AuthenticateHeaderSetter();
+            AuthGenerator ag = new AuthGenerator(sls, authHS);
+        AuthController a = new AuthController(ag);
+                AllowHeaderSetter allowHS = new AllowHeaderSetter();
+            OptionsGenerator og = new OptionsGenerator(sls, allowHS);
+        OptionsController o = new OptionsController(og);
+                LocationHeaderSetter lhs = new LocationHeaderSetter();
+            RedirectionGenerator rdg = new RedirectionGenerator(sls, lhs);
+        RedirectionController d = new RedirectionController(rdg);
+                SetCookieHeaderSetter schs = new SetCookieHeaderSetter();
+                ETagHeaderSetter eths = new ETagHeaderSetter();
+            SuccessGenerator sg = new SuccessGenerator(sls, bs, schs, eths);
+        CookieController c = new CookieController(sg);
+                RangeHeaderSetter rhs = new RangeHeaderSetter(fileClerk);
+            RangeGenerator rg = new RangeGenerator(sls, bs, rhs);
+        RangeController r = new RangeController(fileClerk, rg);
+        MethodController m = new MethodController(fileClerk, sg);
+        subject = new Controller(mockRoutes, fileLogger, t, u, a, o, d, c, r, m, ceg);
     }
 
     @Test
@@ -237,7 +266,7 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturns200IfRequestIsAuthorized() {
         //Given
-        String uri = "/a-uri-that-needs-authorization";
+        String uri = "/a-uri-that-needs-properties";
         Request request = MockRequestDealer.authRequest(uri);
         mockRouteAttributes.put("authorization", "admin:hunter2");
         mockRoutes.put(uri, mockRouteAttributes);
@@ -251,7 +280,7 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturns401IfRequestHasNoAuthHeader() {
         //Given
-        String uri = "/a-uri-that-needs-authorization";
+        String uri = "/a-uri-that-needs-properties";
         Request request = MockRequestDealer.getRequest(uri);
         mockRouteAttributes.put("authorization", "Wont:Pass");
         mockRoutes.put(uri, mockRouteAttributes);
@@ -265,7 +294,7 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturns403IfRequestHasIncorrectAuthHeader() {
         //Given
-        String uri = "/a-uri-that-needs-authorization";
+        String uri = "/a-uri-that-needs-properties";
         Request request = MockRequestDealer.authRequest(uri);
         mockRouteAttributes.put("authorization", "Wont:Pass");
         mockRoutes.put(uri, mockRouteAttributes);

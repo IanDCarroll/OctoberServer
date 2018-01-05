@@ -14,9 +14,9 @@ public class RedirectionGenerator {
         }
     }
 
-    public RedirectionGenerator() {
-        this.startLineSetter = new StartLineSetter();
-        this.locationHeaderSetter = new LocationHeaderSetter();
+    public RedirectionGenerator(StartLineSetter startLineSetter, LocationHeaderSetter locationHeaderSetter) {
+        this.startLineSetter = startLineSetter;
+        this.locationHeaderSetter = locationHeaderSetter;
     }
 
     public byte[] generate(Code code, String redirectToThisUri) {

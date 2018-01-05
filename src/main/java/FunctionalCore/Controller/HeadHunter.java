@@ -1,6 +1,6 @@
 package FunctionalCore.Controller;
 
-public class Validator {
+public class HeadHunter {
     private final String emptyString = "";
 
     public String getHeader(String[] headers, String key) {

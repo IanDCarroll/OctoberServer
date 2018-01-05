@@ -1,18 +1,13 @@
 package FunctionalCore.Controller.ResponseGeneration;
 
-import Filers.FileClerk;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.*;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.AllowHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ETagHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.RangeHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.SetCookieHeaderSetter;
 
 public class SuccessGenerator {
     private Response response;
     private StartLineSetter startLineSetter;
     private BodySetter bodySetter;
-    private RangeHeaderSetter rangeHeaderSetter;
-    private AllowHeaderSetter allowHeaderSetter;
     private SetCookieHeaderSetter setCookieHeaderSetter;
     private ETagHeaderSetter eTagHeaderSetter;
 
@@ -27,13 +22,14 @@ public class SuccessGenerator {
         }
     }
 
-    public SuccessGenerator(FileClerk fileClerk) {
-        this.startLineSetter = new StartLineSetter();
-        this.bodySetter = new BodySetter(fileClerk);
-        this.rangeHeaderSetter = new RangeHeaderSetter(fileClerk);
-        this.allowHeaderSetter = new AllowHeaderSetter();
-        this.setCookieHeaderSetter = new SetCookieHeaderSetter();
-        this.eTagHeaderSetter = new ETagHeaderSetter();
+    public SuccessGenerator(StartLineSetter startLineSetter,
+                            BodySetter bodySetter,
+                            SetCookieHeaderSetter setCookieHeaderSetter,
+                            ETagHeaderSetter eTagHeaderSetter) {
+        this.startLineSetter = startLineSetter;
+        this.bodySetter = bodySetter;
+        this.setCookieHeaderSetter = setCookieHeaderSetter;
+        this.eTagHeaderSetter = eTagHeaderSetter;
     }
 
     public byte[] generate(Code code, String uri) {
@@ -58,25 +54,10 @@ public class SuccessGenerator {
         return response.getResponse();
     }
 
-    public byte[] generate(Code code, String uri, int[] rangeTuple) {
-        response = new Response();
-        startLineSetter.setStartLine(response, code.tuple);
-        bodySetter.setBody(response, uri, rangeTuple);
-        rangeHeaderSetter.setRange(response, uri, rangeTuple);
-        return response.getResponse();
-    }
-
     public byte[] generateHead(Code code, String uri) {
         response = new Response();
         startLineSetter.setStartLine(response, code.tuple);
         bodySetter.setBody(response, uri);
-        return response.getHead();
-    }
-
-    public byte[] generateOptions(Code code, String permittedMethods) {
-        response = new Response();
-        startLineSetter.setStartLine(response, code.tuple);
-        allowHeaderSetter.setAllow(response, permittedMethods);
         return response.getHead();
     }
 

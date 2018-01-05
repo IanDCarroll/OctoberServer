@@ -79,7 +79,7 @@ public class MockRequestDealer {
         request.setMethod("GET");
         request.setUri(uri);
         request.setHttpV("HTTP/1.1");
-        request.setHeaders(new String[]{ "Range: bytes=2-8" });
+        request.setHeaders(new String[]{ "Range: bytes=2-6" });
         return request;
     }
 
@@ -98,6 +98,25 @@ public class MockRequestDealer {
         request.setUri(uri);
         request.setHttpV("HTTP/1.1");
         request.setHeaders(new String[]{ "Authorization: Basic YWRtaW46aHVudGVyMg==" });
+        return request;
+    }
+
+    public static Request badAuthRequest(String uri) {
+        Request request = new Request();
+        request.setMethod("GET");
+        request.setUri(uri);
+        request.setHttpV("HTTP/1.1");
+        request.setHeaders(new String[]{ "Authorization: Basic BadAuth" });
+        return request;
+    }
+
+    public static Request cookieRequest(String uri) {
+        Request request = new Request();
+        request.setMethod("GET");
+        request.setUri(uri);
+        request.setHttpV("HTTP/1.1");
+        request.setHeaders(new String[]{"Cookie: some-arbitrary-cookie-value"});
+        request.setBody("".getBytes());
         return request;
     }
 

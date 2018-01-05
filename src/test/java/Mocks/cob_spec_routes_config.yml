@@ -27,6 +27,7 @@
 
 /eat_cookie:
   allowed-methods: GET
+  watch-for-cookie:
 
 /partial_content.txt:
   allowed-methods: GET
