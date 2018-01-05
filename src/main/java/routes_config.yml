@@ -7,7 +7,7 @@
   allowed-methods: GET
 
 /exampleAllMethodsRoute:
-  allowed-methods: GET,HEAD,POST,PUT,DELETE,OPTIONS
+  allowed-methods: GET,HEAD,POST,PUT,DELETE,PATCH,OPTIONS
 
 /exampleRedirectRoute:
   allowed-methods: GET,HEAD,OPTIONS
@@ -16,3 +16,15 @@
 /exampleAuthorizedRoute:
   allowed-methods: GET
   authorization: username:password
+
+/exampleLogEnabledRoute:
+  allowed-methods: GET
+  log-activity:
+
+/exampleCookieSettingRoute:
+  allowed-methods: GET
+  set-a-cookie:
+
+/exampleCookieWatchingRoute:
+  allowed-methods: GET
+  watch-cor-cookie:
