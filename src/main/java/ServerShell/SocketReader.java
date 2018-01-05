@@ -15,9 +15,7 @@ public class SocketReader {
     public byte[] readRequest(AsynchronousSocketChannel clientConnection) {
         try {
             getRequestFrom(clientConnection);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { /*recover silently*/ }
         return request;
     }
 
