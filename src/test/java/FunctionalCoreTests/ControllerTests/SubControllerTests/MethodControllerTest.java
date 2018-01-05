@@ -36,7 +36,7 @@ class MethodControllerTest {
     }
 
     @Test
-    void relevantAlwaysReturnsTrueForMethodControllerItsTheEndOfTheLine() {
+    void relevantReturnsTrueIfTheRequestIsNotBad() {
         //Given
         String uri = "/flagged-for-cookie-setting";
         Request request = MockRequestDealer.getRequest(uri);
@@ -44,5 +44,15 @@ class MethodControllerTest {
         boolean actual = subject.relevant(request, routes);
         //Then
         assertTrue(actual);
+    }
+
+    @Test
+    void relevantReturnsFalseIfTheRequestHasNoHTTPVersionSet() {
+        //Given
+        Request request = MockRequestDealer.nullHTTPVRequest();
+        //When
+        boolean actual = subject.relevant(request, routes);
+        //Then
+        assertFalse(actual);
     }
 }

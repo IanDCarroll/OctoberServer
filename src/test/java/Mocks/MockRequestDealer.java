@@ -63,6 +63,7 @@ public class MockRequestDealer {
         Request request = new Request();
         request.setMethod("DELETE");
         request.setUri(uri);
+        request.setHttpV("HTTP/1.1");
         return request;
     }
 
@@ -70,6 +71,7 @@ public class MockRequestDealer {
         Request request = new Request();
         request.setMethod("PATCH");
         request.setUri(uri);
+        request.setHttpV("HTTP/1.1");
         request.setHeaders(new String[]{ "If-Match: " + ifMatch });
         return request;
     }
@@ -128,6 +130,14 @@ public class MockRequestDealer {
         request.setHttpV("HTTP/1.1");
         request.setHeaders(new String[]{ "Content-Type: text/plain", "Content-Length: 34" });
         request.setBody("This represents a well-formed body".getBytes());
+        return request;
+    }
+
+    public static Request nullHTTPVRequest() {
+        Request request = new Request();
+        request.setMethod("GET");
+        request.setUri("/");
+        request.setBody("".getBytes());
         return request;
     }
 }

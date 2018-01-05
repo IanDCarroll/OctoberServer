@@ -16,8 +16,10 @@ public class MethodController implements SubController {
     }
 
     public boolean relevant(Request request, LinkedHashMap<String, LinkedHashMap<String, String>> routes) {
-        return true;
+        return theHTTPVersionIsSet(request);
     }
+
+    private boolean theHTTPVersionIsSet(Request request) { return !request.getHttpV().equals("Not Set"); }
 
     public byte[] generate(Request request, LinkedHashMap<String, LinkedHashMap<String, String>> routes) {
         return findMethod(request);
