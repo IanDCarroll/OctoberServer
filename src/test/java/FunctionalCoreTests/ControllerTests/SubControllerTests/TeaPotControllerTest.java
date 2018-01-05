@@ -1,18 +1,15 @@
-package FunctionalCoreTests.ControllerTests;
+package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
 import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGeneration.ClientErrorGenerator;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Controller.ResponseGeneration.TeaPotGenerator;
-import FunctionalCore.Controller.TeaPotController;
+import FunctionalCore.Controller.SubControllers.TeaPotController;
 import FunctionalCore.Request;
 import Mocks.MockRequestDealer;
-import com.sun.org.apache.regexp.internal.RE;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;

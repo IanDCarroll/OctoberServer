@@ -1,4 +1,4 @@
-package FunctionalCore.Controller;
+package FunctionalCore.Controller.SubControllers;
 
 import Filers.FileClerk;
 import FunctionalCore.Controller.ResponseGeneration.RangeGenerator;

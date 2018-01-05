@@ -1,6 +1,6 @@
-package FunctionalCoreTests.ControllerTests;
+package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
-import FunctionalCore.Controller.AuthController;
+import FunctionalCore.Controller.SubControllers.AuthController;
 import FunctionalCore.Controller.ResponseGeneration.AuthGenerator;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.AuthenticateHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;

@@ -1,4 +1,4 @@
-package FunctionalCore.Controller;
+package FunctionalCore.Controller.SubControllers;
 
 import FunctionalCore.Controller.ResponseGeneration.RedirectionGenerator;
 import FunctionalCore.Request;

@@ -1,7 +1,7 @@
-package FunctionalCoreTests.ControllerTests;
+package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
 import Filers.FileClerk;
-import FunctionalCore.Controller.CookieController;
+import FunctionalCore.Controller.SubControllers.CookieController;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ETagHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.SetCookieHeaderSetter;

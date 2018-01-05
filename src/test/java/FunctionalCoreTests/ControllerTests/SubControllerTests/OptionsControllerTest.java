@@ -1,6 +1,6 @@
-package FunctionalCoreTests.ControllerTests;
+package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
-import FunctionalCore.Controller.OptionsController;
+import FunctionalCore.Controller.SubControllers.OptionsController;
 import FunctionalCore.Controller.ResponseGeneration.OptionsGenerator;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.AllowHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;

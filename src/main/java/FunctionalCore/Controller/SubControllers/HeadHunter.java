@@ -1,4 +1,4 @@
-package FunctionalCore.Controller;
+package FunctionalCore.Controller.SubControllers;
 
 public class HeadHunter {
     private final String emptyString = "";

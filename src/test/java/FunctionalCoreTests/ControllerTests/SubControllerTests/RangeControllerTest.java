@@ -1,7 +1,7 @@
-package FunctionalCoreTests.ControllerTests;
+package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
 import Filers.FileClerk;
-import FunctionalCore.Controller.RangeController;
+import FunctionalCore.Controller.SubControllers.RangeController;
 import FunctionalCore.Controller.ResponseGeneration.RangeGenerator;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.RangeHeaderSetter;

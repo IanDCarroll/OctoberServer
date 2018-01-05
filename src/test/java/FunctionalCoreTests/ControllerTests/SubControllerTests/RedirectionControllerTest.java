@@ -1,5 +1,6 @@
-package FunctionalCore.Controller;
+package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
+import FunctionalCore.Controller.SubControllers.RedirectionController;
 import FunctionalCore.Controller.ResponseGeneration.RedirectionGenerator;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.LocationHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;

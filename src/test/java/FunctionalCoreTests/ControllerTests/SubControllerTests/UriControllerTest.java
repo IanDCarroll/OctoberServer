@@ -1,8 +1,8 @@
-package FunctionalCoreTests.ControllerTests;
+package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
 import FunctionalCore.Controller.ResponseGeneration.ClientErrorGenerator;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
-import FunctionalCore.Controller.UriController;
+import FunctionalCore.Controller.SubControllers.UriController;
 import FunctionalCore.Request;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;

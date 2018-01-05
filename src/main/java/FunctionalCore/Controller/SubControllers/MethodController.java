@@ -1,10 +1,6 @@
-package FunctionalCore.Controller;
+package FunctionalCore.Controller.SubControllers;
 
 import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGeneration.RangeGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.RangeHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import FunctionalCore.Request;
 
