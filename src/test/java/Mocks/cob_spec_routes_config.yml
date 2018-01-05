@@ -12,6 +12,9 @@
 /file1:
   allowed-methods: GET
 
+/file2:
+  allowed-methods: GET
+
 /text-file.txt:
   allowed-methods: GET
 
@@ -44,15 +47,15 @@
   authorization: admin:hunter2
 
 /log:
-  allowed-methods: GET
+  allowed-methods: OPTIONS
   log-activity:
 
 /these:
-  allowed-methods: GET
+  allowed-methods: OPTIONS
   log-activity:
 
 /requests:
-  allowed-methods: GET
+  allowed-methods: OPTIONS
   log-activity:
 
 /tea:
