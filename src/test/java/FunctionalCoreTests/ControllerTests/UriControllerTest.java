@@ -1,6 +1,5 @@
 package FunctionalCoreTests.ControllerTests;
 
-import Filers.FileClerk;
 import FunctionalCore.Controller.ResponseGeneration.ClientErrorGenerator;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Controller.UriController;
@@ -40,6 +39,18 @@ class UriControllerTest {
     }
 
     @Test
+    void relevantReturnsTrueIfAnyUriParamsDontHaveAKeyValueDelimiter() {
+        //Given
+        String uri = "/found";
+        routes.put(uri, properties);
+        Request request = MockRequestDealer.badParamRequest(uri);
+        //When
+        boolean actual = subject.relevant(request, routes);
+        //Then
+        assertTrue(actual);
+    }
+
+    @Test
     void relevantReturnsFalseIfTheRequestUriMatchesARoute() {
         //Given
         String uri = "/found";
@@ -52,10 +63,10 @@ class UriControllerTest {
     }
 
     @Test
-    void generateGeneratesA404Response() {
+    void generateGeneratesA404ResponseIfNotFound() {
         //Given
         String uri = "/not-found";
-        Request request = MockRequestDealer.cookieRequest(uri);
+        Request request = MockRequestDealer.getRequest(uri);
         //When
         byte[] actual = subject.generate(request, routes);
         //Then
@@ -63,4 +74,16 @@ class UriControllerTest {
         assertTrue(new String(actual).contains(expected));
     }
 
+    @Test
+    void generateGeneratesA400ResponseIfBadParams() {
+        //Given
+        String uri = "/found";
+        routes.put(uri, properties);
+        Request request = MockRequestDealer.badParamRequest(uri);
+        //When
+        byte[] actual = subject.generate(request, routes);
+        //Then
+        String expected = "400 Bad Request";
+        assertTrue(new String(actual).contains(expected));
+    }
 }

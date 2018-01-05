@@ -120,10 +120,10 @@ public class MockRequestDealer {
         return request;
     }
 
-    public static Request badParamRequest() {
+    public static Request badParamRequest(String uri) {
         Request request = new Request();
         request.setMethod("GET");
-        request.setUri("/");
+        request.setUri(uri);
         request.setUriParams(new String[]{ "param1value1", "param2=value2" });
         request.setHttpV("HTTP/1.1");
         request.setHeaders(new String[]{ "Content-Type: text/plain", "Content-Length: 34" });
