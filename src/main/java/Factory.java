@@ -1,3 +1,4 @@
+import Filers.DirectoryFileClerk;
 import Filers.FileClerk;
 import Filers.FileUpdater;
 import FunctionalCore.*;
@@ -31,7 +32,7 @@ public class Factory {
         this.directory = directory;
         this.configFile = configFile;
         this.logger = buildLogger();
-        this.fileClerk = new FileClerk(directory);
+        this.fileClerk = new DirectoryFileClerk(directory);
     }
 
     private Logger buildLogger() {
