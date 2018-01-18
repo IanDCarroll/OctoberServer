@@ -1,9 +1,11 @@
-package FunctionalCore.Controller.ResponseGeneration;
+package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
 import Filers.FileClerk;
+import FunctionalCore.Controller.ResponseGeneration.CookieGenerator;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.SetCookieHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
+import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
