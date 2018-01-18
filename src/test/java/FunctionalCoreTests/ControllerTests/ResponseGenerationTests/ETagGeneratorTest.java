@@ -58,7 +58,6 @@ class ETagGeneratorTest {
         //Then
         FileHelper.delete(fullPath);
         String expected = "ETag: " + ifMatch;
-        System.out.println(new String(actual));
         assertTrue(new String(actual).contains(expected));
     }
 
