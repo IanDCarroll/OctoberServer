@@ -1,22 +1,22 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
+import Factory.ServerFactory;
 import FunctionalCore.Controller.ResponseGeneration.OptionsGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.AllowHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
-import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OptionsGeneratorTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     OptionsGenerator subject;
 
     @BeforeEach
     void setup() {
-        StartLineSetter startLineSetter = new StartLineSetter();
-        AllowHeaderSetter allowHeaderSetter = new AllowHeaderSetter();
-        subject = new OptionsGenerator(startLineSetter, allowHeaderSetter);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildOptionsGenerator();
     }
 
     @Test

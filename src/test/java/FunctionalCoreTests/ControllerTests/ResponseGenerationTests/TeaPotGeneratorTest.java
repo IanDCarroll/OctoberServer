@@ -1,8 +1,6 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
-import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
+import Factory.ServerFactory;
 import FunctionalCore.Controller.ResponseGeneration.TeaPotGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,15 +8,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TeaPotGeneratorTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     private TeaPotGenerator subject;
 
     @BeforeEach
     void setup() {
-        StartLineSetter startLineSetter = new StartLineSetter();
-        String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
-        FileClerk fileClerk = new FileClerk(publicDir);
-        BodySetter bodySetter = new BodySetter(fileClerk);
-        subject = new TeaPotGenerator(startLineSetter, bodySetter);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildTeaPotGenerator();
     }
 
     @Test

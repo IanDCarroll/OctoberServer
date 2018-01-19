@@ -1,23 +1,22 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
-import Filers.FileClerk;
+import Factory.ServerFactory;
 import FunctionalCore.Controller.ResponseGeneration.ClientErrorGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
-import Helpers.FileHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClientErrorGeneratorTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     private ClientErrorGenerator subject;
-    private String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
 
     @BeforeEach
     void init() {
-        FileClerk fileClerk = new FileClerk(publicDir);
-        StartLineSetter startLineSetter = new StartLineSetter();
-        subject = new ClientErrorGenerator(startLineSetter);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildClientErrorGenerator();
     }
 
     @Test

@@ -1,5 +1,6 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests.ResponseSetterTests;
 
+import Factory.ServerFactory;
 import FunctionalCore.Controller.ResponseGeneration.Response;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,12 +8,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class StartlineSetterTest {
+class StartLineSetterTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     StartLineSetter subject;
 
     @BeforeEach
     void setup() {
-        subject = new StartLineSetter();
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildStartLineSetter();
     }
 
     @Test

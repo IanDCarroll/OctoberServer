@@ -1,9 +1,7 @@
 package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
+import Factory.ServerFactory;
 import FunctionalCore.Controller.SubControllers.RedirectionController;
-import FunctionalCore.Controller.ResponseGeneration.RedirectionGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.LocationHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Request;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +12,9 @@ import java.util.LinkedHashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RedirectionControllerTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     RedirectionController subject;
     LinkedHashMap<String, String> properties;
     LinkedHashMap<String, LinkedHashMap<String, String>> routes;
@@ -22,10 +23,8 @@ class RedirectionControllerTest {
     void setup() {
         properties = new LinkedHashMap<>();
         routes = new LinkedHashMap<>();
-        StartLineSetter startLineSetter = new StartLineSetter();
-        LocationHeaderSetter locationHeaderSetter = new LocationHeaderSetter();
-        RedirectionGenerator redirectionGenerator = new RedirectionGenerator(startLineSetter, locationHeaderSetter);
-        subject = new RedirectionController(redirectionGenerator);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildRedirectionController();
     }
 
     @Test

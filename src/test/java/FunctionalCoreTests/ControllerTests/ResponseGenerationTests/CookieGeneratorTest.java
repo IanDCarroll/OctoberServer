@@ -1,10 +1,7 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
-import Filers.FileClerk;
+import Factory.ServerFactory;
 import FunctionalCore.Controller.ResponseGeneration.CookieGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.SetCookieHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,16 +9,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CookieGeneratorTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     CookieGenerator subject;
-    private String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
 
     @BeforeEach
     void setup() {
-        StartLineSetter startLineSetter = new StartLineSetter();
-        FileClerk fileClerk = new FileClerk(publicDir);
-        BodySetter bodySetter = new BodySetter(fileClerk);
-        SetCookieHeaderSetter setCookieHeaderSetter = new SetCookieHeaderSetter();
-        subject = new CookieGenerator(startLineSetter, bodySetter, setCookieHeaderSetter);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildCookieGenerator();
     }
 
     @Test

@@ -1,9 +1,7 @@
 package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
+import Factory.ServerFactory;
 import FunctionalCore.Controller.SubControllers.AuthController;
-import FunctionalCore.Controller.ResponseGeneration.AuthGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.AuthenticateHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Request;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +12,9 @@ import java.util.LinkedHashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AuthControllerTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     AuthController subject;
     LinkedHashMap<String, String> properties = new LinkedHashMap<>();
     {
@@ -24,10 +25,8 @@ class AuthControllerTest {
     @BeforeEach
     void setup() {
         routes = new LinkedHashMap<>();
-        StartLineSetter startLineSetter = new StartLineSetter();
-        AuthenticateHeaderSetter authenticateHeaderSetter = new AuthenticateHeaderSetter();
-        AuthGenerator generator = new AuthGenerator(startLineSetter, authenticateHeaderSetter);
-        subject = new AuthController(generator);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildAuthController();
     }
 
     @Test

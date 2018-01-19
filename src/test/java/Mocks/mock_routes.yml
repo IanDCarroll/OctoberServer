@@ -10,3 +10,36 @@
 /coffee:
   allowed-methods: GET,HEAD
   redirect-uri: /tea-earl-grey-hot
+
+/options-only:
+  allowed-methods: OPTIONS
+
+/a-file-to-get:
+  allowed-methods: GET
+
+/this-will-be-deleted:
+  allowed-methods: GET,DELETE
+
+/this-will-be-replaced:
+  allowed-methods: GET,PUT
+
+/this-will-be-added-to:
+  allowed-methods: GET,POST
+
+/a-file-for-rangers:
+  allowed-methods: GET
+
+/a-uri-marked-for-redirection:
+  allowed-methods: GET
+  redirect-uri: /
+
+/a-uri-that-needs-authorization:
+  allowed-methods: GET
+  authorization: admin:hunter2
+
+/a-uri-that-wont-pass-authorization:
+  allowed-methods: GET
+  authorization: wont:pass
+
+/patch-this:
+  allowed-methods: PATCH

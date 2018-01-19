@@ -2,8 +2,6 @@ package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
 import Filers.FileClerk;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ETagHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.SetCookieHeaderSetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import Helpers.FileHelper;

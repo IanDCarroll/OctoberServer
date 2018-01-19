@@ -1,6 +1,6 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests.ResponseSetterTests;
 
-import Filers.FileClerk;
+import Factory.ServerFactory;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
 import FunctionalCore.Controller.ResponseGeneration.Response;
 import Helpers.FileHelper;
@@ -13,16 +13,18 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BodySetterTest {
-    private final String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     private final String testUri = "/test-uri";
-    private final String fullPath = publicDir + testUri;
+    private final String fullPath = directory + testUri;
     private byte[] body = "this is a body".getBytes();
     private BodySetter subject;
 
     @BeforeEach
     void setup() {
-        FileClerk fileClerk = new FileClerk(publicDir);
-        subject = new BodySetter(fileClerk);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildBodySetter();
         FileHelper.make(fullPath, body);
     }
 
@@ -44,7 +46,7 @@ class BodySetterTest {
     }
 
     @Test
-    void setBodySetsAbodywithAGivenURI() {
+    void setBodySetsABodyWithAGivenURI() {
         //Given
         Response emptyResponse = new Response();
         //When

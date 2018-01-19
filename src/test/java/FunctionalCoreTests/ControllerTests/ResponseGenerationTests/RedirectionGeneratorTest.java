@@ -1,21 +1,22 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
+import Factory.ServerFactory;
 import FunctionalCore.Controller.ResponseGeneration.RedirectionGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.LocationHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RedirectionGeneratorTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     private RedirectionGenerator subject;
 
     @BeforeEach
     void setup() {
-        StartLineSetter startLineSetter = new StartLineSetter();
-        LocationHeaderSetter locationHeaderSetter = new LocationHeaderSetter();
-        subject = new RedirectionGenerator(startLineSetter, locationHeaderSetter);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildRedirectionGenerator();
     }
 
     @Test

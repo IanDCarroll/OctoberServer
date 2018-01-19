@@ -1,21 +1,22 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
+import Factory.ServerFactory;
 import FunctionalCore.Controller.ResponseGeneration.AuthGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.AuthenticateHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AuthGeneratorTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     AuthGenerator subject;
 
     @BeforeEach
     void setup() {
-        StartLineSetter startLineSetter = new StartLineSetter();
-        AuthenticateHeaderSetter authenticateHeaderSetter = new AuthenticateHeaderSetter();
-        subject = new AuthGenerator(startLineSetter, authenticateHeaderSetter);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildAuthGenerator();
     }
 
     @Test

@@ -1,68 +1,30 @@
 package FunctionalCoreTests.ControllerTests;
 
-import Filers.FileClerk;
+import Factory.ServerFactory;
 import FunctionalCore.Controller.*;
-import FunctionalCore.Controller.ResponseGeneration.*;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.*;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
-import FunctionalCore.Controller.SubControllers.*;
 import FunctionalCore.Request;
 import Helpers.FileHelper;
-import Loggers.FileLogger;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     private Controller subject;
-    private LinkedHashMap<String, LinkedHashMap<String, String>> mockRoutes;
-    private LinkedHashMap<String, String> mockRouteAttributes;
-    private String publicDir;
-    private FileClerk fileClerk;
 
     @BeforeEach
     void init() {
-        mockRoutes = new LinkedHashMap();
-        mockRouteAttributes = new LinkedHashMap();
-        mockRouteAttributes.put("allowed-methods", "GET");
-        publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
-        fileClerk = new FileClerk(publicDir);
-        FileLogger fileLogger = new FileLogger(fileClerk);
-        StartLineSetter sls = new StartLineSetter();
-        BodySetter bs = new BodySetter(fileClerk);
-        TeaPotGenerator tg = new TeaPotGenerator(sls, bs);
-        TeaPotController t = new TeaPotController(tg);
-        ClientErrorGenerator ceg = new ClientErrorGenerator(sls);
-        UriController u = new UriController(ceg);
-        AuthenticateHeaderSetter authHS = new AuthenticateHeaderSetter();
-        AuthGenerator ag = new AuthGenerator(sls, authHS);
-        AuthController a = new AuthController(ag);
-        AllowHeaderSetter allowHS = new AllowHeaderSetter();
-        OptionsGenerator og = new OptionsGenerator(sls, allowHS);
-        OptionsController o = new OptionsController(og);
-        LocationHeaderSetter lhs = new LocationHeaderSetter();
-        RedirectionGenerator rdg = new RedirectionGenerator(sls, lhs);
-        RedirectionController d = new RedirectionController(rdg);
-        SetCookieHeaderSetter schs = new SetCookieHeaderSetter();
-        ETagHeaderSetter eths = new ETagHeaderSetter();
-        CookieGenerator cg = new CookieGenerator(sls, bs, schs);
-        CookieController c = new CookieController(cg);
-        RangeHeaderSetter rhs = new RangeHeaderSetter(fileClerk);
-        RangeGenerator rg = new RangeGenerator(sls, bs, rhs);
-        RangeController r = new RangeController(fileClerk, rg);
-        ETagGenerator etg = new ETagGenerator(sls, bs, eths);
-        MethodController m = new MethodController(fileClerk, etg);
-        subject = new Controller(mockRoutes, fileLogger, t, u, a, o, d, c, r, m, ceg);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildController();
     }
 
     @Test
     void getAppropriateResponseTakesARequestObjectAndReturnsAnAppropriateByteArray() {
         //Given
-        mockRoutes.put("/", mockRouteAttributes);
         Request request = MockRequestDealer.getRootRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -73,8 +35,9 @@ class ControllerTest {
 
     @Test
     void getAppropriateResponseReturnsA404IfTheUriIsNotFoundInRoutes() {
-        //Given no route for root
-        Request request = MockRequestDealer.getRootRequest();
+        //Given (no route in mocks for "/not-found")
+        String uri = "/not-found";
+        Request request = MockRequestDealer.getRequest(uri);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -85,9 +48,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturns405IfTheMethodIsNotAllowed() {
         //Given
-        mockRouteAttributes.put("allowed-methods", "OPTIONS");
-        mockRoutes.put("/", mockRouteAttributes);
-        Request request = MockRequestDealer.getRootRequest();
+        String uri = "/options-only";
+        Request request = MockRequestDealer.getRequest(uri);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -98,8 +60,6 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturnsOnlyTheHeadForAHEADRequest() {
         //Given
-        mockRouteAttributes.put("allowed-methods", "HEAD");
-        mockRoutes.put("/", mockRouteAttributes);
         Request request = MockRequestDealer.headHeaderRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
@@ -111,13 +71,11 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturnsAnAllowHeaderForAnOPTIONSRequest() {
         //Given
-        mockRouteAttributes.put("allowed-methods", "GET,HEAD,OPTIONS");
-        mockRoutes.put("/", mockRouteAttributes);
         Request request = MockRequestDealer.optionsRequest();
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
-        String expected = "Allow: GET,HEAD,OPTIONS";
+        String expected = "Allow: GET,OPTIONS";
         assertTrue(new String(actual).contains(expected));
     }
 
@@ -125,11 +83,10 @@ class ControllerTest {
     void getAppropriateResponseReturnsTheBodyForAGETRequest() {
         //Given
         String uri = "/a-file-to-get";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request request = MockRequestDealer.getRequest(uri);
-        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -142,13 +99,11 @@ class ControllerTest {
     void getAppropriateResponseDeletesTheBodyForADELETERequest() {
         //Given
         String uri = "/this-will-be-deleted";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request delete = MockRequestDealer.deleteRequest(uri);
-        mockRouteAttributes.put("allowed-methods", "GET DELETE");
-        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] beforeDelete = subject.getAppropriateResponse(get);
         byte[] duringDelete = subject.getAppropriateResponse(delete);
@@ -165,13 +120,11 @@ class ControllerTest {
     void getAppropriateResponseReplacesTheBodyForAPUTRequest() {
         //Given
         String uri = "/this-will-be-replaced";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request put = MockRequestDealer.putRequest(uri);
-        mockRouteAttributes.put("allowed-methods", "GET PUT");
-        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] beforePut = subject.getAppropriateResponse(get);
         byte[] duringPut = subject.getAppropriateResponse(put);
@@ -191,13 +144,11 @@ class ControllerTest {
     void getAppropriateResponseAppendsTheBodyForAPOSTRequest() {
         //Given
         String uri = "/this-will-be-added-to";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request get = MockRequestDealer.getRequest(uri);
         Request post = MockRequestDealer.postRequest(uri);
-        mockRouteAttributes.put("allowed-methods", "GET POST");
-        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] beforePost = subject.getAppropriateResponse(get);
         byte[] duringPost1 = subject.getAppropriateResponse(post);
@@ -221,11 +172,10 @@ class ControllerTest {
     void getAppropriateResponseReturns206IfThereIsARangeHeader() {
         //Given
         String uri = "/a-file-for-rangers";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request request = MockRequestDealer.partialRequest(uri);
-        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -238,11 +188,10 @@ class ControllerTest {
     void getAppropriateResponseReturns416IfTheRangeHeaderIsNotGood() {
         //Given
         String uri = "/a-file-for-rangers";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         byte[] content = "Original content".getBytes();
         FileHelper.make(fullPath, content);
         Request request = MockRequestDealer.badPartialRequest(uri);
-        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -256,8 +205,6 @@ class ControllerTest {
         //Given
         String uri = "/a-uri-marked-for-redirection";
         Request request = MockRequestDealer.getRequest(uri);
-        mockRouteAttributes.put("redirect-uri", "/");
-        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -268,10 +215,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturns200IfRequestIsAuthorized() {
         //Given
-        String uri = "/a-uri-that-needs-properties";
+        String uri = "/a-uri-that-needs-authorization";
         Request request = MockRequestDealer.authRequest(uri);
-        mockRouteAttributes.put("authorization", "admin:hunter2");
-        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -282,10 +227,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturns401IfRequestHasNoAuthHeader() {
         //Given
-        String uri = "/a-uri-that-needs-properties";
+        String uri = "/a-uri-that-needs-authorization";
         Request request = MockRequestDealer.getRequest(uri);
-        mockRouteAttributes.put("authorization", "Wont:Pass");
-        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -296,10 +239,8 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturns403IfRequestHasIncorrectAuthHeader() {
         //Given
-        String uri = "/a-uri-that-needs-properties";
+        String uri = "/a-uri-that-wont-pass-authorization";
         Request request = MockRequestDealer.authRequest(uri);
-        mockRouteAttributes.put("authorization", "Wont:Pass");
-        mockRoutes.put(uri, mockRouteAttributes);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
@@ -322,31 +263,29 @@ class ControllerTest {
     @Test
     void getAppropriateResponseReturns204IfRequestMethodIsPatch() {
         //Given
-        mockRouteAttributes.put("allowed-methods", "PATCH");
         String uri = "/patch-this";
-        mockRoutes.put(uri, mockRouteAttributes);
+        String fullPath = directory + uri;
         String ifMatch = "900dE7a9";
         Request request = MockRequestDealer.patchRequest(uri, ifMatch);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
-        FileHelper.delete(publicDir + uri);
+        FileHelper.delete(fullPath);
         String startline = "204 No Content";
         assertTrue(new String(actual).contains(startline));
         assertTrue(new String(actual).contains(ifMatch));
     }
-/*
+
     @Test
     void getAppropriateResponseReturns400ForBadParams() {
         //Given
-        mockRoutes.put("/", mockRouteAttributes);
-        Request request = MockRequestDealer.badParamRequest();
+        String uri = "/";
+        Request request = MockRequestDealer.badParamRequest(uri);
         //When
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
         String expected = "400 Bad Request";
-        System.out.println(new String(actual));
         assertTrue(new String(actual).contains(expected));
     }
-*/
+
 }

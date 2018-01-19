@@ -1,11 +1,7 @@
 package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
-import Filers.FileClerk;
+import Factory.ServerFactory;
 import FunctionalCore.Controller.SubControllers.RangeController;
-import FunctionalCore.Controller.ResponseGeneration.RangeGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.RangeHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Request;
 import Helpers.FileHelper;
 import Mocks.MockRequestDealer;
@@ -18,12 +14,14 @@ import java.util.LinkedHashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RangeControllerTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     private RangeController subject;
     private LinkedHashMap<String, String> properties;
     private LinkedHashMap<String, LinkedHashMap<String, String>> routes;
-    private String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
     private String uri = "/get-partial";
-    private String fullPath = publicDir + uri;
+    private String fullPath = directory + uri;
     private byte[] content;
 
     @BeforeEach
@@ -33,12 +31,8 @@ class RangeControllerTest {
         FileHelper.make(fullPath, content);
         properties = new LinkedHashMap<>();
         routes = new LinkedHashMap<>();
-        FileClerk fileClerk = new FileClerk(publicDir);
-        StartLineSetter startLineSetter = new StartLineSetter();
-        BodySetter bodySetter = new BodySetter(fileClerk);
-        RangeHeaderSetter rangeHeaderSetter = new RangeHeaderSetter(fileClerk);
-        RangeGenerator rangeGenerator = new RangeGenerator(startLineSetter, bodySetter, rangeHeaderSetter);
-        subject = new RangeController(fileClerk, rangeGenerator);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildRangeController();
     }
 
     @AfterEach

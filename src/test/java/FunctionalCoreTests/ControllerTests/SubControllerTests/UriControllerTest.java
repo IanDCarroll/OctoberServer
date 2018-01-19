@@ -1,5 +1,6 @@
 package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
+import Factory.ServerFactory;
 import FunctionalCore.Controller.ResponseGeneration.ClientErrorGenerator;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Controller.SubControllers.UriController;
@@ -13,17 +14,20 @@ import java.util.LinkedHashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UriControllerTest {
-    UriController subject;
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     LinkedHashMap<String, String> properties;
     LinkedHashMap<String, LinkedHashMap<String, String>> routes;
+    UriController subject;
+
 
     @BeforeEach
     void setup() {
         properties = new LinkedHashMap<>();
         routes = new LinkedHashMap<>();
-        StartLineSetter startLineSetter = new StartLineSetter();
-        ClientErrorGenerator clientErrorGenerator = new ClientErrorGenerator(startLineSetter);
-        subject = new UriController(clientErrorGenerator);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildUriController();
     }
 
     @Test

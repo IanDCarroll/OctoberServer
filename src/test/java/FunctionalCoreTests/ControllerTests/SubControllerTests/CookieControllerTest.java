@@ -1,11 +1,7 @@
 package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
-import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGeneration.CookieGenerator;
+import Factory.ServerFactory;
 import FunctionalCore.Controller.SubControllers.CookieController;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.SetCookieHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Request;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,21 +12,19 @@ import java.util.LinkedHashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CookieControllerTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     CookieController subject;
     LinkedHashMap<String, String> properties;
     LinkedHashMap<String, LinkedHashMap<String, String>> routes;
-    private String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
 
     @BeforeEach
     void setup() {
         properties = new LinkedHashMap<>();
         routes = new LinkedHashMap<>();
-        FileClerk fileClerk = new FileClerk(publicDir);
-        StartLineSetter s = new StartLineSetter();
-        BodySetter b = new BodySetter(fileClerk);
-        SetCookieHeaderSetter c = new SetCookieHeaderSetter();
-        CookieGenerator cookieGenerator = new CookieGenerator(s, b, c);
-        subject = new CookieController(cookieGenerator);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildCookieController();
     }
 
     @Test

@@ -1,9 +1,6 @@
 package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
-import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
-import FunctionalCore.Controller.ResponseGeneration.TeaPotGenerator;
+import Factory.ServerFactory;
 import FunctionalCore.Controller.SubControllers.TeaPotController;
 import FunctionalCore.Request;
 import Mocks.MockRequestDealer;
@@ -15,17 +12,16 @@ import java.util.LinkedHashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TeaPotControllerTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     TeaPotController subject;
     LinkedHashMap emptyRoutes = new LinkedHashMap<>();
 
     @BeforeEach
     void setup() {
-        StartLineSetter startLineSetter = new StartLineSetter();
-        String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
-        FileClerk fileClerk = new FileClerk(publicDir);
-        BodySetter bodySetter = new BodySetter(fileClerk);
-        TeaPotGenerator generator = new TeaPotGenerator(startLineSetter, bodySetter);
-        subject = new TeaPotController(generator);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildTeaPotController();
     }
 
     @Test

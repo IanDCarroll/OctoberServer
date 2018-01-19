@@ -41,7 +41,7 @@ class RangeHeaderSetterTest {
     }
 
     @Test
-    void setRangereturnsAResponseWithAFullyDeckedOutRangeHeaderWhenPassedStartAndStopWithURI() {
+    void setRangeReturnsAResponseWithAFullyDeckedOutRangeHeaderWhenPassedStartAndStopWithURI() {
         //Given
         Response emptyResponse = new Response();
         int[] rangeTuple = { 6, 10 };

@@ -1,10 +1,7 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
-import Filers.FileClerk;
+import Factory.ServerFactory;
 import FunctionalCore.Controller.ResponseGeneration.ETagGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.ETagHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
 import FunctionalCore.Request;
 import Helpers.FileHelper;
@@ -15,16 +12,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ETagGeneratorTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     ETagGenerator subject;
-    private String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
 
     @BeforeEach
     void setup() {
-        FileClerk fileClerk = new FileClerk(publicDir);
-        StartLineSetter startLineSetter = new StartLineSetter();
-        BodySetter bodySetter = new BodySetter(fileClerk);
-        ETagHeaderSetter eTagHeaderSetter = new ETagHeaderSetter();
-        subject = new ETagGenerator(startLineSetter, bodySetter, eTagHeaderSetter);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildETagGenerator();
     }
 
     @Test
@@ -34,7 +30,7 @@ class ETagGeneratorTest {
         byte[] content = "Original content".getBytes();
         String uri = "/a-file-with-a-body";
         Request request = MockRequestDealer.eTagRequest(uri, ifMatch);
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         FileHelper.make(fullPath, content);
         //When
         byte[] actual = subject.generate(SuccessGenerator.Code.NO_CONTENT, request);
@@ -51,7 +47,7 @@ class ETagGeneratorTest {
         byte[] content = "Original content".getBytes();
         String uri = "/a-file-with-a-body";
         Request request = MockRequestDealer.eTagRequest(uri, ifMatch);
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         FileHelper.make(fullPath, content);
         //When
         byte[] actual = subject.generate(SuccessGenerator.Code.NO_CONTENT, request);

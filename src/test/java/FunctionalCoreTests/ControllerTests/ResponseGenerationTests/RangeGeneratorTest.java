@@ -1,10 +1,8 @@
 package FunctionalCoreTests.ControllerTests.ResponseGenerationTests;
 
+import Factory.ServerFactory;
 import Filers.FileClerk;
 import FunctionalCore.Controller.ResponseGeneration.RangeGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.RangeHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import Helpers.FileHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,16 +10,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RangeGeneratorTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     private RangeGenerator subject;
-    private String publicDir = System.getProperty("user.dir") + "/src/test/java/Mocks";
 
     @BeforeEach
     void init() {
-        FileClerk fileClerk = new FileClerk(publicDir);
-        StartLineSetter startLineSetter = new StartLineSetter();
-        BodySetter bodySetter = new BodySetter(fileClerk);
-        RangeHeaderSetter rangeHeaderSetter = new RangeHeaderSetter(fileClerk);
-        subject = new RangeGenerator(startLineSetter, bodySetter, rangeHeaderSetter);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildRangeGenerator();
     }
     
     @Test
@@ -30,7 +27,7 @@ class RangeGeneratorTest {
         int[] rangeTuple = { 2, 8 };
         byte[] content = "Original content".getBytes();
         String uri = "/a-file-with-a-body";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         FileHelper.make(fullPath, content);
         //When
         byte[] actual = subject.generate(RangeGenerator.Code.PARTIAL_CONTENT, uri, rangeTuple);
@@ -47,7 +44,7 @@ class RangeGeneratorTest {
         int[] rangeTuple = { 2, 8 };
         byte[] content = "Original content".getBytes();
         String uri = "/a-file-with-a-body";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         FileHelper.make(fullPath, content);
         //When
         byte[] actual = subject.generate(RangeGenerator.Code.PARTIAL_CONTENT, uri, rangeTuple);
@@ -63,7 +60,7 @@ class RangeGeneratorTest {
         int[] rangeTuple = { 2, 8 };
         byte[] content = "Original content".getBytes();
         String uri = "/a-file-with-a-body";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         FileHelper.make(fullPath, content);
         //When
         byte[] actual = subject.generate(RangeGenerator.Code.PARTIAL_CONTENT, uri, rangeTuple);
@@ -78,7 +75,7 @@ class RangeGeneratorTest {
         //Given
         byte[] content = "Original content".getBytes();
         String uri = "/a-file-with-a-body";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         FileHelper.make(fullPath, content);
         //When
         byte[] actual = subject.generate(RangeGenerator.Code.RANGE_NOT_SATISFIABLE, uri);
@@ -93,7 +90,7 @@ class RangeGeneratorTest {
         //Given
         byte[] content = "Original content".getBytes();
         String uri = "/a-file-with-a-body";
-        String fullPath = publicDir + uri;
+        String fullPath = directory + uri;
         FileHelper.make(fullPath, content);
         //When
         byte[] actual = subject.generate(RangeGenerator.Code.PARTIAL_CONTENT, uri);

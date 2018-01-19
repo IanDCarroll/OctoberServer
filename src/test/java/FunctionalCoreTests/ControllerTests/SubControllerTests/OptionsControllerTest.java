@@ -1,9 +1,7 @@
 package FunctionalCoreTests.ControllerTests.SubControllerTests;
 
+import Factory.ServerFactory;
 import FunctionalCore.Controller.SubControllers.OptionsController;
-import FunctionalCore.Controller.ResponseGeneration.OptionsGenerator;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.AllowHeaderSetter;
-import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Request;
 import Mocks.MockRequestDealer;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +12,9 @@ import java.util.LinkedHashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OptionsControllerTest {
+    private int port = 5000;
+    private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     OptionsController subject;
     LinkedHashMap<String, String> properties;
     LinkedHashMap<String, LinkedHashMap<String, String>> routes;
@@ -22,10 +23,8 @@ class OptionsControllerTest {
     void setup() {
         properties = new LinkedHashMap<>();
         routes = new LinkedHashMap<>();
-        StartLineSetter startLineSetter = new StartLineSetter();
-        AllowHeaderSetter allowHeaderSetter = new AllowHeaderSetter();
-        OptionsGenerator optionsGenerator = new OptionsGenerator(startLineSetter, allowHeaderSetter);
-        subject = new OptionsController(optionsGenerator);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        subject = factory.buildOptionsController();
     }
 
     @Test

@@ -1,28 +1,25 @@
 package LoggerTests;
 
-import Filers.FileUpdater;
+import Factory.ServerFactory;
 import Helpers.FileHelper;
-import Loggers.FileLogger;
 import Loggers.Logger;
-import Mocks.MockPrintStreamDealer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.PrintStream;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileLoggerTest {
+    private int port = 5000;
     private String directory = System.getProperty("user.dir") + "/src/test/java/Mocks";
+    private String configFile = directory + "/mock_routes.yml";
     private String fullPath = directory + "/logs";
-    private FileUpdater fileUpdater;
     private Logger logger;
 
     @BeforeEach
     void setup() {
-        fileUpdater = new FileUpdater(directory);
-        logger = new FileLogger(fileUpdater);
+        ServerFactory factory = new ServerFactory(port, directory, configFile);
+        logger = factory.buildLogger();
     }
 
     @AfterEach
