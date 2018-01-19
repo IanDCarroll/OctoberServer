@@ -1,19 +1,45 @@
 package FunctionalCore.Controller.SubControllers;
 
-import Filers.FileClerk;
-import FunctionalCore.Controller.ResponseGeneration.ETagGenerator;
-import FunctionalCore.Controller.ResponseGeneration.SuccessGenerator;
+import FunctionalCore.Controller.SubControllers.MethodSubControllers.*;
 import FunctionalCore.Request;
 
 import java.util.LinkedHashMap;
 
 public class MethodController implements SubController {
-    private FileClerk fileClerk;
-    private ETagGenerator eTagGenerator;
+    private static MethodSubController getController;
+    private static MethodSubController headController;
+    private static MethodSubController postController;
+    private static MethodSubController putController;
+    private static MethodSubController deleteController;
+    private static MethodSubController patchController;
+    public enum Method {
+        GET("GET", getController),
+        HEAD("HEAD", headController),
+        POST("POST", postController),
+        PUT("PUT", putController),
+        DELETE("DELETE", deleteController),
+        PATCH("PATCH", patchController);
+        public String name;
+        public MethodSubController methodClass;
 
-    public MethodController(FileClerk fileClerk, ETagGenerator eTagGenerator) {
-        this.fileClerk = fileClerk;
-        this.eTagGenerator =   eTagGenerator;
+        Method(String name, MethodSubController methodClass) {
+            this.name = name;
+            this.methodClass = methodClass;
+        }
+    }
+
+    public MethodController(GetController getController,
+                            HeadController headController,
+                            PostController postController,
+                            PutController putController,
+                            DeleteController deleteController,
+                            PatchController patchController) {
+        this.getController = getController;
+        this.headController = headController;
+        this.postController = postController;
+        this.putController = putController;
+        this.deleteController = deleteController;
+        this.patchController = patchController;
     }
 
     public boolean relevant(Request request, LinkedHashMap<String, LinkedHashMap<String, String>> routes) {
@@ -23,43 +49,9 @@ public class MethodController implements SubController {
     private boolean theHTTPVersionIsSet(Request request) { return !request.getHttpV().equals("Not Set"); }
 
     public byte[] generate(Request request, LinkedHashMap<String, LinkedHashMap<String, String>> routes) {
-        return findMethod(request);
-    }
-
-    private byte[] findMethod(Request request) {
-        String method = request.getMethod();
-        if (method.equals("GET")) { return get(request); }
-        if (method.equals("HEAD")) { return head(request); }
-        if (method.equals("POST")) { return post(request); }
-        if (method.equals("PUT")) { return put(request); }
-        if (method.equals("DELETE")) { return delete(request); }
-        if (method.equals("PATCH")) { return patch(request); }
-        return get(request);
-    }
-
-    private byte[] head(Request request) { return eTagGenerator.generateHead(SuccessGenerator.Code.OK, request.getUri()); }
-
-    private byte[] post(Request request) {
-        fileClerk.append(request.getUri(), request.getBody());
-        return get(request);
-    }
-
-    private byte[] put(Request request) {
-        fileClerk.rewrite(request.getUri(), request.getBody());
-        return get(request);
-    }
-
-    private byte[] delete(Request request) {
-        fileClerk.delete(request.getUri());
-        return get(request);
-    }
-
-    private byte[] patch(Request request) {
-        fileClerk.append(request.getUri(), request.getBody());
-        return eTagGenerator.generate(SuccessGenerator.Code.NO_CONTENT, request);
-    }
-
-    private byte[] get(Request request) {
-        return eTagGenerator.generate(SuccessGenerator.Code.OK, request.getUri(), request.getUriParams());
+        for (Method method : Method.values()) {
+            if (method.name.equals(request.getMethod())) { return method.methodClass.fulfill(request); }
+        }
+        return Method.GET.methodClass.fulfill(request);
     }
 }

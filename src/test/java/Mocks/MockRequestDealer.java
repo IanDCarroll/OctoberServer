@@ -17,14 +17,13 @@ public class MockRequestDealer {
         request.setMethod("GET");
         request.setUri(uri);
         request.setHttpV("HTTP/1.1");
-        request.setBody("".getBytes());
         return request;
     }
 
     public static Request headHeaderRequest() {
         Request request = new Request();
         request.setMethod("HEAD");
-        request.setUri("/");
+        request.setUri("/head-uri");
         request.setUriParams(new String[]{ "param1=value1", "param2=value2" });
         request.setHttpV("HTTP/1.1");
         request.setHeaders(new String[]{ "Content-Type: text/plain", "Content-Length: 34" });
@@ -73,6 +72,7 @@ public class MockRequestDealer {
         request.setUri(uri);
         request.setHttpV("HTTP/1.1");
         request.setHeaders(new String[]{ "If-Match: " + ifMatch });
+        request.setBody("This represents a well-formed PATCH".getBytes());
         return request;
     }
 

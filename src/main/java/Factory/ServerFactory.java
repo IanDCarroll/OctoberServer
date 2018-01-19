@@ -10,6 +10,7 @@ import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.BodySetter;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.HeaderSetters.*;
 import FunctionalCore.Controller.ResponseGeneration.ResponseSetter.StartLineSetter;
 import FunctionalCore.Controller.SubControllers.*;
+import FunctionalCore.Controller.SubControllers.MethodSubControllers.*;
 import FunctionalCore.Core;
 import FunctionalCore.Parser.Parser;
 import Importers.FileImporter;
@@ -191,8 +192,49 @@ public class ServerFactory {
     }
 
     public MethodController buildMethodController() {
+        GetController get = buildGetController();
+        HeadController head = buildHeadController();
+        PostController post = buildPostController();
+        PutController put = buildPutController();
+        DeleteController delete = buildDeleteController();
+        PatchController patch = buildPatchController();
+        return new MethodController(get, head, post, put, delete, patch);
+    }
+
+    public GetController buildGetController() {
+        SuccessGenerator successGenerator = buildSuccessGenerator();
+        return new GetController(successGenerator);
+    }
+
+    public SuccessGenerator buildSuccessGenerator() {
+        StartLineSetter startLineSetter = buildStartLineSetter();
+        BodySetter bodySetter = buildBodySetter();
+        return new SuccessGenerator(startLineSetter, bodySetter);
+    }
+
+    public HeadController buildHeadController() {
+        SuccessGenerator successGenerator = buildSuccessGenerator();
+        return new HeadController(successGenerator);
+    }
+
+    public PostController buildPostController() {
+        SuccessGenerator successGenerator = buildSuccessGenerator();
+        return new PostController(successGenerator, fileClerk);
+    }
+
+    public PutController buildPutController() {
+        SuccessGenerator successGenerator = buildSuccessGenerator();
+        return new PutController(successGenerator, fileClerk);
+    }
+
+    public DeleteController buildDeleteController() {
+        SuccessGenerator successGenerator = buildSuccessGenerator();
+        return new DeleteController(successGenerator, fileClerk);
+    }
+
+    public PatchController buildPatchController() {
         ETagGenerator eTagGenerator = buildETagGenerator();
-        return new MethodController(fileClerk, eTagGenerator);
+        return new PatchController(eTagGenerator, fileClerk);
     }
 
     public ETagGenerator buildETagGenerator() {

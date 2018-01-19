@@ -271,8 +271,8 @@ class ControllerTest {
         byte[] actual = subject.getAppropriateResponse(request);
         //Then
         FileHelper.delete(fullPath);
-        String startline = "204 No Content";
-        assertTrue(new String(actual).contains(startline));
+        String startLine = "204 No Content";
+        assertTrue(new String(actual).contains(startLine));
         assertTrue(new String(actual).contains(ifMatch));
     }
 
